@@ -1,0 +1,25 @@
+{
+  "name": "worldmap-tech",
+  "private": true,
+  "description": "worldmap.tech: mark the countries you've visited",
+  "scripts": {
+    "build": "node build.js",
+    "dev": "wrangler pages dev site --d1 DB=worldmap-local --port 8788",
+    "labels": "node dumplabels.js && node build.js",
+    "test": "node tests/test8.js && node tests/test9.js && node tests/linkcheck.js",
+    "test:consent": "ADS_CLIENT=ca-pub-1234567890123456 ADS_SLOT=1234567890 node build.js && node tests/test9.js consent; node build.js"
+  },
+  "dependencies": {
+    "@fontsource/bricolage-grotesque": "5.3.0",
+    "@fontsource/figtree": "5.3.0",
+    "d3": "7.9.0",
+    "qrcode-generator": "1.4.4",
+    "topojson-client": "3.1.0"
+  },
+  "devDependencies": {
+    "terser": "^5.36.0",
+    "wrangler": "^4.0.0",
+    "jsqr": "1.4.0",
+    "playwright": "^1.50.0"
+  }
+}

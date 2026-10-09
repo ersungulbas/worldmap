@@ -1,0 +1,50 @@
+[
+  {
+    "q": "How do I mark a country as visited?",
+    "a": "Tap it on the map and it turns soft blue; tap it again to remove it. Can't spot a tiny one? Use the search box at the top right and mark it straight from the results."
+  },
+  {
+    "q": "How is my \"% of the world\" calculated?",
+    "a": "We divide the number of countries you've marked by 195: the 193 UN member states plus Vatican City and Palestine. So 39 countries means you've seen exactly 20% of the world."
+  },
+  {
+    "q": "Why can my count go above 195?",
+    "a": "The map has 232 selectable places, so places like Northern Cyprus, Taiwan, Hong Kong and Macau count too. Your world % still uses 195 as the base."
+  },
+  {
+    "q": "How do I share my map and compare it with a friend's?",
+    "a": "Grab your share link and send it anywhere; your whole map lives inside the link (worldmap.tech/#w…), so nobody needs an account to open it. When you open a friend's link, you see both maps on one screen: their countries in orange, yours in blue and the ones you've both visited in purple."
+  },
+  {
+    "q": "How do I save my map as an image?",
+    "a": "Tap Save and pick a format: Story (1080×1920), Square (1080×1080) or Wide (1920×1080). The image shows your count, level and world %, adds the flags of your countries in the taller formats, and can include a QR code that links to your map. It's created right on your device."
+  },
+  {
+    "q": "How do I keep my map safe or move it to another device?",
+    "a": "There's no sign-up: your map is saved in this browser, so clearing your browser data clears your map too. To carry it over, open your share link on the other device, or get an anonymous 8-character restore code (no email needed) and enter it there."
+  },
+  {
+    "q": "I opened worldmap.tech from Instagram and my map is gone. Why?",
+    "a": "Apps like Instagram and TikTok open links in their own built-in browser, which keeps its storage separate from Safari or Chrome. We'll warn you when this happens; open the page in your regular browser, or bring your map over with your link or a restore code."
+  },
+  {
+    "q": "What do you store, and where?",
+    "a": "Your map is stored in your own browser, and saved images are generated on your device. Our analytics are cookieless, and ad cookies are only used with your consent where that's required. If you create a restore code, your map is stored anonymously under that code, with no email or name attached."
+  },
+  {
+    "q": "Is it really free? Are there ads?",
+    "a": "Yes, it's completely free. Ads keep the lights on, but they never appear on your map or in the images you save."
+  },
+  {
+    "q": "Which borders does the map use, and why?",
+    "a": "Every map has to follow one reference, and for borders and names ours is the official position of the Republic of Türkiye. That's why Northern Cyprus (KKTC) is shown as a separate country, Crimea as part of Ukraine, the Golan Heights as part of Syria and Western Sahara as part of Morocco. The map is approximate and is not an official or legal statement on any dispute."
+  },
+  {
+    "q": "Can I mark Taiwan, Hong Kong and Macau separately?",
+    "a": "Yes, each one can be marked on its own and is added to your count. Your world % is still calculated out of 195."
+  },
+  {
+    "q": "How do I delete my data?",
+    "a": "Your map lives in your browser, so just untap your countries or clear this site's data in your browser settings. If you created a restore code, you can delete the data saved under it too."
+  }
+]

@@ -1,0 +1,26 @@
+# worldmap.tech
+
+> worldmap.tech is a free web app for marking the countries you've visited on a zoomable world map. It shows how many countries you've been to, what percentage of the world that is (out of 195) and a traveller level, and lets you save a shareable image or compare maps with a friend. No sign-up required; available in English and Turkish.
+
+Key facts:
+
+- Tap a country to mark it as visited (it turns soft blue); tap again to remove it. A search box (top right) finds and highlights a country, which can be marked from the results.
+- World % = visited count / 195 (the 193 UN member states plus Vatican City and Palestine). 232 places are selectable in total, so the count can exceed 195.
+- A traveller level title appears at 1, 5, 10, 20, 35, 60 and 100 countries.
+- Save generates an image on the device in Story (1080×1920), Square (1080×1080) or Wide (1920×1080) format, showing count, level, world %, flags of visited countries (taller formats) and an optional QR code linking to the map.
+- Share link: the map is encoded in the URL (worldmap.tech/#w…). Opening a friend's link shows both maps compared: the friend in orange, you in blue, countries in common in purple.
+- No account: the map is saved in the browser. It can be moved to another device via the share link or an anonymous 8-character restore code (no email); the code's data can be deleted.
+- In-app browsers (Instagram, TikTok, etc.) keep separate storage; the app warns users about this.
+- Borders and names follow the official positions of the Republic of Türkiye: e.g. Northern Cyprus (KKTC) is shown as a separate country, Crimea as part of Ukraine, the Golan Heights as part of Syria and Western Sahara as part of Morocco. Taiwan, Hong Kong and Macau can be marked separately.
+- Free and ad-supported; ads never appear on the map or in saved images. Cookieless analytics; ad cookies only with consent where required.
+
+## Pages
+
+- [worldmap.tech (English)](https://worldmap.tech/): The interactive visited-countries map, in English.
+- [worldmap.tech (Türkçe)](https://worldmap.tech/tr/): The same map app in Turkish.
+- [FAQ](https://worldmap.tech/faq/): Answers on marking countries, the world %, sharing and comparing, saving images, restore codes, borders and privacy.
+- [SSS](https://worldmap.tech/sss/): Frequently asked questions in Turkish.
+- [Privacy](https://worldmap.tech/privacy/): What is stored and where, analytics, and how ad cookies and consent are handled.
+- [Gizlilik](https://worldmap.tech/gizlilik/): Privacy policy in Turkish.
+- [Terms](https://worldmap.tech/terms/): Terms of use for worldmap.tech.
+- [Koşullar](https://worldmap.tech/kosullar/): Terms of use in Turkish.

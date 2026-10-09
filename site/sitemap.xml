@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url><loc>https://worldmap.tech/</loc><lastmod>2026-10-09</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://worldmap.tech/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://worldmap.tech/tr/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://worldmap.tech/"/></url>
+  <url><loc>https://worldmap.tech/tr/</loc><lastmod>2026-10-09</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://worldmap.tech/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://worldmap.tech/tr/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://worldmap.tech/"/></url>
+  <url><loc>https://worldmap.tech/faq/</loc><lastmod>2026-10-09</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://worldmap.tech/faq/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://worldmap.tech/sss/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://worldmap.tech/faq/"/></url>
+  <url><loc>https://worldmap.tech/sss/</loc><lastmod>2026-10-09</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://worldmap.tech/faq/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://worldmap.tech/sss/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://worldmap.tech/faq/"/></url>
+  <url><loc>https://worldmap.tech/privacy/</loc><lastmod>2026-10-09</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://worldmap.tech/privacy/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://worldmap.tech/gizlilik/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://worldmap.tech/privacy/"/></url>
+  <url><loc>https://worldmap.tech/gizlilik/</loc><lastmod>2026-10-09</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://worldmap.tech/privacy/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://worldmap.tech/gizlilik/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://worldmap.tech/privacy/"/></url>
+  <url><loc>https://worldmap.tech/terms/</loc><lastmod>2026-10-09</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://worldmap.tech/terms/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://worldmap.tech/kosullar/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://worldmap.tech/terms/"/></url>
+  <url><loc>https://worldmap.tech/kosullar/</loc><lastmod>2026-10-09</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://worldmap.tech/terms/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://worldmap.tech/kosullar/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://worldmap.tech/terms/"/></url>
+</urlset>

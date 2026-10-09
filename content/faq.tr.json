@@ -1,0 +1,50 @@
+[
+  {
+    "q": "Bir ülkeyi nasıl işaretlerim?",
+    "a": "Haritada ülkeye dokun, açık maviye dönsün; vazgeçersen bir kez daha dokunman yeterli. Küçük bir ülkeyi bulamıyorsan sağ üstteki arama kutusunu kullan, sonuçlardan hemen işaretleyebilirsin."
+  },
+  {
+    "q": "Dünyanın yüzde kaçını gördüğüm nasıl hesaplanıyor?",
+    "a": "İşaretlediğin ülke sayısı 195'e bölünüyor: BM'ye üye 193 ülke, artı Vatikan ve Filistin. Yani 39 ülke gezdiysen dünyanın tam %20'sini görmüşsün demektir."
+  },
+  {
+    "q": "Ülke sayım neden 195'i geçebiliyor?",
+    "a": "Haritada işaretlenebilen tam 232 yer var; KKTC, Tayvan, Hong Kong ve Makao gibi yerler de sayına eklenir. Dünya yüzdesi ise her zaman 195 üzerinden hesaplanır."
+  },
+  {
+    "q": "Haritamı nasıl paylaşırım, arkadaşımınkiyle nasıl karşılaştırırım?",
+    "a": "Paylaşım linkini al ve dilediğin yere gönder; haritan linkin içinde saklanır (worldmap.tech/#w…), açan kişinin üye olmasına gerek yok. Bir arkadaşının linkini açtığında iki harita tek ekranda buluşur: onun gittiği ülkeler turuncu, seninkiler mavi, ikinizin de gittiği ülkeler mor görünür."
+  },
+  {
+    "q": "Haritamı görsel olarak nasıl kaydederim?",
+    "a": "Kaydet'e dokun ve formatını seç: Hikâye (1080×1920), Kare (1080×1080) ya da Yatay (1920×1080). Görselde ülke sayın, seviyen ve dünyanın yüzde kaçını gördüğün yer alır; daha uzun formatlarda gittiğin ülkelerin bayrakları da eklenir, istersen haritana giden bir QR kod da koyabilirsin. Görsel tamamen senin cihazında oluşturulur."
+  },
+  {
+    "q": "Haritamı kaybetmemek ya da başka cihaza taşımak için ne yapmalıyım?",
+    "a": "Üyelik yok; haritan bu tarayıcıda saklanır, yani tarayıcı verilerini silersen haritan da gider. Başka bir cihaza taşımak için paylaşım linkini orada aç ya da e-posta istemeyen 8 karakterlik anonim bir geri yükleme kodu alıp diğer cihaza gir."
+  },
+  {
+    "q": "Instagram'dan açınca haritam neden görünmüyor?",
+    "a": "Instagram, TikTok gibi uygulamalar linkleri kendi içlerindeki tarayıcıda açar ve bu tarayıcı kayıtlarını Safari ya da Chrome'dan ayrı tutar. Böyle olduğunda seni uyarıyoruz; sayfayı normal tarayıcında aç ya da haritanı linkinle veya geri yükleme kodunla taşı."
+  },
+  {
+    "q": "Hangi verilerim nerede saklanıyor?",
+    "a": "Haritan kendi tarayıcında durur, kaydettiğin görseller de senin cihazında oluşturulur. Analiz için çerez kullanmıyoruz; reklam çerezleri ise gereken yerlerde yalnızca onay verirsen devreye girer. Geri yükleme kodu alırsan haritan e-posta ya da isim olmadan, yalnızca o koda bağlı olarak saklanır."
+  },
+  {
+    "q": "worldmap.tech ücretsiz mi? Reklam var mı?",
+    "a": "Evet, tamamen ücretsiz. Siteyi reklamlar ayakta tutuyor ama haritanda ya da kaydettiğin görselde asla reklam görmezsin."
+  },
+  {
+    "q": "Haritada hangi sınırlar kullanılıyor, neden?",
+    "a": "Her harita tek bir referansa dayanmak zorunda; worldmap.tech'te sınırlar ve ülke adları Türkiye Cumhuriyeti'nin resmî tutumunu esas alır. Bu yüzden KKTC ayrı bir ülke olarak gösterilir; Kırım Ukrayna'nın, Golan Tepeleri Suriye'nin, Batı Sahra da Fas'ın parçası olarak yer alır. Harita yaklaşıktır ve herhangi bir uyuşmazlıkta resmî ya da hukuki bir görüş bildirmez."
+  },
+  {
+    "q": "Tayvan, Hong Kong ve Makao'yu ayrı işaretleyebilir miyim?",
+    "a": "Evet, üçünü de ayrı ayrı işaretleyebilirsin ve her biri ülke sayına eklenir. Dünya yüzdesi yine 195 üzerinden hesaplanır."
+  },
+  {
+    "q": "Verilerimi nasıl silerim?",
+    "a": "Haritan tarayıcında durduğu için işaretlerini kaldırman ya da tarayıcı ayarlarından bu sitenin verilerini temizlemen yeterli. Geri yükleme kodu aldıysan o koda bağlı verileri de silebilirsin."
+  }
+]

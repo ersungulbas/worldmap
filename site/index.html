@@ -1,0 +1,1057 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Visited Countries Map – Free, No Sign-up | worldmap.tech</title>
+<meta name="description" content="Tap the countries you've visited, see how much of the world you've seen and your traveller level, then save a shareable image or compare maps with friends.">
+<link rel="canonical" href="https://worldmap.tech/">
+<link rel="alternate" hreflang="en" href="https://worldmap.tech/">
+<link rel="alternate" hreflang="tr" href="https://worldmap.tech/tr/">
+<link rel="alternate" hreflang="x-default" href="https://worldmap.tech/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="worldmap.tech">
+<meta property="og:url" content="https://worldmap.tech/">
+<meta property="og:title" content="How much of the world have you seen?">
+<meta property="og:description" content="Mark your countries on worldmap.tech, get your world % and traveller level, and compare maps with friends. Free, no sign-up.">
+<meta property="og:image" content="https://worldmap.tech/assets/og-en.png?v=5e120716b3">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="How much of the world have you seen?">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="tr_TR">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/assets/icon.svg?v=2f3b2bb51b" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=b5c8c66347">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#e9f0f6" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0c141e" media="(prefers-color-scheme: dark)">
+<link rel="preload" href="/assets/fonts/figtree-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/fonts.css?v=d1df592a3e">
+<link rel="preload" href="/assets/world.json?v=805eb45764" as="fetch" crossorigin>
+
+<script>(function(){try{var p=localStorage.getItem("wmn.lang"),h=location.hash,t=location.pathname;if(t==="/"&&(p==="tr"||(!p&&/^tr\b/i.test(navigator.language||""))))location.replace("/tr/"+h);else if(t==="/tr/"&&p==="en")location.replace("/"+h);}catch(e){}})();</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"worldmap.tech","url":"https://worldmap.tech/","description":"Tap the countries you've visited, see how much of the world you've seen and your traveller level, then save a shareable image or compare maps with friends.","applicationCategory":"TravelApplication","operatingSystem":"Any","inLanguage":"en","isAccessibleForFree":true,"image":"https://worldmap.tech/assets/og-en.png","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+<style>
+/* Layout: one full-bleed map; floating controls in the four corners, nothing else on screen. */
+:root{
+  --ocean:#e9f0f6;
+  --land:#ffffff;
+  --border:#c3ceda;
+  --sel:#7fb2ee;
+  --sel-border:#4f8fd8;
+  --sel-label:#0f3463;
+  --label:#5d6b7c;
+  --ink:#16212e;
+  --muted:#6a7787;
+  --chrome:rgba(255,255,255,.88);
+  --chrome-line:rgba(22,33,46,.10);
+  --accent:#2f7ee0;
+  --flash:#ff9f43;
+  --danger:#e0484f;
+  --friend:#f6b26b;
+  --friend-border:#d98a3a;
+  --both:#a594f5;
+  --both-border:#6f5fd6;
+  --shadow:0 6px 24px rgba(20,40,70,.12),0 1px 3px rgba(20,40,70,.08);
+  --f-display:"Bricolage Grotesque",ui-rounded,"Segoe UI",system-ui,sans-serif;
+  --f-body:"Figtree",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --friend:#b9773a;--friend-border:#f0a85e;--both:#7b68e0;--both-border:#b4a8ff;
+  --ocean:#0c141e;--land:#1b2633;--border:#33445a;--sel:#3f7fd0;--sel-border:#7fb2ee;--sel-label:#eaf3ff;
+  --label:#8796a8;--ink:#eef3f8;--muted:#9aa8b8;--chrome:rgba(22,32,44,.86);--chrome-line:rgba(255,255,255,.10);
+  --accent:#6aa8f2;--flash:#ffb36b;--shadow:0 6px 24px rgba(0,0,0,.45);color-scheme:dark}}
+:root[data-theme="dark"]{
+  --friend:#b9773a;--friend-border:#f0a85e;--both:#7b68e0;--both-border:#b4a8ff;
+  --ocean:#0c141e;--land:#1b2633;--border:#33445a;--sel:#3f7fd0;--sel-border:#7fb2ee;--sel-label:#eaf3ff;
+  --label:#8796a8;--ink:#eef3f8;--muted:#9aa8b8;--chrome:rgba(22,32,44,.86);--chrome-line:rgba(255,255,255,.10);
+  --accent:#6aa8f2;--flash:#ffb36b;--shadow:0 6px 24px rgba(0,0,0,.45);color-scheme:dark}
+[hidden]{display:none!important}
+#cmp,#iab,#linkout{box-sizing:border-box}
+html,body{height:100%}
+body{background:var(--ocean);color:var(--ink);font-family:var(--f-body);overflow:hidden;
+  -webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
+#app{position:fixed;inset:0}
+#map{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none;cursor:grab}
+#map:active{cursor:grabbing}
+.c{fill:var(--land);stroke:var(--border);stroke-width:.7;vector-effect:non-scaling-stroke;stroke-linejoin:round;transition:fill .25s ease}
+.c.on{fill:var(--sel);stroke:var(--sel-border)}
+.dz{fill:var(--land);fill-opacity:.55;stroke:var(--border);stroke-width:.7;stroke-dasharray:3 2;vector-effect:non-scaling-stroke;pointer-events:none}
+.c.fr{fill:var(--friend);stroke:var(--friend-border)}
+.c.on.fr{fill:var(--both);stroke:var(--both-border)}
+.c.flash{stroke:var(--flash);stroke-width:2.5;animation:flash 1.1s ease-in-out 3}
+@keyframes flash{50%{stroke-width:5;stroke-opacity:.35}}
+.lb{fill:var(--label);font-family:var(--f-body);font-weight:600;text-anchor:middle;dominant-baseline:central;pointer-events:none;letter-spacing:.01em}
+.lb.on{fill:var(--sel-label);font-weight:700}
+.lb.hl{fill:var(--ink);font-weight:700}
+
+/* chrome */
+.chip{background:var(--chrome);-webkit-backdrop-filter:blur(14px) saturate(1.4);backdrop-filter:blur(14px) saturate(1.4);
+  border:1px solid var(--chrome-line);box-shadow:var(--shadow);border-radius:14px}
+#search{position:absolute;top:calc(12px + env(safe-area-inset-top,0px));right:12px;width:min(300px,calc(100vw - 24px));z-index:5}
+#search .box{display:flex;align-items:center;gap:8px;padding:0 12px;height:46px}
+#search svg{flex:none;color:var(--muted)}
+#q{flex:1;min-width:0;border:0;background:transparent;outline:none;font:600 16px var(--f-body);color:var(--ink)}
+#q::placeholder{color:var(--muted);font-weight:500}
+#res{margin-top:6px;padding:6px;list-style:none;max-height:min(340px,50vh);overflow:auto}
+#res li{padding:10px 12px;border-radius:10px;cursor:pointer;display:flex;justify-content:space-between;gap:10px;font-weight:600;font-size:15px}
+#res li small{color:var(--muted);font-weight:500}
+#res li[aria-selected="true"],#res li:hover{background:color-mix(in srgb,var(--accent) 14%,transparent)}
+#res li .dot{width:10px;height:10px;border-radius:50%;background:var(--sel);align-self:center;flex:none}
+#zoom{position:absolute;top:calc(12px + env(safe-area-inset-top,0px));left:12px;display:flex;flex-direction:column;overflow:hidden;z-index:4}
+#zoom button{width:44px;height:44px;border:0;background:transparent;color:var(--ink);font:600 22px/1 var(--f-body);cursor:pointer}
+#zoom button+button{border-top:1px solid var(--chrome-line)}
+#brand{position:absolute;left:14px;bottom:calc(14px + var(--legal-h,env(safe-area-inset-bottom,0px)));font:800 18px var(--f-display);letter-spacing:-.01em;color:var(--ink);z-index:3;pointer-events:none;text-shadow:0 0 6px var(--ocean),0 0 2px var(--ocean)}
+#brand span{color:var(--accent)}
+#dock{position:absolute;right:12px;bottom:calc(12px + var(--legal-h,env(safe-area-inset-bottom,0px)));display:flex;align-items:stretch;gap:8px;z-index:4}
+#count{padding:6px 14px 6px 14px;display:flex;flex-direction:column;align-items:flex-end;justify-content:center;min-width:72px}
+#count b{font:800 30px/1 var(--f-display);font-variant-numeric:tabular-nums;color:var(--accent);letter-spacing:-.02em}
+#count small{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-top:3px}
+#save{border:0;border-radius:14px;padding:0 20px;background:var(--accent);color:#fff;font:700 16px var(--f-body);cursor:pointer;box-shadow:var(--shadow);display:flex;align-items:center;gap:8px}
+#save:active,#clear:active{transform:scale(.97)}
+#clear{align-self:center;height:46px;min-width:46px;padding:0 12px;display:flex;align-items:center;justify-content:center;gap:6px;color:var(--muted);cursor:pointer;font:700 14px var(--f-body);transition:background .2s,color .2s}
+#clear .t{display:none;white-space:nowrap}
+#clear.arm{background:var(--danger);color:#fff;border-color:transparent}
+#clear.arm .t{display:inline}
+#clear:disabled{opacity:.45;cursor:default}
+button:focus-visible,#q:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+#hint{position:absolute;left:50%;transform:translateX(-50%);bottom:calc(84px + var(--legal-h,env(safe-area-inset-bottom,0px)));padding:9px 14px;font-size:13px;font-weight:600;color:var(--muted);white-space:nowrap;z-index:3;transition:opacity .4s}
+#hint.gone{opacity:0;pointer-events:none}
+#toast{position:fixed;left:50%;bottom:calc(86px + var(--legal-h,env(safe-area-inset-bottom,0px)));transform:translate(-50%,8px);padding:9px 14px;font-weight:700;font-size:14px;opacity:0;transition:.25s;z-index:20;pointer-events:none;white-space:nowrap}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+#ring{position:absolute;width:64px;height:64px;margin:-32px 0 0 -32px;pointer-events:none;z-index:6;opacity:0}
+#ring circle{fill:none;stroke:var(--flash);stroke-width:4;stroke-linecap:round;stroke-dasharray:176;stroke-dashoffset:176;transform:rotate(-90deg);transform-origin:center}
+#ring.go{opacity:1}
+#ring.go circle{transition:stroke-dashoffset .5s linear;stroke-dashoffset:0}
+
+/* save preview */
+#sheet{position:fixed;inset:0;z-index:10;background:color-mix(in srgb,var(--ocean) 70%,#000 30%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:calc(16px + env(safe-area-inset-top,0px)) 16px calc(16px + env(safe-area-inset-bottom,0px))}
+#shotbox{flex:1 1 auto;min-height:0;width:100%;display:grid;place-items:center;container-type:size}
+#sheet img{max-width:100%;max-height:100%;max-width:100cqw;max-height:100cqh;transition:opacity .2s;border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,.35);-webkit-touch-callout:default;-webkit-user-select:auto;user-select:auto}
+#sheet .row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+#sheet .row button,#sheet .row a{border:0;border-radius:12px;padding:12px 22px;font:700 16px var(--f-body);cursor:pointer;text-decoration:none}
+#dl,#share{background:var(--accent);color:#fff}
+#link{background:var(--chrome);color:var(--ink)}
+#linkout{width:min(520px,100%);border:1px solid var(--chrome-line);border-radius:10px;padding:10px 12px;font:600 14px var(--f-body);background:var(--chrome);color:var(--ink);-webkit-user-select:text;user-select:text}
+.seg{display:flex;padding:4px;gap:4px;border-radius:12px}
+.seg button{border:0;background:transparent;color:var(--ink);font:700 14px var(--f-body);padding:8px 14px;border-radius:9px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--accent);color:#fff}
+#cmp{position:absolute;top:calc(12px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);width:min(380px,calc(100vw - 24px));padding:10px 12px 10px 14px;z-index:5;display:flex;flex-direction:column;gap:6px}
+#cmp .top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+#cmp .top b{font:800 16px var(--f-display)}
+#cmpX{border:0;background:transparent;color:var(--muted);font:600 24px/1 var(--f-body);width:32px;height:32px;cursor:pointer;border-radius:8px}
+#cmp .lg{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;font-weight:600;color:var(--muted)}
+#cmp .lg span{display:flex;align-items:center;gap:6px}
+#cmp .lg em{font-style:normal}
+#cmp .lg b{color:var(--ink);font-variant-numeric:tabular-nums}
+#cmp i{width:12px;height:12px;border-radius:4px;display:inline-block}
+#cmp i.f{background:var(--friend)} #cmp i.y{background:var(--sel)} #cmp i.b{background:var(--both)}
+#cmp small{font-size:12px;color:var(--muted);font-weight:500}
+#iab{position:absolute;top:calc(68px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);width:min(380px,calc(100vw - 24px));padding:10px 8px 10px 14px;z-index:5;display:flex;align-items:flex-start;gap:8px;font-size:13px;font-weight:600;line-height:1.4}
+#iab span{flex:1;min-width:0}
+#iabX{flex:none;border:0;background:transparent;color:var(--muted);font:600 22px/1 var(--f-body);width:30px;height:30px;cursor:pointer;border-radius:8px}
+#cmp .tip{display:flex;align-items:center;justify-content:space-between;gap:10px}
+#cmpMine{flex:none;border:0;border-radius:9px;background:var(--accent);color:#fff;font:700 13px var(--f-body);padding:7px 11px;cursor:pointer}
+#close{background:var(--chrome);color:var(--ink)}
+#sheet p{margin:0;color:#fff;font-size:13px;font-weight:600;opacity:.85;text-align:center;max-width:520px}
+#loading{position:absolute;inset:0;display:grid;place-items:center;font:700 18px var(--f-display);color:var(--muted)}
+/* bottom strip: short disclaimer + legal links */
+#legal{position:absolute;left:0;right:0;bottom:0;z-index:3;padding:6px 14px calc(6px + env(safe-area-inset-bottom,0px));font-size:11.5px;line-height:1.55;font-weight:500;color:var(--muted);text-align:center;
+  background:color-mix(in srgb,var(--ocean) 84%,transparent);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-top:1px solid var(--chrome-line)}
+#legal a,#legal button{color:inherit;font:inherit;font-weight:700;text-decoration:none;background:none;border:0;padding:0;cursor:pointer;white-space:nowrap}
+#legal a:hover,#legal button:hover{color:var(--ink);text-decoration:underline}
+#legal i{font-style:normal;opacity:.45;margin:0 6px}
+a:focus-visible,#legal button:focus-visible,#res .tg:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:3px}
+.sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+/* consent banner: Accept and Reject look the same on purpose */
+#consent{position:absolute;left:50%;transform:translateX(-50%);bottom:calc(12px + var(--legal-h,0px));width:min(520px,calc(100vw - 24px));box-sizing:border-box;padding:14px 16px;z-index:8;font-size:13.5px;line-height:1.45;font-weight:500}
+#consent p{margin:0 0 10px}
+#consent a{color:var(--accent);font-weight:700}
+.btns{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
+.btns button{flex:1 1 0;min-width:110px;border:1px solid var(--chrome-line);border-radius:10px;padding:10px 14px;font:700 15px var(--f-body);cursor:pointer;background:var(--land);color:var(--ink)}
+/* restore code dialog */
+#dlg{position:fixed;inset:0;z-index:12;display:grid;place-items:center;padding:16px;background:rgba(10,20,30,.45)}
+#dlgF{width:min(380px,100%);box-sizing:border-box;padding:18px;display:flex;flex-direction:column;gap:10px}
+#dlgF b{font:800 19px var(--f-display)}
+#dlgF p{margin:0;font-size:14px;line-height:1.45;color:var(--muted);font-weight:500}
+#codeIn{font:800 24px/1 var(--f-display);letter-spacing:.12em;text-align:center;text-transform:uppercase;padding:12px;border-radius:10px;border:1px solid var(--chrome-line);background:var(--land);color:var(--ink);-webkit-user-select:text;user-select:text;min-width:0}
+#dlgF #dlgErr{color:var(--danger);min-height:1.2em;font-weight:600}
+#dlgGo{background:var(--accent)!important;color:#fff!important;border-color:transparent!important}
+#hint button{display:block;margin:6px auto 0;border:0;background:none;color:var(--accent);font:700 13px var(--f-body);cursor:pointer;padding:2px 4px}
+/* save sheet extras */
+.fmtrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:center}
+#qrT{border:1px solid var(--chrome-line);border-radius:12px;height:44px;padding:0 14px;font:700 14px var(--f-body);cursor:pointer;color:var(--ink);display:flex;align-items:center;gap:7px}
+#qrT[aria-pressed="true"]{background:var(--accent);color:#fff;border-color:transparent}
+#codebox{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;color:#fff;font-size:13px;font-weight:600}
+#codebox b{font:800 17px var(--f-display);letter-spacing:.08em}
+#codebox button{border:0;border-radius:9px;padding:7px 11px;font:700 13px var(--f-body);cursor:pointer;background:var(--chrome);color:var(--ink)}
+#codebox button.arm{background:var(--danger);color:#fff}
+#adbox{width:min(728px,100%);min-height:50px;text-align:center}
+#adbox small{display:block;color:#fff;opacity:.6;font-size:10px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:2px}
+#res li .tg{flex:none;width:30px;height:30px;margin:-5px -6px -5px 0;border-radius:8px;border:1px solid var(--chrome-line);background:var(--land);color:var(--accent);font:800 17px/1 var(--f-body);cursor:pointer;display:grid;place-items:center;padding:0}
+#res li .tg.on{background:var(--sel);color:#fff;border-color:transparent}
+@media (max-width:480px){
+  #search{width:calc(100vw - 80px)}
+  #sheet .row button{padding:11px 16px;font-size:15px}
+  #save{padding:0 16px}
+  #save .t{display:none}
+  #clear.arm .t{display:none}
+  #brand{font-size:16px;bottom:calc(18px + var(--legal-h,env(safe-area-inset-bottom,0px)))}
+}
+@media (max-width:1010px){ #cmp{top:calc(68px + env(safe-area-inset-top,0px))} }
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<noscript><div style="position:fixed;inset:0;z-index:50;background:var(--ocean);padding:32px 20px;font:500 17px/1.6 var(--f-body)">
+<p><b>worldmap.tech</b></p><p>Tap the countries you've visited, see how much of the world you've seen and your traveller level, then save a shareable image or compare maps with friends.</p><p>The map needs JavaScript.</p>
+<p><a href="/faq/">FAQ</a> · <a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a></p></div></noscript>
+<div id="app">
+  <h1 class="sr" id="h1">worldmap.tech</h1>
+  <div id="loading">worldmap.tech</div>
+  <svg id="map" role="img" aria-label="World map"></svg>
+  <div id="zoom" class="chip"><button id="zin" aria-label="Zoom in">+</button><button id="zout" aria-label="Zoom out">−</button></div>
+  <div id="search">
+    <div class="box chip">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="q" type="search" autocomplete="off" spellcheck="false" aria-label="Search">
+    </div>
+    <ul id="res" class="chip" role="listbox" hidden></ul>
+  </div>
+  <div id="cmp" class="chip" hidden>
+    <div class="top"><b id="cmpT"></b><button id="cmpX">×</button></div>
+    <div class="lg"><span><i class="f"></i><em id="lgF"></em> <b id="cF">0</b></span><span><i class="y"></i><em id="lgY"></em> <b id="cY">0</b></span><span><i class="b"></i><em id="lgB"></em> <b id="cB">0</b></span></div>
+    <div class="tip"><small id="cmpTip"></small><button id="cmpMine"></button></div>
+  </div>
+  <div id="iab" class="chip" hidden><span id="iabT"></span><button id="iabX">×</button></div>
+  <div id="hint" class="chip"></div>
+  <div id="toast" class="chip" role="status" aria-live="polite"></div>
+  <svg id="ring" viewBox="0 0 64 64"><circle cx="32" cy="32" r="28"/></svg>
+  <div id="brand">worldmap<span>.tech</span></div>
+  <div id="dock">
+    <div id="count" class="chip"><b id="n">0</b><small id="nl"></small></div>
+    <button id="clear" class="chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9.5 7V4.5h5V7M6.5 7l1 12.5h9L17.5 7M10 11v5M14 11v5"/></svg><span class="t" id="cleart"></span></button>
+    <button id="save"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 20h14"/></svg><span class="t" id="savet"></span></button>
+  </div>
+  <div id="consent" class="chip" role="region" aria-labelledby="consentP" hidden><p id="consentP"></p><div class="btns"><button id="cNo"></button><button id="cYes"></button></div></div>
+  <footer id="legal"><span>Information is for general purposes only and provided without warranty.</span><i aria-hidden="true">·</i><a href="/terms/">Terms</a><i aria-hidden="true">·</i><a href="/privacy/">Privacy</a><i aria-hidden="true">·</i><a href="/faq/">FAQ</a><i aria-hidden="true">·</i><a href="/terms/#contact">Contact</a><i aria-hidden="true">·</i><a href="/tr/" hreflang="tr" lang="tr">Türkçe</a></footer>
+</div>
+<div id="sheet" role="dialog" aria-modal="true" hidden>
+  <div class="fmtrow"><div id="fmt" class="seg chip" role="group"><button data-f="story"></button><button data-f="square"></button><button data-f="wide"></button></div><button id="qrT" class="chip" aria-pressed="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 3h8v8H3zm2 2v4h4V5zm8-2h8v8h-8zm2 2v4h4V5zM3 13h8v8H3zm2 2v4h4v-4zm8-2h3v3h-3zm5 0h3v3h-3zm-5 5h3v3h-3zm5 0h3v3h-3zm-2.5-2.5h3v3h-3z"/></svg>QR</button></div>
+  <div id="shotbox"><img id="shot" alt=""></div>
+  <div class="row"><button id="share" hidden></button><button id="dl"></button><button id="link"></button><button id="close"></button></div>
+  <input id="linkout" readonly hidden aria-label="Link">
+  <p id="backup"></p>
+  <div id="codebox" hidden></div>
+  <div id="adbox" hidden><small id="adL"></small><ins class="adsbygoogle" style="display:block" data-ad-format="horizontal" data-full-width-responsive="true"></ins></div>
+  <p id="sheetp"></p>
+</div>
+
+<div id="dlg" role="dialog" aria-modal="true" aria-labelledby="dlgT" hidden>
+  <form id="dlgF" class="chip"><b id="dlgT"></b><p id="dlgP"></p>
+    <input id="codeIn" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="9" placeholder="XXXX-XXXX" aria-labelledby="dlgT">
+    <p id="dlgErr" role="alert"></p>
+    <div class="btns"><button type="button" id="dlgX"></button><button type="submit" id="dlgGo"></button></div></form>
+</div>
+<script type="application/json" id="cfg">{"env":"site","lang":"en","ads":{"client":"","slot":""}}</script>
+<script type="application/json" id="world" data-src="/assets/world.json?v=805eb45764"></script>
+<script type="application/json" id="names">{"N":{"ZW":["Zimbabwe","Zimbabve"],"ZM":["Zambia","Zambiya"],"YE":["Yemen","Yemen"],"VN":["Vietnam","Vietnam"],"VE":["Venezuela","Venezuela"],"VA":["Vatican City","Vatikan"],"VU":["Vanuatu","Vanuatu"],"UZ":["Uzbekistan","Özbekistan"],"UY":["Uruguay","Uruguay"],"FM":["Micronesia","Mikronezya"],"MH":["Marshall Islands","Marshall Adaları"],"MP":["Northern Mariana Islands","Kuzey Mariana Adaları"],"VI":["U.S. Virgin Islands","ABD Virjin Adaları"],"GU":["Guam","Guam"],"AS":["American Samoa","Amerikan Samoası"],"PR":["Puerto Rico","Porto Riko"],"US":["United States","Amerika Birleşik Devletleri"],"GS":["South Georgia","Güney Georgia"],"IO":["Chagos Islands","Chagos Adaları"],"SH":["St. Helena","Saint Helena"],"PN":["Pitcairn Islands","Pitcairn Adaları"],"AI":["Anguilla","Anguilla"],"FK":["Falkland Islands","Falkland Adaları"],"KY":["Cayman Islands","Cayman Adaları"],"BM":["Bermuda","Bermuda"],"VG":["British Virgin Islands","Britanya Virjin Adaları"],"TC":["Turks & Caicos Islands","Turks ve Caicos Adaları"],"MS":["Montserrat","Montserrat"],"JE":["Jersey","Jersey"],"GG":["Guernsey","Guernsey"],"IM":["Isle of Man","Man Adası"],"GB":["United Kingdom","Birleşik Krallık"],"AE":["United Arab Emirates","Birleşik Arap Emirlikleri"],"UA":["Ukraine","Ukrayna"],"UG":["Uganda","Uganda"],"TM":["Turkmenistan","Türkmenistan"],"TR":["Türkiye","Türkiye"],"TN":["Tunisia","Tunus"],"TT":["Trinidad & Tobago","Trinidad ve Tobago"],"TO":["Tonga","Tonga"],"TG":["Togo","Togo"],"TL":["Timor-Leste","Timor-Leste"],"TH":["Thailand","Tayland"],"TZ":["Tanzania","Tanzanya"],"TJ":["Tajikistan","Tacikistan"],"TW":["Taiwan","Tayvan"],"SY":["Syria","Suriye"],"CH":["Switzerland","İsviçre"],"SE":["Sweden","İsveç"],"SZ":["Eswatini","Esvatini"],"SR":["Suriname","Surinam"],"SS":["South Sudan","Güney Sudan"],"SD":["Sudan","Sudan"],"LK":["Sri Lanka","Sri Lanka"],"ES":["Spain","İspanya"],"KR":["South Korea","Güney Kore"],"ZA":["South Africa","Güney Afrika"],"SO":["Somalia","Somali"],"SB":["Solomon Islands","Solomon Adaları"],"SK":["Slovakia","Slovakya"],"SI":["Slovenia","Slovenya"],"SG":["Singapore","Singapur"],"SL":["Sierra Leone","Sierra Leone"],"SC":["Seychelles","Seyşeller"],"RS":["Serbia","Sırbistan"],"SN":["Senegal","Senegal"],"SA":["Saudi Arabia","Suudi Arabistan"],"ST":["São Tomé & Príncipe","São Tomé ve Príncipe"],"SM":["San Marino","San Marino"],"WS":["Samoa","Samoa"],"VC":["St. Vincent & Grenadines","Saint Vincent ve Grenadinler"],"LC":["St. Lucia","Saint Lucia"],"KN":["St. Kitts & Nevis","Saint Kitts ve Nevis"],"RW":["Rwanda","Ruanda"],"RU":["Russia","Rusya"],"RO":["Romania","Romanya"],"QA":["Qatar","Katar"],"PT":["Portugal","Portekiz"],"PL":["Poland","Polonya"],"PH":["Philippines","Filipinler"],"PE":["Peru","Peru"],"PY":["Paraguay","Paraguay"],"PG":["Papua New Guinea","Papua Yeni Gine"],"PA":["Panama","Panama"],"PW":["Palau","Palau"],"PK":["Pakistan","Pakistan"],"OM":["Oman","Umman"],"NO":["Norway","Norveç"],"KP":["North Korea","Kuzey Kore"],"NG":["Nigeria","Nijerya"],"NE":["Niger","Nijer"],"NI":["Nicaragua","Nikaragua"],"NZ":["New Zealand","Yeni Zelanda"],"NU":["Niue","Niue"],"CK":["Cook Islands","Cook Adaları"],"NL":["Netherlands","Hollanda"],"AW":["Aruba","Aruba"],"CW":["Curaçao","Curaçao"],"NP":["Nepal","Nepal"],"NR":["Nauru","Nauru"],"NA":["Namibia","Namibya"],"MZ":["Mozambique","Mozambik"],"MA":["Morocco","Fas"],"ME":["Montenegro","Karadağ"],"MN":["Mongolia","Moğolistan"],"MD":["Moldova","Moldova"],"MC":["Monaco","Monako"],"MX":["Mexico","Meksika"],"MU":["Mauritius","Mauritius"],"MR":["Mauritania","Moritanya"],"MT":["Malta","Malta"],"ML":["Mali","Mali"],"MV":["Maldives","Maldivler"],"MY":["Malaysia","Malezya"],"MW":["Malawi","Malavi"],"MG":["Madagascar","Madagaskar"],"MK":["North Macedonia","Kuzey Makedonya"],"LU":["Luxembourg","Lüksemburg"],"LT":["Lithuania","Litvanya"],"LI":["Liechtenstein","Liechtenstein"],"LY":["Libya","Libya"],"LR":["Liberia","Liberya"],"LS":["Lesotho","Lesotho"],"LB":["Lebanon","Lübnan"],"LV":["Latvia","Letonya"],"LA":["Laos","Laos"],"KG":["Kyrgyzstan","Kırgızistan"],"KW":["Kuwait","Kuveyt"],"XK":["Kosovo","Kosova"],"KI":["Kiribati","Kiribati"],"KE":["Kenya","Kenya"],"KZ":["Kazakhstan","Kazakistan"],"JO":["Jordan","Ürdün"],"JP":["Japan","Japonya"],"JM":["Jamaica","Jamaika"],"IT":["Italy","İtalya"],"IL":["Israel","İsrail"],"PS":["Palestine","Filistin"],"IE":["Ireland","İrlanda"],"IQ":["Iraq","Irak"],"IR":["Iran","İran"],"ID":["Indonesia","Endonezya"],"IN":["India","Hindistan"],"IS":["Iceland","İzlanda"],"HU":["Hungary","Macaristan"],"HN":["Honduras","Honduras"],"HT":["Haiti","Haiti"],"GY":["Guyana","Guyana"],"GW":["Guinea-Bissau","Gine-Bissau"],"GN":["Guinea","Gine"],"GT":["Guatemala","Guatemala"],"GD":["Grenada","Grenada"],"GR":["Greece","Yunanistan"],"GH":["Ghana","Gana"],"DE":["Germany","Almanya"],"GE":["Georgia","Gürcistan"],"GM":["Gambia","Gambiya"],"GA":["Gabon","Gabon"],"FR":["France","Fransa"],"PM":["St. Pierre & Miquelon","Saint Pierre ve Miquelon"],"WF":["Wallis & Futuna","Wallis ve Futuna"],"MF":["St. Martin","Saint Martin"],"BL":["St. Barthélemy","Saint Barthelemy"],"PF":["French Polynesia","Fransız Polinezyası"],"NC":["New Caledonia","Yeni Kaledonya"],"FI":["Finland","Finlandiya"],"FJ":["Fiji","Fiji"],"ET":["Ethiopia","Etiyopya"],"EE":["Estonia","Estonya"],"ER":["Eritrea","Eritre"],"GQ":["Equatorial Guinea","Ekvator Ginesi"],"SV":["El Salvador","El Salvador"],"EG":["Egypt","Mısır"],"EC":["Ecuador","Ekvador"],"DO":["Dominican Republic","Dominik Cumhuriyeti"],"DM":["Dominica","Dominika"],"DJ":["Djibouti","Cibuti"],"GL":["Greenland","Grönland"],"FO":["Faroe Islands","Faroe Adaları"],"DK":["Denmark","Danimarka"],"CZ":["Czechia","Çekya"],"XC":["Northern Cyprus","Kuzey Kıbrıs Türk Cumhuriyeti"],"CY":["Cyprus","Güney Kıbrıs Rum Yönetimi"],"CU":["Cuba","Küba"],"HR":["Croatia","Hırvatistan"],"CI":["Côte d'Ivoire","Fildişi Sahili"],"CR":["Costa Rica","Kosta Rika"],"CD":["DR Congo","Kongo DC"],"CG":["Congo","Kongo"],"KM":["Comoros","Komorlar"],"CO":["Colombia","Kolombiya"],"CN":["China","Çin"],"MO":["Macau","Makao"],"HK":["Hong Kong","Hong Kong"],"CL":["Chile","Şili"],"TD":["Chad","Çad"],"CF":["Central African Republic","Orta Afrika Cumhuriyeti"],"CV":["Cape Verde","Yeşil Burun Adaları"],"CA":["Canada","Kanada"],"CM":["Cameroon","Kamerun"],"KH":["Cambodia","Kamboçya"],"MM":["Myanmar","Myanmar"],"BI":["Burundi","Burundi"],"BF":["Burkina Faso","Burkina Faso"],"BG":["Bulgaria","Bulgaristan"],"BN":["Brunei","Brunei"],"BR":["Brazil","Brezilya"],"BW":["Botswana","Botsvana"],"BA":["Bosnia & Herzegovina","Bosna-Hersek"],"BO":["Bolivia","Bolivya"],"BT":["Bhutan","Butan"],"BJ":["Benin","Benin"],"BZ":["Belize","Belize"],"BE":["Belgium","Belçika"],"BY":["Belarus","Belarus"],"BB":["Barbados","Barbados"],"BD":["Bangladesh","Bangladeş"],"BH":["Bahrain","Bahreyn"],"BS":["Bahamas","Bahamalar"],"AZ":["Azerbaijan","Azerbaycan"],"AT":["Austria","Avusturya"],"AU":["Australia","Avustralya"],"NF":["Norfolk Island","Norfolk Adası"],"AM":["Armenia","Ermenistan"],"AR":["Argentina","Arjantin"],"AG":["Antigua & Barbuda","Antigua ve Barbuda"],"AO":["Angola","Angola"],"AD":["Andorra","Andorra"],"DZ":["Algeria","Cezayir"],"AL":["Albania","Arnavutluk"],"AF":["Afghanistan","Afganistan"],"SX":["Sint Maarten","Sint Maarten"]},"S":{"US":["USA","ABD"],"AE":["UAE","BAE"],"GB":["UK","Birleşik Krallık"],"CF":["Central African Rep.","Orta Afrika Cum."],"BA":["Bosnia & Herz.","Bosna-Hersek"],"DO":["Dominican Rep.","Dominik Cum."],"XC":["N. Cyprus","KKTC"],"CY":["Cyprus","Güney Kıbrıs"]},"A":{"XC":"KKTC TRNC Kuzey Kıbrıs Turkish Republic of Northern Cyprus","CY":"GKRY Kıbrıs Rum Republic of Cyprus"},"L":{"en":{"ZW":[29.8141,-18.9727,0.017644,["Zimbabwe"]],"ZM":[26.3518,-14.5826,0.02919,["Zambia"]],"YE":[45.357,15.304,0.021815,["Yemen"]],"VN":[105.2157,21.8491,0.010028,["Vietnam"]],"VE":[-64.4527,7.1997,0.020985,["Venezuela"]],"VA":[12.4342,41.9023,0.000035332,["Vatican","City"]],"VU":[166.9299,-15.3693,0.0018972,["Vanuatu"]],"UZ":[63.9286,41.8032,0.010962,["Uzbekistan"]],"UY":[-56.0342,-32.9108,0.01486,["Uruguay"]],"FM":[158.2414,6.8753,0.00044808,["Micronesia"]],"MH":[171.1289,7.1135,0.00011318,["Marshall","Islands"]],"MP":[145.7429,15.1798,0.0002284,["Northern","Mariana","Islands"]],"VI":[-64.8174,17.742,0.00035543,["U.S.","Virgin","Islands"]],"GU":[144.7177,13.4031,0.00064072,["Guam"]],"AS":[-170.747,-14.3211,0.00028947,["American","Samoa"]],"PR":[-66.2384,18.2076,0.0028362,["Puerto","Rico"]],"US":[-101.4288,39.2273,0.17181,["USA"]],"GS":[-36.1122,-54.6876,0.0010112,["South","Georgia"]],"IO":[72.4442,-7.4102,0.00014022,["Chagos","Islands"]],"SH":[-5.7192,-15.9613,0.00032967,["St.","Helena"]],"PN":[-128.3166,-24.365,0.00017063,["Pitcairn","Islands"]],"AI":[-63.029,18.2397,0.00022809,["Anguilla"]],"FK":[-58.7454,-51.708,0.0022903,["Falkland","Islands"]],"KY":[-81.3685,19.3076,0.00029167,["Cayman","Islands"]],"BM":[-64.7379,32.311,0.0001077,["Bermuda"]],"VG":[-64.6223,18.4227,0.00019089,["British","Virgin","Islands"]],"TC":[-71.7917,21.82,0.00026243,["Turks &","Caicos","Islands"]],"MS":[-62.1857,16.7406,0.00018398,["Montserrat"]],"JE":[-2.1676,49.2241,0.0004528,["Jersey"]],"GG":[-2.5726,49.4673,0.00021903,["Guernsey"]],"IM":[-4.5051,54.2378,0.00081793,["Isle of","Man"]],"GB":[-1.446,52.6658,0.026829,["UK"]],"AE":[54.4522,23.4962,0.01191,["UAE"]],"UA":[31.9909,49.4592,0.024448,["Ukraine"]],"UG":[33.0777,2.0635,0.015178,["Uganda"]],"TM":[60.0376,39.3791,0.01176,["Turkmenistan"]],"TR":[33.4892,39.2327,0.031577,["Türkiye"]],"TN":[9.6226,35.2296,0.010708,["Tunisia"]],"TT":[-61.247,10.2892,0.0017657,["Trinidad","&","Tobago"]],"TO":[-175.2487,-21.1535,0.0004825,["Tonga"]],"TG":[1.0488,8.8275,0.0068018,["Togo"]],"TL":[125.4982,-8.8865,0.0023,["Timor-Leste"]],"TH":[101.3335,15.4876,0.02004,["Thailand"]],"TZ":[34.2703,-5.7701,0.032228,["Tanzania"]],"TJ":[69.5377,38.584,0.0076272,["Tajikistan"]],"TW":[120.8255,23.639,0.0060691,["Taiwan"]],"SY":[38.4599,35.0581,0.023101,["Syria"]],"CH":[7.554,46.7855,0.0048776,["Switzerland"]],"SE":[18.5027,65.5489,0.01849,["Sweden"]],"SZ":[31.4705,-26.5125,0.0045925,["Eswatini"]],"SR":[-56.013,4.1738,0.011132,["Suriname"]],"SS":[30.2168,7.1082,0.028676,["South","Sudan"]],"SD":[30.0333,16.8169,0.06039,["Sudan"]],"LK":[80.8539,7.096,0.0092093,["Sri","Lanka"]],"ES":[-3.5812,39.8221,0.033799,["Spain"]],"KR":[128.0507,36.5477,0.010655,["South","Korea"]],"ZA":[23.2242,-30.5878,0.034377,["South","Africa"]],"SO":[48.7121,9.5816,0.015962,["Somalia"]],"SB":[160.2332,-9.6193,0.0017776,["Solomon","Islands"]],"SK":[18.8111,48.7221,0.0068332,["Slovakia"]],"SI":[14.9186,46.0665,0.0045137,["Slovenia"]],"SG":[103.817,1.3591,0.00069762,["Singapore"]],"SL":[-11.7637,8.6842,0.011237,["Sierra","Leone"]],"SC":[55.4478,-4.6286,0.00024365,["Seychelles"]],"RS":[20.6886,44.1076,0.011169,["Serbia"]],"SN":[-15.0546,15.2006,0.013062,["Senegal"]],"SA":[44.8627,23.4562,0.047416,["Saudi","Arabia"]],"ST":[6.6035,0.2499,0.00075384,["São Tomé","& Príncipe"]],"SM":[12.4594,43.9414,0.00034392,["San","Marino"]],"WS":[-172.4259,-13.6296,0.0017051,["Samoa"]],"VC":[-61.2006,13.2506,0.00034175,["St. Vincent &","Grenadines"]],"LC":[-60.9803,13.8755,0.00082291,["St.","Lucia"]],"KN":[-62.7727,17.3447,0.00036258,["St. Kitts","& Nevis"]],"RW":[29.7047,-1.9091,0.0044418,["Rwanda"]],"RU":[43.6874,57.1972,0.092931,["Russia"]],"RO":[25.2057,45.7435,0.019481,["Romania"]],"QA":[51.21,25.0621,0.0041609,["Qatar"]],"PT":[-7.7688,40.7075,0.0065069,["Portugal"]],"PL":[20.0249,52.043,0.028064,["Poland"]],"PH":[121.3871,16.8043,0.0052701,["Philippines"]],"PE":[-72.8258,-13.204,0.042469,["Peru"]],"PY":[-60.1796,-21.636,0.015375,["Paraguay"]],"PG":[143.2185,-5.5338,0.017251,["Papua","New","Guinea"]],"PA":[-80.9773,8.3533,0.0043825,["Panama"]],"PW":[134.5709,7.5034,0.00065383,["Palau"]],"PK":[67.0007,27.8225,0.02022,["Pakistan"]],"OM":[57.5107,22.0802,0.019114,["Oman"]],"NO":[9.906,61.4654,0.01494,["Norway"]],"KP":[126.8579,40.4037,0.010924,["North","Korea"]],"NG":[7.6182,9.6403,0.034816,["Nigeria"]],"NE":[10.0115,17.3831,0.052294,["Niger"]],"NI":[-85.3184,12.5552,0.0098511,["Nicaragua"]],"NZ":[169.2524,-45.1334,0.0083626,["New","Zealand"]],"NU":[-169.8705,-19.0486,0.00082918,["Niue"]],"CK":[-159.7838,-21.2176,0.00029358,["Cook","Islands"]],"NL":[5.7664,52.4913,0.0041218,["Netherlands"]],"AW":[-70.0166,12.5545,0.00042017,["Aruba"]],"CW":[-68.8712,12.1275,0.00043253,["Curaçao"]],"NP":[82.2216,28.8456,0.012785,["Nepal"]],"NR":[166.9319,-0.5196,0.00022131,["Nauru"]],"NA":[17.0389,-20.3289,0.026783,["Namibia"]],"MZ":[38.0549,-13.7987,0.012674,["Mozambique"]],"MA":[-6.8095,31.756,0.016718,["Morocco"]],"ME":[19.1265,42.8135,0.0028756,["Montenegro"]],"MN":[103.2367,46.3957,0.03543,["Mongolia"]],"MD":[28.3978,47.5321,0.0047677,["Moldova"]],"MC":[7.4032,43.7517,0.00012285,["Monaco"]],"MX":[-103.1115,25.3438,0.038818,["Mexico"]],"MU":[57.5609,-20.2985,0.0012281,["Mauritius"]],"MR":[-9.925,19.0461,0.021629,["Mauritania"]],"MT":[14.4263,35.8932,0.00076987,["Malta"]],"ML":[-1.7841,18.4689,0.057128,["Mali"]],"MV":[73.503,4.1969,0.00011504,["Maldives"]],"MY":[113.7082,2.4419,0.0073128,["Malaysia"]],"MW":[33.8064,-13.5766,0.0072493,["Malawi"]],"MG":[46.6862,-18.1812,0.013735,["Madagascar"]],"MK":[21.291,41.4974,0.0039604,["North","Macedonia"]],"LU":[6.1299,49.697,0.0011768,["Luxembourg"]],"LT":[24.3211,55.1274,0.0087505,["Lithuania"]],"LI":[9.5377,47.1116,0.00024711,["Liechtenstein"]],"LY":[20.0455,26.2773,0.055584,["Libya"]],"LR":[-9.5023,6.5088,0.0085401,["Liberia"]],"LS":[28.3442,-29.4741,0.0062015,["Lesotho"]],"LB":[36.0365,34.1718,0.0027984,["Lebanon"]],"LV":[26.548,56.6918,0.0091588,["Latvia"]],"LA":[102.6158,19.7345,0.017516,["Laos"]],"KG":[74.6062,41.6299,0.0094987,["Kyrgyzstan"]],"KW":[47.4721,29.7126,0.004079,["Kuwait"]],"XK":[20.8587,42.5694,0.0050273,["Kosovo"]],"KI":[-157.3827,1.8244,0.00055646,["Kiribati"]],"KE":[37.7521,0.2265,0.032791,["Kenya"]],"KZ":[71.8142,48.0059,0.040429,["Kazakhstan"]],"JO":[36.3236,30.6422,0.00934,["Jordan"]],"JP":[138.772,36.2706,0.016954,["Japan"]],"JM":[-77.3601,18.1503,0.0032807,["Jamaica"]],"IT":[10.731,45.1355,0.020907,["Italy"]],"IL":[34.8574,30.9615,0.0052389,["Israel"]],"PS":[35.2629,32.1867,0.0017731,["Palestine"]],"IE":[-7.6433,53.1281,0.011765,["Ireland"]],"IQ":[42.9339,33.18,0.035825,["Iraq"]],"IR":[54.9805,32.6523,0.088763,["Iran"]],"ID":[113.9627,-0.9334,0.017118,["Indonesia"]],"IN":[79.6912,21.894,0.079179,["India"]],"IS":[-18.9535,64.6159,0.012027,["Iceland"]],"HU":[20.2689,47.1716,0.0088109,["Hungary"]],"HN":[-87.2023,14.7639,0.0092681,["Honduras"]],"HT":[-72.2339,19.2639,0.0061565,["Haiti"]],"GY":[-58.5617,2.6638,0.010657,["Guyana"]],"GW":[-14.5369,12.151,0.0027156,["Guinea-Bissau"]],"GN":[-10.0574,10.692,0.012929,["Guinea"]],"GT":[-90.7977,14.9924,0.0075425,["Guatemala"]],"GD":[-61.6866,12.0991,0.00046941,["Grenada"]],"GR":[21.5889,39.7962,0.0083789,["Greece"]],"GH":[-1.2719,6.8397,0.017421,["Ghana"]],"DE":[9.3937,51.043,0.017954,["Germany"]],"GE":[44.3059,41.9281,0.0076685,["Georgia"]],"GM":[-15.0147,13.6601,0.0015348,["Gambia"]],"GA":[11.5695,-0.5657,0.019511,["Gabon"]],"FR":[2.4565,46.9909,0.030905,["France"]],"PM":[-56.329,47.043,0.00023672,["St. Pierre &","Miquelon"]],"WF":[-178.1597,-14.2609,0.00017665,["Wallis &","Futuna"]],"MF":[-63.0444,18.0925,0.00024073,["St.","Martin"]],"BL":[-62.8464,17.8985,0.00011037,["St.","Barthélemy"]],"PF":[-149.4731,-17.623,0.0008155,["French","Polynesia"]],"NC":[165.0723,-21.0329,0.0020056,["New","Caledonia"]],"FI":[26.7845,62.9751,0.021911,["Finland"]],"FJ":[-28.1098,-16.522,0.00044666,["Fiji"]],"ET":[39.1531,7.8659,0.034779,["Ethiopia"]],"EE":[26.3262,58.678,0.0078275,["Estonia"]],"ER":[38.0439,15.9178,0.011436,["Eritrea"]],"GQ":[10.656,1.5852,0.004093,["Equatorial","Guinea"]],"SV":[-89.2291,13.8867,0.0033046,["El Salvador"]],"EG":[29.5197,25.7316,0.045543,["Egypt"]],"EC":[-78.1235,-1.2192,0.017659,["Ecuador"]],"DO":[-70.7774,19.0782,0.0055875,["Dominican","Rep."]],"DM":[-61.3633,15.4916,0.00062868,["Dominica"]],"DJ":[42.5566,12.0259,0.0034186,["Djibouti"]],"GL":[-42.6386,73.6613,0.051752,["Greenland"]],"FO":[-6.9397,62.1969,0.00088613,["Faroe","Islands"]],"DK":[9.0893,55.9862,0.0048836,["Denmark"]],"CZ":[14.3421,49.8221,0.010317,["Czechia"]],"XC":[33.672,35.197,0.0017889,["N.","Cyprus"]],"CY":[33.1635,34.9291,0.0027371,["Cyprus"]],"CU":[-76.4481,20.6371,0.0080819,["Cuba"]],"HR":[16.4166,45.787,0.0058295,["Croatia"]],"CI":[-5.5802,7.3372,0.018714,["Côte","d'Ivoire"]],"CR":[-84.0349,10.1133,0.0066041,["Costa","Rica"]],"CD":[23.1525,-2.2219,0.047455,["DR","Congo"]],"CG":[16.0956,0.1976,0.016243,["Congo"]],"KM":[43.3312,-11.7342,0.00070415,["Comoros"]],"CO":[-73.0843,3.6657,0.026931,["Colombia"]],"CN":[106.9764,34.1414,0.11861,["China"]],"MO":[113.5064,22.2265,0.0001909,["Macau"]],"HK":[114.1491,22.46,0.0012853,["Hong","Kong"]],"CL":[-69.2009,-23.5382,0.013955,["Chile"]],"TD":[19.6006,17.445,0.04712,["Chad"]],"CF":[21.6766,6.9419,0.021428,["Central","African","Rep."]],"CV":[-23.609,15.0369,0.0011122,["Cape","Verde"]],"CA":[-116.2466,58.9564,0.10338,["Canada"]],"CM":[12.1846,4.4538,0.015809,["Cameroon"]],"KH":[104.5752,12.6425,0.011585,["Cambodia"]],"MM":[96.2093,21.5297,0.020142,["Myanmar"]],"BI":[29.86,-3.3298,0.005357,["Burundi"]],"BF":[-1.0509,12.7387,0.015099,["Burkina","Faso"]],"BG":[24.2376,42.6436,0.010335,["Bulgaria"]],"BN":[114.5333,4.4577,0.0025242,["Brunei"]],"BR":[-49.2214,-11.4956,0.11762,["Brazil"]],"BW":[24.337,-21.8737,0.021851,["Botswana"]],"BA":[17.9686,44.192,0.0091711,["Bosnia","& Herz."]],"BO":[-64.6094,-17.0464,0.041882,["Bolivia"]],"BT":[89.9126,27.4441,0.0071025,["Bhutan"]],"BJ":[2.3962,10.4893,0.014653,["Benin"]],"BZ":[-88.7293,17.011,0.0048136,["Belize"]],"BE":[4.6992,50.7773,0.0064687,["Belgium"]],"BY":[28.3324,53.7267,0.019786,["Belarus"]],"BB":[-59.5566,13.1614,0.00056655,["Barbados"]],"BD":[89.8588,24.2521,0.0062554,["Bangladesh"]],"BH":[50.5477,25.9846,0.00057697,["Bahrain"]],"BS":[-77.9921,24.6452,0.0015263,["Bahamas"]],"AZ":[47.1543,40.3471,0.0064026,["Azerbaijan"]],"AT":[14.3559,47.5151,0.010462,["Austria"]],"AU":[134.0801,-23.8296,0.085546,["Australia"]],"NF":[167.9522,-29.0548,0.00022448,["Norfolk","Island"]],"AM":[44.4212,40.5998,0.005032,["Armenia"]],"AR":[-63.8319,-30.4677,0.03804,["Argentina"]],"AG":[-61.7899,17.0786,0.00051461,["Antigua &","Barbuda"]],"AO":[17.6535,-13.709,0.039032,["Angola"]],"AD":[1.54,42.5447,0.00085708,["Andorra"]],"DZ":[2.7547,27.4774,0.060062,["Algeria"]],"AL":[20.1274,40.587,0.0055041,["Albania"]],"AF":[66.1309,33.9881,0.018574,["Afghanistan"]],"SX":[-63.0574,18.0504,0.00017561,["Sint","Maarten"]]},"tr":{"ZW":[29.8141,-18.9727,0.018657,["Zimbabve"]],"ZM":[26.3518,-14.5826,0.025453,["Zambiya"]],"YE":[45.357,15.304,0.021815,["Yemen"]],"VN":[105.2157,21.8491,0.010028,["Vietnam"]],"VE":[-64.4527,7.1997,0.020985,["Venezuela"]],"VA":[12.4342,41.9023,0.000040025,["Vatikan"]],"VU":[166.9299,-15.3693,0.0018972,["Vanuatu"]],"UZ":[63.9286,41.8032,0.010801,["Özbekistan"]],"UY":[-56.0342,-32.9108,0.01486,["Uruguay"]],"FM":[158.2414,6.8753,0.00042488,["Mikronezya"]],"MH":[171.1289,7.1135,0.00011318,["Marshall","Adaları"]],"MP":[145.7429,15.1798,0.00024884,["Kuzey","Mariana","Adaları"]],"VI":[-64.8174,17.742,0.00035267,["ABD","Virjin","Adaları"]],"GU":[144.7177,13.4031,0.00064072,["Guam"]],"AS":[-170.747,-14.3211,0.00029202,["Amerikan","Samoası"]],"PR":[-66.2384,18.2076,0.0032104,["Porto","Riko"]],"US":[-101.4288,39.2273,0.17235,["ABD"]],"GS":[-36.1122,-54.6876,0.0010112,["Güney","Georgia"]],"IO":[72.4442,-7.4102,0.00014022,["Chagos","Adaları"]],"SH":[-5.7192,-15.9613,0.00032967,["Saint","Helena"]],"PN":[-128.3166,-24.365,0.00017063,["Pitcairn","Adaları"]],"AI":[-63.029,18.2397,0.00022809,["Anguilla"]],"FK":[-58.7454,-51.708,0.0022903,["Falkland","Adaları"]],"KY":[-81.3685,19.3076,0.00029167,["Cayman","Adaları"]],"BM":[-64.7379,32.311,0.0001077,["Bermuda"]],"VG":[-64.6223,18.4227,0.00017293,["Britanya","Virjin","Adaları"]],"TC":[-71.7917,21.82,0.00024512,["Turks ve","Caicos","Adaları"]],"MS":[-62.1857,16.7406,0.00018398,["Montserrat"]],"JE":[-2.1676,49.2241,0.0004528,["Jersey"]],"GG":[-2.5726,49.4673,0.00021903,["Guernsey"]],"IM":[-4.5051,54.2378,0.00086078,["Man","Adası"]],"GB":[-1.446,52.6658,0.011837,["Birleşik","Krallık"]],"AE":[54.4522,23.4962,0.012359,["BAE"]],"UA":[31.9909,49.4592,0.022829,["Ukrayna"]],"UG":[33.0777,2.0635,0.015178,["Uganda"]],"TM":[60.0376,39.3791,0.01176,["Türkmenistan"]],"TR":[33.4892,39.2327,0.031577,["Türkiye"]],"TN":[9.6226,35.2296,0.012313,["Tunus"]],"TT":[-61.247,10.2892,0.0017657,["Trinidad","ve","Tobago"]],"TO":[-175.2487,-21.1535,0.0004825,["Tonga"]],"TG":[1.0488,8.8275,0.0068018,["Togo"]],"TL":[125.4982,-8.8865,0.0023,["Timor-Leste"]],"TH":[101.3335,15.4876,0.021804,["Tayland"]],"TZ":[34.2703,-5.7701,0.030213,["Tanzanya"]],"TJ":[69.5377,38.584,0.0072096,["Tacikistan"]],"TW":[120.8255,23.639,0.0060314,["Tayvan"]],"SY":[38.4599,35.0581,0.019074,["Suriye"]],"CH":[7.554,46.7855,0.0084168,["İsviçre"]],"SE":[18.5027,65.5489,0.027205,["İsveç"]],"SZ":[31.4705,-26.5125,0.0049171,["Esvatini"]],"SR":[-56.013,4.1738,0.01266,["Surinam"]],"SS":[30.2168,7.1082,0.027953,["Güney","Sudan"]],"SD":[30.0333,16.8169,0.06039,["Sudan"]],"LK":[80.8539,7.096,0.0092093,["Sri","Lanka"]],"ES":[-3.5812,39.8221,0.025545,["İspanya"]],"KR":[128.0507,36.5477,0.010059,["Güney","Kore"]],"ZA":[23.2242,-30.5878,0.032836,["Güney","Afrika"]],"SO":[48.7121,9.5816,0.018423,["Somali"]],"SB":[160.2332,-9.6193,0.0017776,["Solomon","Adaları"]],"SK":[18.8111,48.7221,0.006372,["Slovakya"]],"SI":[14.9186,46.0665,0.0042244,["Slovenya"]],"SG":[103.817,1.3591,0.0007893,["Singapur"]],"SL":[-11.7637,8.6842,0.011237,["Sierra","Leone"]],"SC":[55.4478,-4.6286,0.00028394,["Seyşeller"]],"RS":[20.6886,44.1076,0.0072974,["Sırbistan"]],"SN":[-15.0546,15.2006,0.013062,["Senegal"]],"SA":[44.8627,23.4562,0.035436,["Suudi","Arabistan"]],"ST":[6.6035,0.2499,0.00076876,["São","Tomé ve","Príncipe"]],"SM":[12.4594,43.9414,0.00034392,["San","Marino"]],"WS":[-172.4259,-13.6296,0.0017051,["Samoa"]],"VC":[-61.2006,13.2506,0.00034888,["Saint","Vincent ve","Grenadinler"]],"LC":[-60.9803,13.8755,0.00082291,["Saint","Lucia"]],"KN":[-62.7727,17.3447,0.00029343,["Saint Kitts","ve Nevis"]],"RW":[29.7047,-1.9091,0.0047094,["Ruanda"]],"RU":[43.6874,57.1972,0.098077,["Rusya"]],"RO":[25.2057,45.7435,0.018264,["Romanya"]],"QA":[51.21,25.0621,0.0043965,["Katar"]],"PT":[-7.7688,40.7075,0.0067098,["Portekiz"]],"PL":[20.0249,52.043,0.024346,["Polonya"]],"PH":[121.3871,16.8043,0.0066487,["Filipinler"]],"PE":[-72.8258,-13.204,0.042469,["Peru"]],"PY":[-60.1796,-21.636,0.015375,["Paraguay"]],"PG":[143.2185,-5.5338,0.018408,["Papua","Yeni","Gine"]],"PA":[-80.9773,8.3533,0.0043825,["Panama"]],"PW":[134.5709,7.5034,0.00065383,["Palau"]],"PK":[67.0007,27.8225,0.02022,["Pakistan"]],"OM":[57.5107,22.0802,0.015241,["Umman"]],"NO":[9.906,61.4654,0.015948,["Norveç"]],"KP":[126.8579,40.4037,0.01068,["Kuzey","Kore"]],"NG":[7.6182,9.6403,0.035027,["Nijerya"]],"NE":[10.0115,17.3831,0.058408,["Nijer"]],"NI":[-85.3184,12.5552,0.0099465,["Nikaragua"]],"NZ":[169.2524,-45.1334,0.0083626,["Yeni","Zelanda"]],"NU":[-169.8705,-19.0486,0.00082918,["Niue"]],"CK":[-159.7838,-21.2176,0.00029044,["Cook","Adaları"]],"NL":[5.7664,52.4913,0.0056492,["Hollanda"]],"AW":[-70.0166,12.5545,0.00042017,["Aruba"]],"CW":[-68.8712,12.1275,0.00043253,["Curaçao"]],"NP":[82.2216,28.8456,0.012785,["Nepal"]],"NR":[166.9319,-0.5196,0.00022131,["Nauru"]],"NA":[17.0389,-20.3289,0.025095,["Namibya"]],"MZ":[38.0549,-13.7987,0.015752,["Mozambik"]],"MA":[-6.8095,31.756,0.037618,["Fas"]],"ME":[19.1265,42.8135,0.004206,["Karadağ"]],"MN":[103.2367,46.3957,0.029705,["Moğolistan"]],"MD":[28.3978,47.5321,0.0047677,["Moldova"]],"MC":[7.4032,43.7517,0.00012433,["Monako"]],"MX":[-103.1115,25.3438,0.035109,["Meksika"]],"MU":[57.5609,-20.2985,0.0012281,["Mauritius"]],"MR":[-9.925,19.0461,0.025733,["Moritanya"]],"MT":[14.4263,35.8932,0.00076987,["Malta"]],"ML":[-1.7841,18.4689,0.057128,["Mali"]],"MV":[73.503,4.1969,0.00011121,["Maldivler"]],"MY":[113.7082,2.4419,0.0076947,["Malezya"]],"MW":[33.8064,-13.5766,0.0078528,["Malavi"]],"MG":[46.6862,-18.1812,0.013848,["Madagaskar"]],"MK":[21.291,41.4974,0.003808,["Kuzey","Makedonya"]],"LU":[6.1299,49.697,0.0011965,["Lüksemburg"]],"LT":[24.3211,55.1274,0.0094302,["Litvanya"]],"LI":[9.5377,47.1116,0.00024711,["Liechtenstein"]],"LY":[20.0455,26.2773,0.055584,["Libya"]],"LR":[-9.5023,6.5088,0.0078655,["Liberya"]],"LS":[28.3442,-29.4741,0.0062015,["Lesotho"]],"LB":[36.0365,34.1718,0.0032346,["Lübnan"]],"LV":[26.548,56.6918,0.0070955,["Letonya"]],"LA":[102.6158,19.7345,0.017516,["Laos"]],"KG":[74.6062,41.6299,0.010146,["Kırgızistan"]],"KW":[47.4721,29.7126,0.004032,["Kuveyt"]],"XK":[20.8587,42.5694,0.0051066,["Kosova"]],"KI":[-157.3827,1.8244,0.00055646,["Kiribati"]],"KE":[37.7521,0.2265,0.032791,["Kenya"]],"KZ":[71.8142,48.0059,0.042935,["Kazakistan"]],"JO":[36.3236,30.6422,0.010443,["Ürdün"]],"JP":[138.772,36.2706,0.012466,["Japonya"]],"JM":[-77.3601,18.1503,0.0033191,["Jamaika"]],"IT":[10.731,45.1355,0.015263,["İtalya"]],"IL":[34.8574,30.9615,0.0058435,["İsrail"]],"PS":[35.2629,32.1867,0.0027278,["Filistin"]],"IE":[-7.6433,53.1281,0.011857,["İrlanda"]],"IQ":[42.9339,33.18,0.036887,["Irak"]],"IR":[54.9805,32.6523,0.088763,["İran"]],"ID":[113.9627,-0.9334,0.015097,["Endonezya"]],"IN":[79.6912,21.894,0.043346,["Hindistan"]],"IS":[-18.9535,64.6159,0.012326,["İzlanda"]],"HU":[20.2689,47.1716,0.006995,["Macaristan"]],"HN":[-87.2023,14.7639,0.0092681,["Honduras"]],"HT":[-72.2339,19.2639,0.0061565,["Haiti"]],"GY":[-58.5617,2.6638,0.010657,["Guyana"]],"GW":[-14.5369,12.151,0.0032438,["Gine-Bissau"]],"GN":[-10.0574,10.692,0.020972,["Gine"]],"GT":[-90.7977,14.9924,0.0075425,["Guatemala"]],"GD":[-61.6866,12.0991,0.00046941,["Grenada"]],"GR":[21.5889,39.7962,0.0056994,["Yunanistan"]],"GH":[-1.2719,6.8397,0.020958,["Gana"]],"DE":[9.3937,51.043,0.018887,["Almanya"]],"GE":[44.3059,41.9281,0.0063651,["Gürcistan"]],"GM":[-15.0147,13.6601,0.0013431,["Gambiya"]],"GA":[11.5695,-0.5657,0.019511,["Gabon"]],"FR":[2.4565,46.9909,0.031876,["Fransa"]],"PM":[-56.329,47.043,0.00024654,["Saint","Pierre ve","Miquelon"]],"WF":[-178.1597,-14.2609,0.00016178,["Wallis ve","Futuna"]],"MF":[-63.0444,18.0925,0.00024073,["Saint","Martin"]],"BL":[-62.8464,17.8985,0.0001104,["Saint","Barthelemy"]],"PF":[-149.4731,-17.623,0.00071745,["Fransız","Polinezyası"]],"NC":[165.0723,-21.0329,0.0019416,["Yeni","Kaledonya"]],"FI":[26.7845,62.9751,0.018188,["Finlandiya"]],"FJ":[-28.1098,-16.522,0.00044666,["Fiji"]],"ET":[39.1531,7.8659,0.03275,["Etiyopya"]],"EE":[26.3262,58.678,0.0072718,["Estonya"]],"ER":[38.0439,15.9178,0.013495,["Eritre"]],"GQ":[10.656,1.5852,0.0057794,["Ekvator","Ginesi"]],"SV":[-89.2291,13.8867,0.0033046,["El Salvador"]],"EG":[29.5197,25.7316,0.055047,["Mısır"]],"EC":[-78.1235,-1.2192,0.017938,["Ekvador"]],"DO":[-70.7774,19.0782,0.0068947,["Dominik","Cum."]],"DM":[-61.3633,15.4916,0.00063527,["Dominika"]],"DJ":[42.5566,12.0259,0.0043326,["Cibuti"]],"GL":[-42.6386,73.6613,0.057848,["Grönland"]],"FO":[-6.9397,62.1969,0.00087664,["Faroe","Adaları"]],"DK":[9.0893,55.9862,0.0041812,["Danimarka"]],"CZ":[14.3421,49.8221,0.01284,["Çekya"]],"XC":[33.672,35.197,0.0024929,["KKTC"]],"CY":[33.1635,34.9291,0.002586,["Güney","Kıbrıs"]],"CU":[-76.4481,20.6371,0.0083256,["Küba"]],"HR":[16.4166,45.787,0.0040152,["Hırvatistan"]],"CI":[-5.5802,7.3372,0.022227,["Fildişi","Sahili"]],"CR":[-84.0349,10.1133,0.0067592,["Kosta","Rika"]],"CD":[23.1525,-2.2219,0.048529,["Kongo","DC"]],"CG":[16.0956,0.1976,0.016733,["Kongo"]],"KM":[43.3312,-11.7342,0.00070799,["Komorlar"]],"CO":[-73.0843,3.6657,0.024567,["Kolombiya"]],"CN":[106.9764,34.1414,0.15859,["Çin"]],"MO":[113.5064,22.2265,0.00019261,["Makao"]],"HK":[114.1491,22.46,0.0012853,["Hong","Kong"]],"CL":[-69.2009,-23.5382,0.023698,["Şili"]],"TD":[19.6006,17.445,0.058375,["Çad"]],"CF":[21.6766,6.9419,0.020857,["Orta","Afrika","Cum."]],"CV":[-23.609,15.0369,0.00085548,["Yeşil","Burun","Adaları"]],"CA":[-116.2466,58.9564,0.10619,["Kanada"]],"CM":[12.1846,4.4538,0.018372,["Kamerun"]],"KH":[104.5752,12.6425,0.011294,["Kamboçya"]],"MM":[96.2093,21.5297,0.020142,["Myanmar"]],"BI":[29.86,-3.3298,0.005357,["Burundi"]],"BF":[-1.0509,12.7387,0.015099,["Burkina","Faso"]],"BG":[24.2376,42.6436,0.0086306,["Bulgaristan"]],"BN":[114.5333,4.4577,0.0025242,["Brunei"]],"BR":[-49.2214,-11.4956,0.084974,["Brezilya"]],"BW":[24.337,-21.8737,0.023193,["Botsvana"]],"BA":[17.9686,44.192,0.0048644,["Bosna-Hersek"]],"BO":[-64.6094,-17.0464,0.038521,["Bolivya"]],"BT":[89.9126,27.4441,0.008427,["Butan"]],"BJ":[2.3962,10.4893,0.014653,["Benin"]],"BZ":[-88.7293,17.011,0.0048136,["Belize"]],"BE":[4.6992,50.7773,0.0073085,["Belçika"]],"BY":[28.3324,53.7267,0.019786,["Belarus"]],"BB":[-59.5566,13.1614,0.00056655,["Barbados"]],"BD":[89.8588,24.2521,0.0069628,["Bangladeş"]],"BH":[50.5477,25.9846,0.00053197,["Bahreyn"]],"BS":[-77.9921,24.6452,0.0013253,["Bahamalar"]],"AZ":[47.1543,40.3471,0.0057809,["Azerbaycan"]],"AT":[14.3559,47.5151,0.0075498,["Avusturya"]],"AU":[134.0801,-23.8296,0.071992,["Avustralya"]],"NF":[167.9522,-29.0548,0.00022448,["Norfolk","Adası"]],"AM":[44.4212,40.5998,0.0038074,["Ermenistan"]],"AR":[-63.8319,-30.4677,0.046449,["Arjantin"]],"AG":[-61.7899,17.0786,0.00051799,["Antigua","ve","Barbuda"]],"AO":[17.6535,-13.709,0.039032,["Angola"]],"AD":[1.54,42.5447,0.00085708,["Andorra"]],"DZ":[2.7547,27.4774,0.056557,["Cezayir"]],"AL":[20.1274,40.587,0.0038555,["Arnavutluk"]],"AF":[66.1309,33.9881,0.020608,["Afganistan"]],"SX":[-63.0574,18.0504,0.00017561,["Sint","Maarten"]]}},"B":[[-405.3236393789093,-206.74033721930502],[405.3236393789093,153.03932393082653]]}</script>
+<script defer src="/assets/d3.min.js?v=6d64bd2f09"></script>
+<script defer src="/assets/topojson-client.min.js?v=bc057598e8"></script>
+<script>// Copyright (c) 2009 Kazuhiko Arase
+// Licensed under the MIT license:
+//  http://www.opensource.org/licenses/mit-license.php
+var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],f={},c=function(t,r){o=function(t){for(var r=new Array(t),e=0;e<t;e+=1){r[e]=new Array(t);for(var n=0;n<t;n+=1)r[e][n]=null}return r}(i=4*e+17),l(0,0),l(i-7,0),l(0,i-7),s(),h(),d(t,r),e>=7&&v(t),null==a&&(a=p(e,n,u)),w(a,r)},l=function(t,r){for(var e=-1;e<=7;e+=1)if(!(t+e<=-1||i<=t+e))for(var n=-1;n<=7;n+=1)r+n<=-1||i<=r+n||(o[t+e][r+n]=0<=e&&e<=6&&(0==n||6==n)||0<=n&&n<=6&&(0==e||6==e)||2<=e&&e<=4&&2<=n&&n<=4)},h=function(){for(var t=8;t<i-8;t+=1)null==o[t][6]&&(o[t][6]=t%2==0);for(var r=8;r<i-8;r+=1)null==o[6][r]&&(o[6][r]=r%2==0)},s=function(){for(var t=B.getPatternPosition(e),r=0;r<t.length;r+=1)for(var n=0;n<t.length;n+=1){var i=t[r],a=t[n];if(null==o[i][a])for(var u=-2;u<=2;u+=1)for(var f=-2;f<=2;f+=1)o[i+u][a+f]=-2==u||2==u||-2==f||2==f||0==u&&0==f}},v=function(t){for(var r=B.getBCHTypeNumber(e),n=0;n<18;n+=1){var a=!t&&1==(r>>n&1);o[Math.floor(n/3)][n%3+i-8-3]=a}for(n=0;n<18;n+=1){a=!t&&1==(r>>n&1);o[n%3+i-8-3][Math.floor(n/3)]=a}},d=function(t,r){for(var e=n<<3|r,a=B.getBCHTypeInfo(e),u=0;u<15;u+=1){var f=!t&&1==(a>>u&1);u<6?o[u][8]=f:u<8?o[u+1][8]=f:o[i-15+u][8]=f}for(u=0;u<15;u+=1){f=!t&&1==(a>>u&1);u<8?o[8][i-u-1]=f:u<9?o[8][15-u-1+1]=f:o[8][15-u-1]=f}o[i-8][8]=!t},w=function(t,r){for(var e=-1,n=i-1,a=7,u=0,f=B.getMaskFunction(r),c=i-1;c>0;c-=2)for(6==c&&(c-=1);;){for(var g=0;g<2;g+=1)if(null==o[n][c-g]){var l=!1;u<t.length&&(l=1==(t[u]>>>a&1)),f(n,c-g)&&(l=!l),o[n][c-g]=l,-1==(a-=1)&&(u+=1,a=7)}if((n+=e)<0||i<=n){n-=e,e=-e;break}}},p=function(t,r,e){for(var n=A.getRSBlocks(t,r),o=b(),i=0;i<e.length;i+=1){var a=e[i];o.put(a.getMode(),4),o.put(a.getLength(),B.getLengthInBits(a.getMode(),t)),a.write(o)}var u=0;for(i=0;i<n.length;i+=1)u+=n[i].dataCount;if(o.getLengthInBits()>8*u)throw"code length overflow. ("+o.getLengthInBits()+">"+8*u+")";for(o.getLengthInBits()+4<=8*u&&o.put(0,4);o.getLengthInBits()%8!=0;)o.putBit(!1);for(;!(o.getLengthInBits()>=8*u||(o.put(236,8),o.getLengthInBits()>=8*u));)o.put(17,8);return function(t,r){for(var e=0,n=0,o=0,i=new Array(r.length),a=new Array(r.length),u=0;u<r.length;u+=1){var f=r[u].dataCount,c=r[u].totalCount-f;n=Math.max(n,f),o=Math.max(o,c),i[u]=new Array(f);for(var g=0;g<i[u].length;g+=1)i[u][g]=255&t.getBuffer()[g+e];e+=f;var l=B.getErrorCorrectPolynomial(c),h=k(i[u],l.getLength()-1).mod(l);for(a[u]=new Array(l.getLength()-1),g=0;g<a[u].length;g+=1){var s=g+h.getLength()-a[u].length;a[u][g]=s>=0?h.getAt(s):0}}var v=0;for(g=0;g<r.length;g+=1)v+=r[g].totalCount;var d=new Array(v),w=0;for(g=0;g<n;g+=1)for(u=0;u<r.length;u+=1)g<i[u].length&&(d[w]=i[u][g],w+=1);for(g=0;g<o;g+=1)for(u=0;u<r.length;u+=1)g<a[u].length&&(d[w]=a[u][g],w+=1);return d}(o,n)};f.addData=function(t,r){var e=null;switch(r=r||"Byte"){case"Numeric":e=M(t);break;case"Alphanumeric":e=x(t);break;case"Byte":e=m(t);break;case"Kanji":e=L(t);break;default:throw"mode:"+r}u.push(e),a=null},f.isDark=function(t,r){if(t<0||i<=t||r<0||i<=r)throw t+","+r;return o[t][r]},f.getModuleCount=function(){return i},f.make=function(){if(e<1){for(var t=1;t<40;t++){for(var r=A.getRSBlocks(t,n),o=b(),i=0;i<u.length;i++){var a=u[i];o.put(a.getMode(),4),o.put(a.getLength(),B.getLengthInBits(a.getMode(),t)),a.write(o)}var g=0;for(i=0;i<r.length;i++)g+=r[i].dataCount;if(o.getLengthInBits()<=8*g)break}e=t}c(!1,function(){for(var t=0,r=0,e=0;e<8;e+=1){c(!0,e);var n=B.getLostPoint(f);(0==e||t>n)&&(t=n,r=e)}return r}())},f.createTableTag=function(t,r){t=t||2;var e="";e+='<table style="',e+=" border-width: 0px; border-style: none;",e+=" border-collapse: collapse;",e+=" padding: 0px; margin: "+(r=void 0===r?4*t:r)+"px;",e+='">',e+="<tbody>";for(var n=0;n<f.getModuleCount();n+=1){e+="<tr>";for(var o=0;o<f.getModuleCount();o+=1)e+='<td style="',e+=" border-width: 0px; border-style: none;",e+=" border-collapse: collapse;",e+=" padding: 0px; margin: 0px;",e+=" width: "+t+"px;",e+=" height: "+t+"px;",e+=" background-color: ",e+=f.isDark(n,o)?"#000000":"#ffffff",e+=";",e+='"/>';e+="</tr>"}return e+="</tbody>",e+="</table>"},f.createSvgTag=function(t,r,e,n){var o={};"object"==typeof arguments[0]&&(t=(o=arguments[0]).cellSize,r=o.margin,e=o.alt,n=o.title),t=t||2,r=void 0===r?4*t:r,(e="string"==typeof e?{text:e}:e||{}).text=e.text||null,e.id=e.text?e.id||"qrcode-description":null,(n="string"==typeof n?{text:n}:n||{}).text=n.text||null,n.id=n.text?n.id||"qrcode-title":null;var i,a,u,c,g=f.getModuleCount()*t+2*r,l="";for(c="l"+t+",0 0,"+t+" -"+t+",0 0,-"+t+"z ",l+='<svg version="1.1" xmlns="http://www.w3.org/2000/svg"',l+=o.scalable?"":' width="'+g+'px" height="'+g+'px"',l+=' viewBox="0 0 '+g+" "+g+'" ',l+=' preserveAspectRatio="xMinYMin meet"',l+=n.text||e.text?' role="img" aria-labelledby="'+y([n.id,e.id].join(" ").trim())+'"':"",l+=">",l+=n.text?'<title id="'+y(n.id)+'">'+y(n.text)+"</title>":"",l+=e.text?'<description id="'+y(e.id)+'">'+y(e.text)+"</description>":"",l+='<rect width="100%" height="100%" fill="white" cx="0" cy="0"/>',l+='<path d="',a=0;a<f.getModuleCount();a+=1)for(u=a*t+r,i=0;i<f.getModuleCount();i+=1)f.isDark(a,i)&&(l+="M"+(i*t+r)+","+u+c);return l+='" stroke="transparent" fill="black"/>',l+="</svg>"},f.createDataURL=function(t,r){t=t||2,r=void 0===r?4*t:r;var e=f.getModuleCount()*t+2*r,n=r,o=e-r;return I(e,e,function(r,e){if(n<=r&&r<o&&n<=e&&e<o){var i=Math.floor((r-n)/t),a=Math.floor((e-n)/t);return f.isDark(a,i)?0:1}return 1})},f.createImgTag=function(t,r,e){t=t||2,r=void 0===r?4*t:r;var n=f.getModuleCount()*t+2*r,o="";return o+="<img",o+=' src="',o+=f.createDataURL(t,r),o+='"',o+=' width="',o+=n,o+='"',o+=' height="',o+=n,o+='"',e&&(o+=' alt="',o+=y(e),o+='"'),o+="/>"};var y=function(t){for(var r="",e=0;e<t.length;e+=1){var n=t.charAt(e);switch(n){case"<":r+="&lt;";break;case">":r+="&gt;";break;case"&":r+="&amp;";break;case'"':r+="&quot;";break;default:r+=n}}return r};return f.createASCII=function(t,r){if((t=t||1)<2)return function(t){t=void 0===t?2:t;var r,e,n,o,i,a=1*f.getModuleCount()+2*t,u=t,c=a-t,g={"██":"█","█ ":"▀"," █":"▄","  ":" "},l={"██":"▀","█ ":"▀"," █":" ","  ":" "},h="";for(r=0;r<a;r+=2){for(n=Math.floor((r-u)/1),o=Math.floor((r+1-u)/1),e=0;e<a;e+=1)i="█",u<=e&&e<c&&u<=r&&r<c&&f.isDark(n,Math.floor((e-u)/1))&&(i=" "),u<=e&&e<c&&u<=r+1&&r+1<c&&f.isDark(o,Math.floor((e-u)/1))?i+=" ":i+="█",h+=t<1&&r+1>=c?l[i]:g[i];h+="\n"}return a%2&&t>0?h.substring(0,h.length-a-1)+Array(a+1).join("▀"):h.substring(0,h.length-1)}(r);t-=1,r=void 0===r?2*t:r;var e,n,o,i,a=f.getModuleCount()*t+2*r,u=r,c=a-r,g=Array(t+1).join("██"),l=Array(t+1).join("  "),h="",s="";for(e=0;e<a;e+=1){for(o=Math.floor((e-u)/t),s="",n=0;n<a;n+=1)i=1,u<=n&&n<c&&u<=e&&e<c&&f.isDark(o,Math.floor((n-u)/t))&&(i=0),s+=i?g:l;for(o=0;o<t;o+=1)h+=s+"\n"}return h.substring(0,h.length-1)},f.renderTo2dContext=function(t,r){r=r||2;for(var e=f.getModuleCount(),n=0;n<e;n++)for(var o=0;o<e;o++)t.fillStyle=f.isDark(n,o)?"black":"white",t.fillRect(n*r,o*r,r,r)},f};t.stringToBytes=(t.stringToBytesFuncs={default:function(t){for(var r=[],e=0;e<t.length;e+=1){var n=t.charCodeAt(e);r.push(255&n)}return r}}).default,t.createStringToBytes=function(t,r){var e=function(){for(var e=S(t),n=function(){var t=e.read();if(-1==t)throw"eof";return t},o=0,i={};;){var a=e.read();if(-1==a)break;var u=n(),f=n()<<8|n();i[String.fromCharCode(a<<8|u)]=f,o+=1}if(o!=r)throw o+" != "+r;return i}(),n="?".charCodeAt(0);return function(t){for(var r=[],o=0;o<t.length;o+=1){var i=t.charCodeAt(o);if(i<128)r.push(i);else{var a=e[t.charAt(o)];"number"==typeof a?(255&a)==a?r.push(a):(r.push(a>>>8),r.push(255&a)):r.push(n)}}return r}};var r,e,n,o,i,a=1,u=2,f=4,c=8,g={L:1,M:0,Q:3,H:2},l=0,h=1,s=2,v=3,d=4,w=5,p=6,y=7,B=(r=[[],[6,18],[6,22],[6,26],[6,30],[6,34],[6,22,38],[6,24,42],[6,26,46],[6,28,50],[6,30,54],[6,32,58],[6,34,62],[6,26,46,66],[6,26,48,70],[6,26,50,74],[6,30,54,78],[6,30,56,82],[6,30,58,86],[6,34,62,90],[6,28,50,72,94],[6,26,50,74,98],[6,30,54,78,102],[6,28,54,80,106],[6,32,58,84,110],[6,30,58,86,114],[6,34,62,90,118],[6,26,50,74,98,122],[6,30,54,78,102,126],[6,26,52,78,104,130],[6,30,56,82,108,134],[6,34,60,86,112,138],[6,30,58,86,114,142],[6,34,62,90,118,146],[6,30,54,78,102,126,150],[6,24,50,76,102,128,154],[6,28,54,80,106,132,158],[6,32,58,84,110,136,162],[6,26,54,82,110,138,166],[6,30,58,86,114,142,170]],e=1335,n=7973,i=function(t){for(var r=0;0!=t;)r+=1,t>>>=1;return r},(o={}).getBCHTypeInfo=function(t){for(var r=t<<10;i(r)-i(e)>=0;)r^=e<<i(r)-i(e);return 21522^(t<<10|r)},o.getBCHTypeNumber=function(t){for(var r=t<<12;i(r)-i(n)>=0;)r^=n<<i(r)-i(n);return t<<12|r},o.getPatternPosition=function(t){return r[t-1]},o.getMaskFunction=function(t){switch(t){case l:return function(t,r){return(t+r)%2==0};case h:return function(t,r){return t%2==0};case s:return function(t,r){return r%3==0};case v:return function(t,r){return(t+r)%3==0};case d:return function(t,r){return(Math.floor(t/2)+Math.floor(r/3))%2==0};case w:return function(t,r){return t*r%2+t*r%3==0};case p:return function(t,r){return(t*r%2+t*r%3)%2==0};case y:return function(t,r){return(t*r%3+(t+r)%2)%2==0};default:throw"bad maskPattern:"+t}},o.getErrorCorrectPolynomial=function(t){for(var r=k([1],0),e=0;e<t;e+=1)r=r.multiply(k([1,C.gexp(e)],0));return r},o.getLengthInBits=function(t,r){if(1<=r&&r<10)switch(t){case a:return 10;case u:return 9;case f:case c:return 8;default:throw"mode:"+t}else if(r<27)switch(t){case a:return 12;case u:return 11;case f:return 16;case c:return 10;default:throw"mode:"+t}else{if(!(r<41))throw"type:"+r;switch(t){case a:return 14;case u:return 13;case f:return 16;case c:return 12;default:throw"mode:"+t}}},o.getLostPoint=function(t){for(var r=t.getModuleCount(),e=0,n=0;n<r;n+=1)for(var o=0;o<r;o+=1){for(var i=0,a=t.isDark(n,o),u=-1;u<=1;u+=1)if(!(n+u<0||r<=n+u))for(var f=-1;f<=1;f+=1)o+f<0||r<=o+f||0==u&&0==f||a==t.isDark(n+u,o+f)&&(i+=1);i>5&&(e+=3+i-5)}for(n=0;n<r-1;n+=1)for(o=0;o<r-1;o+=1){var c=0;t.isDark(n,o)&&(c+=1),t.isDark(n+1,o)&&(c+=1),t.isDark(n,o+1)&&(c+=1),t.isDark(n+1,o+1)&&(c+=1),0!=c&&4!=c||(e+=3)}for(n=0;n<r;n+=1)for(o=0;o<r-6;o+=1)t.isDark(n,o)&&!t.isDark(n,o+1)&&t.isDark(n,o+2)&&t.isDark(n,o+3)&&t.isDark(n,o+4)&&!t.isDark(n,o+5)&&t.isDark(n,o+6)&&(e+=40);for(o=0;o<r;o+=1)for(n=0;n<r-6;n+=1)t.isDark(n,o)&&!t.isDark(n+1,o)&&t.isDark(n+2,o)&&t.isDark(n+3,o)&&t.isDark(n+4,o)&&!t.isDark(n+5,o)&&t.isDark(n+6,o)&&(e+=40);var g=0;for(o=0;o<r;o+=1)for(n=0;n<r;n+=1)t.isDark(n,o)&&(g+=1);return e+=Math.abs(100*g/r/r-50)/5*10},o),C=function(){for(var t=new Array(256),r=new Array(256),e=0;e<8;e+=1)t[e]=1<<e;for(e=8;e<256;e+=1)t[e]=t[e-4]^t[e-5]^t[e-6]^t[e-8];for(e=0;e<255;e+=1)r[t[e]]=e;var n={glog:function(t){if(t<1)throw"glog("+t+")";return r[t]},gexp:function(r){for(;r<0;)r+=255;for(;r>=256;)r-=255;return t[r]}};return n}();function k(t,r){if(void 0===t.length)throw t.length+"/"+r;var e=function(){for(var e=0;e<t.length&&0==t[e];)e+=1;for(var n=new Array(t.length-e+r),o=0;o<t.length-e;o+=1)n[o]=t[o+e];return n}(),n={getAt:function(t){return e[t]},getLength:function(){return e.length},multiply:function(t){for(var r=new Array(n.getLength()+t.getLength()-1),e=0;e<n.getLength();e+=1)for(var o=0;o<t.getLength();o+=1)r[e+o]^=C.gexp(C.glog(n.getAt(e))+C.glog(t.getAt(o)));return k(r,0)},mod:function(t){if(n.getLength()-t.getLength()<0)return n;for(var r=C.glog(n.getAt(0))-C.glog(t.getAt(0)),e=new Array(n.getLength()),o=0;o<n.getLength();o+=1)e[o]=n.getAt(o);for(o=0;o<t.getLength();o+=1)e[o]^=C.gexp(C.glog(t.getAt(o))+r);return k(e,0).mod(t)}};return n}var A=function(){var t=[[1,26,19],[1,26,16],[1,26,13],[1,26,9],[1,44,34],[1,44,28],[1,44,22],[1,44,16],[1,70,55],[1,70,44],[2,35,17],[2,35,13],[1,100,80],[2,50,32],[2,50,24],[4,25,9],[1,134,108],[2,67,43],[2,33,15,2,34,16],[2,33,11,2,34,12],[2,86,68],[4,43,27],[4,43,19],[4,43,15],[2,98,78],[4,49,31],[2,32,14,4,33,15],[4,39,13,1,40,14],[2,121,97],[2,60,38,2,61,39],[4,40,18,2,41,19],[4,40,14,2,41,15],[2,146,116],[3,58,36,2,59,37],[4,36,16,4,37,17],[4,36,12,4,37,13],[2,86,68,2,87,69],[4,69,43,1,70,44],[6,43,19,2,44,20],[6,43,15,2,44,16],[4,101,81],[1,80,50,4,81,51],[4,50,22,4,51,23],[3,36,12,8,37,13],[2,116,92,2,117,93],[6,58,36,2,59,37],[4,46,20,6,47,21],[7,42,14,4,43,15],[4,133,107],[8,59,37,1,60,38],[8,44,20,4,45,21],[12,33,11,4,34,12],[3,145,115,1,146,116],[4,64,40,5,65,41],[11,36,16,5,37,17],[11,36,12,5,37,13],[5,109,87,1,110,88],[5,65,41,5,66,42],[5,54,24,7,55,25],[11,36,12,7,37,13],[5,122,98,1,123,99],[7,73,45,3,74,46],[15,43,19,2,44,20],[3,45,15,13,46,16],[1,135,107,5,136,108],[10,74,46,1,75,47],[1,50,22,15,51,23],[2,42,14,17,43,15],[5,150,120,1,151,121],[9,69,43,4,70,44],[17,50,22,1,51,23],[2,42,14,19,43,15],[3,141,113,4,142,114],[3,70,44,11,71,45],[17,47,21,4,48,22],[9,39,13,16,40,14],[3,135,107,5,136,108],[3,67,41,13,68,42],[15,54,24,5,55,25],[15,43,15,10,44,16],[4,144,116,4,145,117],[17,68,42],[17,50,22,6,51,23],[19,46,16,6,47,17],[2,139,111,7,140,112],[17,74,46],[7,54,24,16,55,25],[34,37,13],[4,151,121,5,152,122],[4,75,47,14,76,48],[11,54,24,14,55,25],[16,45,15,14,46,16],[6,147,117,4,148,118],[6,73,45,14,74,46],[11,54,24,16,55,25],[30,46,16,2,47,17],[8,132,106,4,133,107],[8,75,47,13,76,48],[7,54,24,22,55,25],[22,45,15,13,46,16],[10,142,114,2,143,115],[19,74,46,4,75,47],[28,50,22,6,51,23],[33,46,16,4,47,17],[8,152,122,4,153,123],[22,73,45,3,74,46],[8,53,23,26,54,24],[12,45,15,28,46,16],[3,147,117,10,148,118],[3,73,45,23,74,46],[4,54,24,31,55,25],[11,45,15,31,46,16],[7,146,116,7,147,117],[21,73,45,7,74,46],[1,53,23,37,54,24],[19,45,15,26,46,16],[5,145,115,10,146,116],[19,75,47,10,76,48],[15,54,24,25,55,25],[23,45,15,25,46,16],[13,145,115,3,146,116],[2,74,46,29,75,47],[42,54,24,1,55,25],[23,45,15,28,46,16],[17,145,115],[10,74,46,23,75,47],[10,54,24,35,55,25],[19,45,15,35,46,16],[17,145,115,1,146,116],[14,74,46,21,75,47],[29,54,24,19,55,25],[11,45,15,46,46,16],[13,145,115,6,146,116],[14,74,46,23,75,47],[44,54,24,7,55,25],[59,46,16,1,47,17],[12,151,121,7,152,122],[12,75,47,26,76,48],[39,54,24,14,55,25],[22,45,15,41,46,16],[6,151,121,14,152,122],[6,75,47,34,76,48],[46,54,24,10,55,25],[2,45,15,64,46,16],[17,152,122,4,153,123],[29,74,46,14,75,47],[49,54,24,10,55,25],[24,45,15,46,46,16],[4,152,122,18,153,123],[13,74,46,32,75,47],[48,54,24,14,55,25],[42,45,15,32,46,16],[20,147,117,4,148,118],[40,75,47,7,76,48],[43,54,24,22,55,25],[10,45,15,67,46,16],[19,148,118,6,149,119],[18,75,47,31,76,48],[34,54,24,34,55,25],[20,45,15,61,46,16]],r=function(t,r){var e={};return e.totalCount=t,e.dataCount=r,e},e={};return e.getRSBlocks=function(e,n){var o=function(r,e){switch(e){case g.L:return t[4*(r-1)+0];case g.M:return t[4*(r-1)+1];case g.Q:return t[4*(r-1)+2];case g.H:return t[4*(r-1)+3];default:return}}(e,n);if(void 0===o)throw"bad rs block @ typeNumber:"+e+"/errorCorrectionLevel:"+n;for(var i=o.length/3,a=[],u=0;u<i;u+=1)for(var f=o[3*u+0],c=o[3*u+1],l=o[3*u+2],h=0;h<f;h+=1)a.push(r(c,l));return a},e}(),b=function(){var t=[],r=0,e={getBuffer:function(){return t},getAt:function(r){var e=Math.floor(r/8);return 1==(t[e]>>>7-r%8&1)},put:function(t,r){for(var n=0;n<r;n+=1)e.putBit(1==(t>>>r-n-1&1))},getLengthInBits:function(){return r},putBit:function(e){var n=Math.floor(r/8);t.length<=n&&t.push(0),e&&(t[n]|=128>>>r%8),r+=1}};return e},M=function(t){var r=a,e=t,n={getMode:function(){return r},getLength:function(t){return e.length},write:function(t){for(var r=e,n=0;n+2<r.length;)t.put(o(r.substring(n,n+3)),10),n+=3;n<r.length&&(r.length-n==1?t.put(o(r.substring(n,n+1)),4):r.length-n==2&&t.put(o(r.substring(n,n+2)),7))}},o=function(t){for(var r=0,e=0;e<t.length;e+=1)r=10*r+i(t.charAt(e));return r},i=function(t){if("0"<=t&&t<="9")return t.charCodeAt(0)-"0".charCodeAt(0);throw"illegal char :"+t};return n},x=function(t){var r=u,e=t,n={getMode:function(){return r},getLength:function(t){return e.length},write:function(t){for(var r=e,n=0;n+1<r.length;)t.put(45*o(r.charAt(n))+o(r.charAt(n+1)),11),n+=2;n<r.length&&t.put(o(r.charAt(n)),6)}},o=function(t){if("0"<=t&&t<="9")return t.charCodeAt(0)-"0".charCodeAt(0);if("A"<=t&&t<="Z")return t.charCodeAt(0)-"A".charCodeAt(0)+10;switch(t){case" ":return 36;case"$":return 37;case"%":return 38;case"*":return 39;case"+":return 40;case"-":return 41;case".":return 42;case"/":return 43;case":":return 44;default:throw"illegal char :"+t}};return n},m=function(r){var e=f,n=t.stringToBytes(r),o={getMode:function(){return e},getLength:function(t){return n.length},write:function(t){for(var r=0;r<n.length;r+=1)t.put(n[r],8)}};return o},L=function(r){var e=c,n=t.stringToBytesFuncs.SJIS;if(!n)throw"sjis not supported.";!function(){var t=n("友");if(2!=t.length||38726!=(t[0]<<8|t[1]))throw"sjis not supported."}();var o=n(r),i={getMode:function(){return e},getLength:function(t){return~~(o.length/2)},write:function(t){for(var r=o,e=0;e+1<r.length;){var n=(255&r[e])<<8|255&r[e+1];if(33088<=n&&n<=40956)n-=33088;else{if(!(57408<=n&&n<=60351))throw"illegal char at "+(e+1)+"/"+n;n-=49472}n=192*(n>>>8&255)+(255&n),t.put(n,13),e+=2}if(e<r.length)throw"illegal char at "+(e+1)}};return i},D=function(){var t=[],r={writeByte:function(r){t.push(255&r)},writeShort:function(t){r.writeByte(t),r.writeByte(t>>>8)},writeBytes:function(t,e,n){e=e||0,n=n||t.length;for(var o=0;o<n;o+=1)r.writeByte(t[o+e])},writeString:function(t){for(var e=0;e<t.length;e+=1)r.writeByte(t.charCodeAt(e))},toByteArray:function(){return t},toString:function(){var r="";r+="[";for(var e=0;e<t.length;e+=1)e>0&&(r+=","),r+=t[e];return r+="]"}};return r},S=function(t){var r=t,e=0,n=0,o=0,i={read:function(){for(;o<8;){if(e>=r.length){if(0==o)return-1;throw"unexpected end of file./"+o}var t=r.charAt(e);if(e+=1,"="==t)return o=0,-1;t.match(/^\s$/)||(n=n<<6|a(t.charCodeAt(0)),o+=6)}var i=n>>>o-8&255;return o-=8,i}},a=function(t){if(65<=t&&t<=90)return t-65;if(97<=t&&t<=122)return t-97+26;if(48<=t&&t<=57)return t-48+52;if(43==t)return 62;if(47==t)return 63;throw"c:"+t};return i},I=function(t,r,e){for(var n=function(t,r){var e=t,n=r,o=new Array(t*r),i={setPixel:function(t,r,n){o[r*e+t]=n},write:function(t){t.writeString("GIF87a"),t.writeShort(e),t.writeShort(n),t.writeByte(128),t.writeByte(0),t.writeByte(0),t.writeByte(0),t.writeByte(0),t.writeByte(0),t.writeByte(255),t.writeByte(255),t.writeByte(255),t.writeString(","),t.writeShort(0),t.writeShort(0),t.writeShort(e),t.writeShort(n),t.writeByte(0);var r=a(2);t.writeByte(2);for(var o=0;r.length-o>255;)t.writeByte(255),t.writeBytes(r,o,255),o+=255;t.writeByte(r.length-o),t.writeBytes(r,o,r.length-o),t.writeByte(0),t.writeString(";")}},a=function(t){for(var r=1<<t,e=1+(1<<t),n=t+1,i=u(),a=0;a<r;a+=1)i.add(String.fromCharCode(a));i.add(String.fromCharCode(r)),i.add(String.fromCharCode(e));var f,c,g,l=D(),h=(f=l,c=0,g=0,{write:function(t,r){if(t>>>r!=0)throw"length over";for(;c+r>=8;)f.writeByte(255&(t<<c|g)),r-=8-c,t>>>=8-c,g=0,c=0;g|=t<<c,c+=r},flush:function(){c>0&&f.writeByte(g)}});h.write(r,n);var s=0,v=String.fromCharCode(o[s]);for(s+=1;s<o.length;){var d=String.fromCharCode(o[s]);s+=1,i.contains(v+d)?v+=d:(h.write(i.indexOf(v),n),i.size()<4095&&(i.size()==1<<n&&(n+=1),i.add(v+d)),v=d)}return h.write(i.indexOf(v),n),h.write(e,n),h.flush(),l.toByteArray()},u=function(){var t={},r=0,e={add:function(n){if(e.contains(n))throw"dup key:"+n;t[n]=r,r+=1},size:function(){return r},indexOf:function(r){return t[r]},contains:function(r){return void 0!==t[r]}};return e};return i}(t,r),o=0;o<r;o+=1)for(var i=0;i<t;i+=1)n.setPixel(i,o,e(i,o));var a=D();n.write(a);for(var u=function(){var t=0,r=0,e=0,n="",o={},i=function(t){n+=String.fromCharCode(a(63&t))},a=function(t){if(t<0);else{if(t<26)return 65+t;if(t<52)return t-26+97;if(t<62)return t-52+48;if(62==t)return 43;if(63==t)return 47}throw"n:"+t};return o.writeByte=function(n){for(t=t<<8|255&n,r+=8,e+=1;r>=6;)i(t>>>r-6),r-=6},o.flush=function(){if(r>0&&(i(t<<6-r),t=0,r=0),e%3!=0)for(var o=3-e%3,a=0;a<o;a+=1)n+="="},o.toString=function(){return n},o}(),f=a.toByteArray(),c=0;c<f.length;c+=1)u.writeByte(f[c]);return u.flush(),"data:image/gif;base64,"+u};return t}();qrcode.stringToBytesFuncs["UTF-8"]=function(t){return function(t){for(var r=[],e=0;e<t.length;e++){var n=t.charCodeAt(e);n<128?r.push(n):n<2048?r.push(192|n>>6,128|63&n):n<55296||n>=57344?r.push(224|n>>12,128|n>>6&63,128|63&n):(e++,n=65536+((1023&n)<<10|1023&t.charCodeAt(e)),r.push(240|n>>18,128|n>>12&63,128|n>>6&63,128|63&n))}return r}(t)},function(t){"function"==typeof define&&define.amd?define([],t):"object"==typeof exports&&(module.exports=t())}(function(){return qrcode});</script>
+<script>
+const boot = async function(){
+const CFG = JSON.parse(document.getElementById("cfg").textContent);
+// "site" = the real worldmap.tech build (own server, restore codes, ads); otherwise the self-contained preview
+const SITE = CFG.env === "site" && /^https?:$/.test(location.protocol);
+const TR = CFG.lang ? CFG.lang === "tr" : /^tr\b/i.test(navigator.language || "");
+// ?dumplabels: lay labels out from scratch and expose them (build step that precomputes NM.L / NM.B)
+const DUMP = /[?&]dumplabels\b/.test(location.search);
+// ads/consent state (used by the legal strip, which renders before the map data arrives)
+const ADS = SITE && CFG.ads && CFG.ads.client ? CFG.ads : null;
+const GOOGLE_CMP = new Set("AT BE BG HR CY CZ DK EE FI FR DE GR HU IE IT LV LT LU MT NL PL PT RO SK SI ES SE IS LI NO GB CH US".split(" "));
+let consent = null; try { consent = localStorage.getItem("wmn.consent"); } catch(e){}
+let region = null, adsLoaded = false, adShown = false;
+const LI = TR ? 1 : 0;
+const T = TR ? {
+  search:"Ülke ara", hint:"Dokun: işaretle · Tekrar dokun: kaldır", countries:"ülke", save:"Kaydet",
+  dl:"Resmi indir", close:"Kapat", saved:"Kaydedildi", added:"eklendi", removed:"kaldırıldı",
+  visited:"ÜLKE GEZDİM", level:"GEZGİN SEVİYESİ", newLevel:"Yeni seviye", story:"Hikâye", square:"Kare", wide:"Yatay", share:"Paylaş", link:"Linki kopyala", copied:"Link kopyalandı", copyManual:"Linki seçip kopyala", saveFail:"Resim kaydedilemedi", shareFail:"Paylaşılamadı",
+  friendTitle:"Arkadaşının haritası", friend:"Arkadaşın", you:"Sen", both:"Ortak", makeYours:"Gittiğin ülkelere dokun, ortak ülkeleriniz mor görünsün.", mine:"Bu harita benim", iab:"Haritan şu an bu uygulamanın içinde kayıtlı. Kaybetmemek için Kaydet'ten linkini kopyala ya da sayfayı Safari/Chrome'da aç.", restored:"Haritan geri yüklendi", backup:"Bu link aynı zamanda haritanın yedeği: başka bir telefonda ya da tarayıcıda açınca haritanı geri yükleyebilirsin.", closeCompare:"Karşılaştırmayı kapat", clear:"Tüm seçimleri sil", confirm:"Hepsini sil?", again:"Hepsini silmek için tekrar dokun", cleared:"Tüm seçimler silindi", longpress:"Telefonda resme basılı tutarak da kaydedebilirsin.", none:"Sonuç yok",
+  h1:"worldmap.tech: gittiğin ülkeleri işaretle, haritanı paylaş", backupSite:"Linkin ve geri yükleme kodun, haritanı başka bir cihaza taşır.", preview:"Kaydedilecek harita görseli", map:"Dünya haritası. Ülkeye dokunarak işaretle; klavyeyle arama kutusunu kullan.", sheet:"Görseli kaydet",
+  mark:"İşaretle", unmark:"İşareti kaldır", qrCap:"TARA · KARŞILAŞTIR", qrOn:"Görselde QR kod var", qrOff:"Görselde QR kod yok",
+  codeL:"Kodun:", codeGet:"Geri yükleme kodu al", codeHave:"Kodum var", codeCopy:"Kopyala", codeDel:"Sil", codeDelSure:"Silinsin mi?",
+  codeReady:"Kodun hazır, bir yere not et", codeCopied:"Kod kopyalandı", codeGone:"Kod ve sunucudaki kaydı silindi", codeTitle:"Geri yükleme kodu",
+  codeText:"Başka cihazda aldığın 8 haneli kodu yaz, haritan buraya gelsin.", codeLoad:"Yükle", cancel:"Vazgeç", codeBad:"Kod 8 karakter olmalı.",
+  codeNotFound:"Bu kodla kayıtlı bir harita bulamadık.", codeNet:"Bağlantı kurulamadı, biraz sonra tekrar dene.", haveCode:"Başka cihazda başladıysan: kodla geri yükle",
+  footer:"Bilgiler genel amaçlıdır ve hiçbir garanti verilmeden sunulur.", terms:"Koşullar", privacy:"Gizlilik", faq:"SSS", contact:"İletişim", prefs:"Çerez tercihleri", langName:"English",
+  consent:"Siteyi ücretsiz tutmak için, yalnızca onay verirseniz Google'ın (ABD) reklam çerezlerini kullanarak ilgi alanlarınıza göre kişiselleştirilebilen reklamlar gösteririz; ayrıntılar Gizlilik Politikası'nda. Reddetmek siteyi kullanmanızı etkilemez ve kararınızı “Çerez tercihleri” bağlantısından her zaman değiştirebilirsiniz. <a href=\"/gizlilik/#cerezler\">Gizlilik ve çerezler</a>", accept:"Kabul et", reject:"Reddet", ad:"Reklam"
+} : {
+  search:"Search a country", hint:"Tap to mark · Tap again to remove", countries:"countries", save:"Save",
+  dl:"Download image", close:"Close", saved:"Saved", added:"added", removed:"removed",
+  visited:"COUNTRIES VISITED", level:"TRAVELER LEVEL", newLevel:"New level", story:"Story", square:"Square", wide:"Wide", share:"Share", link:"Copy link", copied:"Link copied", copyManual:"Select the link and copy it", saveFail:"The image could not be saved", shareFail:"Sharing didn't work",
+  friendTitle:"Your friend's map", friend:"Friend", you:"You", both:"Both", makeYours:"Tap the countries you've been to and shared ones turn purple.", mine:"This is my map", iab:"Your map is saved inside this app's browser only. To keep it, copy your link from Save or open this page in Safari/Chrome.", restored:"Your map is back", backup:"This link is also a backup of your map: open it on another phone or browser to restore your map.", closeCompare:"Close comparison", clear:"Clear all selections", confirm:"Clear all?", again:"Tap again to clear all", cleared:"All selections cleared", longpress:"On a phone you can also press and hold the image to save it.", none:"No results",
+  h1:"worldmap.tech: mark the countries you've visited and share your map", backupSite:"Your link and your restore code bring your map to another device.", preview:"Map image to save", map:"World map. Tap a country to mark it; with a keyboard, use the search box.", sheet:"Save image",
+  mark:"Mark", unmark:"Unmark", qrCap:"SCAN · COMPARE", qrOn:"QR code on the image", qrOff:"No QR code on the image",
+  codeL:"Your code:", codeGet:"Get a restore code", codeHave:"I have a code", codeCopy:"Copy", codeDel:"Delete", codeDelSure:"Delete it?",
+  codeReady:"Your code is ready, write it down", codeCopied:"Code copied", codeGone:"Code and its server copy deleted", codeTitle:"Restore code",
+  codeText:"Enter the 8-character code you got on your other device to bring your map here.", codeLoad:"Restore", cancel:"Cancel", codeBad:"The code has 8 characters.",
+  codeNotFound:"We couldn't find a map with this code.", codeNet:"Couldn't connect, please try again in a moment.", haveCode:"Started on another device? Restore with a code",
+  footer:"Information is for general purposes only and provided without warranty.", terms:"Terms", privacy:"Privacy", faq:"FAQ", contact:"Contact", prefs:"Cookie preferences", langName:"Türkçe",
+  consent:"To keep the site free, we show ads using Google's (US) advertising cookies, which may be personalised to your interests, only if you agree; details are in the Privacy Policy. Rejecting won't affect how the site works, and you can change your choice anytime via “Cookie preferences”. <a href=\"/privacy/#cookies\">Privacy and cookies</a>", accept:"Accept", reject:"Reject", ad:"Advertisement"
+};
+document.documentElement.lang = TR ? "tr" : "en";
+const $ = id => document.getElementById(id);
+$("q").placeholder = T.search; $("hint").append(T.hint); $("nl").textContent = T.countries;
+$("savet").textContent = T.save; $("cleart").textContent = T.confirm; $("clear").setAttribute("aria-label", T.clear); $("clear").title = T.clear; $("save").setAttribute("aria-label", T.save);
+$("dl").textContent = T.dl; $("close").textContent = T.close; $("sheetp").textContent = T.longpress;
+$("share").textContent = T.share; $("link").textContent = T.link;
+document.querySelectorAll("#fmt button").forEach(b => b.textContent = T[b.dataset.f]);
+$("cmpT").textContent = T.friendTitle; $("lgF").textContent = T.friend; $("lgY").textContent = T.you; $("lgB").textContent = T.both;
+$("cmpX").setAttribute("aria-label", T.closeCompare); $("cmpTip").textContent = T.makeYours; $("cmpMine").textContent = T.mine; $("iabT").textContent = T.iab; $("iabX").setAttribute("aria-label", T.close); $("backup").textContent = T.backup;
+$("h1").textContent = T.h1; $("map").setAttribute("aria-label", T.map); if (SITE) $("backup").textContent = T.backupSite; $("shot").alt = T.preview; $("sheet").setAttribute("aria-label", T.sheet); $("adL").textContent = T.ad;
+$("dlgT").textContent = T.codeTitle; $("dlgP").textContent = T.codeText; $("dlgX").textContent = T.cancel; $("dlgGo").textContent = T.codeLoad;
+$("consentP").innerHTML = T.consent; $("cYes").textContent = T.accept; $("cNo").textContent = T.reject;
+renderLegal();
+for (const a of $("consentP").querySelectorAll("a")) if (!SITE){ a.href = "https://worldmap.tech" + a.getAttribute("href"); a.target = "_blank"; a.rel = "noopener"; }
+if (SITE){
+  const b = document.createElement("button"); b.type = "button"; b.textContent = T.haveCode; b.onclick = openDlg; $("hint").appendChild(b);
+}
+
+
+const NM = JSON.parse($("names").textContent);
+const nameOf = k => NM.N[k][LI];
+const labelOf = k => (NM.S[k] ? NM.S[k][LI] : NM.N[k][LI]);
+const fold = s => s.toLocaleLowerCase(TR ? "tr" : "en").normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/ı/g,"i");
+
+// ---------- data ----------
+const worldEl = $("world");
+const topo = worldEl.dataset.src ? await (await fetch(worldEl.dataset.src)).json() : JSON.parse(worldEl.textContent);
+const feats = topojson.feature(topo, topo.objects.countries).features;
+const groups = new Map(); // key -> [features]
+for (const f of feats){ const k=f.properties.k; if(!groups.has(k)) groups.set(k,[]); groups.get(k).push(f); }
+const KEYS = [...groups.keys()];
+// disputed areas no side is given (e.g. Siachen): drawn, but not selectable
+const dfeats = topo.objects.disputed ? topojson.feature(topo, topo.objects.disputed).features : [];
+const geoByKey = new Map(KEYS.map(k => [k, {type:"FeatureCollection", features:groups.get(k)}]));
+
+// ---------- state ----------
+let sel = new Set();
+try { const s = JSON.parse(localStorage.getItem("wmn.sel")||"[]"); s.forEach(k => groups.has(k) && sel.add(k)); } catch(e){}
+// restore code (site only): an anonymous 8-character key whose server copy follows this map
+const CODE_OK = /^[0-9A-HJKMNP-TV-Z]{8}$/;
+let code = null, codeAt = 0, codeDirty = false;
+try { const c = localStorage.getItem("wmn.code"); if (SITE && c && CODE_OK.test(c)){ code = c; codeAt = +localStorage.getItem("wmn.codeAt") || 0; codeDirty = localStorage.getItem("wmn.codeDirty") === "1"; } } catch(e){}
+let askedDurable = false;
+const persist = () => {
+  try { localStorage.setItem("wmn.sel", JSON.stringify([...sel])); } catch(e){}
+  if (!askedDurable && navigator.storage && navigator.storage.persist){ askedDurable = true; navigator.storage.persist().catch(()=>{}); }
+  syncHash(); codeChanged();
+};
+// On the real site the address bar always carries your map (#wTRDE…), so a bookmark or
+// home-screen icon brings it back even if the browser cleared its storage.
+function syncHash(){
+  if (friend) return;                                            // a friend's link is open: leave it alone
+  if (window.claude || location.protocol === "file:") return;    // inside the artifact frame the hash is not the page link
+  try { history.replaceState(null, "", location.pathname + location.search + (sel.size ? "#w" + [...sel].join("") : "")); } catch(e){}
+}
+
+// ---------- map ----------
+const svg = d3.select("#map");
+const root = svg.append("g");
+const gD = root.append("g");
+const gC = root.append("g");
+const gL = root.append("g");
+let W=0,H=0, proj, path, labels=[], tf=d3.zoomIdentity, hlKey=null, hlTimer=0;
+
+const measure = (() => { const c=document.createElement("canvas").getContext("2d"); return (txt) => { c.font = "600 100px Figtree, system-ui, sans-serif"; return c.measureText(txt).width/100; }; })();
+
+function polylabel(rings, precision){
+  // pole of inaccessibility (Mapbox algorithm, compact)
+  const outer = rings[0]; let minX=Infinity,minY=Infinity,maxX=-Infinity,maxY=-Infinity;
+  for (const [x,y] of outer){ if(x<minX)minX=x; if(y<minY)minY=y; if(x>maxX)maxX=x; if(y>maxY)maxY=y; }
+  const w=maxX-minX, h=maxY-minY, cs=Math.min(w,h); if(cs===0) return [minX,minY,0];
+  const dist=(x,y)=>{ let inside=false, md=Infinity;
+    for (const r of rings){ for(let i=0,n=r.length,j=n-1;i<n;j=i++){ const a=r[i], b=r[j];
+      if((a[1]>y)!==(b[1]>y) && x<(b[0]-a[0])*(y-a[1])/(b[1]-a[1])+a[0]) inside=!inside;
+      let px=a[0],py=a[1],dx=b[0]-px,dy=b[1]-py; if(dx||dy){ const t=((x-px)*dx+(y-py)*dy)/(dx*dx+dy*dy); if(t>1){px=b[0];py=b[1];} else if(t>0){px+=dx*t;py+=dy*t;} }
+      dx=x-px; dy=y-py; const d=dx*dx+dy*dy; if(d<md) md=d; } }
+    return (inside?1:-1)*Math.sqrt(md); };
+  const cell=(x,y,hh)=>{ const d=dist(x,y); return {x,y,h:hh,d,max:d+hh*Math.SQRT2}; };
+  const q=[]; const push=c=>{ q.push(c); }; const pop=()=>{ let bi=0; for(let i=1;i<q.length;i++) if(q[i].max>q[bi].max) bi=i; return q.splice(bi,1)[0]; };
+  let hh=cs/2; for(let x=minX;x<maxX;x+=cs) for(let y=minY;y<maxY;y+=cs) push(cell(x+hh,y+hh,hh));
+  // centroid seed
+  let best=cell(minX+w/2,minY+h/2,0);
+  let a=0,cx=0,cy=0; for(let i=0,n=outer.length,j=n-1;i<n;j=i++){ const p=outer[i],q2=outer[j],f=p[0]*q2[1]-q2[0]*p[1]; cx+=(p[0]+q2[0])*f; cy+=(p[1]+q2[1])*f; a+=f*3; }
+  if(a){ const c=cell(cx/a,cy/a,0); if(c.d>best.d) best=c; }
+  let it=0;
+  while(q.length && it++<4000){ const c=pop(); if(c.d>best.d) best=c; if(c.max-best.d<=precision) continue;
+    const h2=c.h/2; push(cell(c.x-h2,c.y-h2,h2)); push(cell(c.x+h2,c.y-h2,h2)); push(cell(c.x-h2,c.y+h2,h2)); push(cell(c.x+h2,c.y+h2,h2)); }
+  return [best.x,best.y,best.d];
+}
+const inside = (rings,x,y) => { if(!d3.polygonContains(rings[0],[x,y])) return false; for(let i=1;i<rings.length;i++) if(d3.polygonContains(rings[i],[x,y])) return false; return true; };
+
+function layoutLabel(k){
+  // precomputed at build time (lon/lat of the label, font size relative to the projection scale, line breaks)
+  const pre = !DUMP && NM.L && NM.L[TR ? "tr" : "en"] && NM.L[TR ? "tr" : "en"][k];
+  if (pre){ const pt = proj([pre[0], pre[1]]); return pt && {k, x:pt[0], y:pt[1], fs:pre[2]*proj.scale(), lines:pre[3]}; }
+  // largest projected polygon of the country
+  let best=null, bestA=0;
+  for (const f of groups.get(k)){
+    const g=f.geometry; const polys = g.type==="Polygon" ? [g.coordinates] : g.coordinates;
+    for (const poly of polys){
+      const rings = poly.map(r => r.map(p => proj(p)).filter(Boolean));
+      if (!rings[0] || rings[0].length<4) continue;
+      const a=Math.abs(d3.polygonArea(rings[0])); if(a>bestA){bestA=a;best=rings;}
+    }
+  }
+  if(!best) return null;
+  const [x0,y0] = d3.extent(best[0],p=>p[0]), ys=d3.extent(best[0],p=>p[1]);
+  const span=Math.max(x0===undefined?0:y0-x0, ys[1]-ys[0]);
+  const [px,py,r] = polylabel(best, Math.max(span/120, .05));
+  const text = labelOf(k);
+  const words = text.split(" ");
+  // candidate line breaks: 1 line, 2 lines, 3 lines
+  const cands = [[text]];
+  if (words.length>=2){ let bestSplit=null,bw=Infinity; for(let i=1;i<words.length;i++){ const a=words.slice(0,i).join(" "), b=words.slice(i).join(" "); const m=Math.max(measure(a),measure(b)); if(m<bw){bw=m;bestSplit=[a,b];} } cands.push(bestSplit); }
+  if (words.length>=3){ cands.push(threeLines(words)); }
+  let top=null;
+  for (const lines of cands){
+    const tw = Math.max(...lines.map(measure)), th = lines.length*1.05;
+    // start with the inscribed circle, then shrink until the text box sits inside the shape
+    let fs = (2*r*0.92)/Math.hypot(tw, th);
+    fs *= 1.25; // circle is conservative; let the box test decide
+    for (let i=0;i<14;i++){
+      const hw=tw*fs/2, hh=th*fs/2*0.86;
+      const pts=[[px-hw,py-hh],[px+hw,py-hh],[px-hw,py+hh],[px+hw,py+hh],[px,py-hh],[px,py+hh],[px-hw,py],[px+hw,py],[px-hw/2,py-hh],[px+hw/2,py+hh],[px+hw/2,py-hh],[px-hw/2,py+hh]];
+      if (pts.every(p=>inside(best,p[0],p[1]))) break;
+      fs*=0.88;
+    }
+    if(!top || fs>top.fs*1.08) top={lines,fs};
+  }
+  return {k, x:px, y:py, fs:top.fs, lines:top.lines};
+}
+function threeLines(words){
+  let best=null,bw=Infinity;
+  for(let i=1;i<words.length-1;i++) for(let j=i+1;j<words.length;j++){
+    const ls=[words.slice(0,i).join(" "),words.slice(i,j).join(" "),words.slice(j).join(" ")]; const m=Math.max(...ls.map(measure)); if(m<bw){bw=m;best=ls;} }
+  return best;
+}
+
+function build(){
+  const r = $("app").getBoundingClientRect(); W=r.width; H=r.height;
+  const pad = Math.min(W,H)*0.04;
+  const ext = [[pad,pad+(W<600?50:10)],[W-pad,H-pad-(W<600?60:20)]];
+  proj = d3.geoNaturalEarth1();
+  if (NM.B && !DUMP){
+    // same as fitExtent, from the world's bounds at scale 150 (precomputed): saves a pass over every coordinate
+    const b = NM.B, w = ext[1][0]-ext[0][0], h = ext[1][1]-ext[0][1], k = Math.min(w/(b[1][0]-b[0][0]), h/(b[1][1]-b[0][1]));
+    proj.scale(150*k).translate([ext[0][0] + (w - k*(b[1][0]+b[0][0]))/2, ext[0][1] + (h - k*(b[1][1]+b[0][1]))/2]);
+  } else proj.fitExtent(ext, {type:"FeatureCollection",features:feats});
+  path = d3.geoPath(proj);
+  gC.selectAll("path").data(KEYS, d=>d).join("path")
+    .attr("class", k => "c"+(sel.has(k)?" on":"")+(friend && friend.has(k)?" fr":""))
+    .attr("data-k", k=>k)
+    .attr("d", k => path(geoByKey.get(k)));
+  gD.selectAll("path").data(dfeats).join("path").attr("class","dz").attr("d", path);
+  labels = KEYS.map(layoutLabel).filter(Boolean);
+  if (DUMP) window.__wmDump = { lang: TR ? "tr" : "en",
+    B: d3.geoPath(d3.geoNaturalEarth1().scale(150).translate([0,0])).bounds({type:"FeatureCollection",features:feats}),
+    L: Object.fromEntries(labels.map(l => { const ll = proj.invert([l.x, l.y]); return [l.k, [+ll[0].toFixed(4), +ll[1].toFixed(4), +(l.fs/proj.scale()).toPrecision(5), l.lines]]; })) };
+  const t = gL.selectAll("text").data(labels, d=>d.k).join("text")
+    .attr("class", d => "lb"+(sel.has(d.k)?" on":""))
+    .attr("x", d=>d.x).attr("y", d=>d.y);
+  t.selectAll("tspan").data(d => d.lines.map((s,i)=>({s,i,n:d.lines.length,x:d.x}))).join("tspan")
+    .attr("x", d=>d.x).text(d=>d.s);
+  zoom.extent([[0,0],[W,H]]).translateExtent([[-W*0.1,-H*0.1],[W*1.1,H*1.1]]);
+  tf = d3.zoomIdentity;
+  if (H > W*1.1){
+    const s0 = proj.scale()/150, t0 = proj.translate();
+    const bb = NM.B && !DUMP ? NM.B.map(p => [p[0]*s0 + t0[0], p[1]*s0 + t0[1]]) : path.bounds({type:"FeatureCollection",features:feats});
+    const k0 = Math.max(1, Math.min(4, (H*0.58)/(bb[1][1]-bb[0][1])));
+    const c = proj([18, 22]);
+    tf = d3.zoomIdentity.translate(W/2 - k0*c[0], H/2 - k0*c[1]).scale(k0);
+  }
+  svg.call(zoom.transform, tf);
+  applyZoom();
+}
+
+const MINPX = 7.5, MAXPX = 24;
+function applyZoom(){
+  root.attr("transform", tf);
+  const k = tf.k;
+  gL.selectAll("text").each(function(d){
+    const screen = d.fs*k;
+    const show = screen >= MINPX || d.k===hlKey;
+    const px = Math.min(Math.max(screen, d.k===hlKey?13:0), MAXPX + Math.log2(k)*2);
+    this.style.display = show ? "" : "none";
+    if (!show) return;
+    const fs = px/k;
+    this.setAttribute("font-size", fs);
+    const n=d.lines.length, lh=fs*1.05;
+    const ts=this.childNodes;
+    for (let i=0;i<ts.length;i++) ts[i].setAttribute("y", d.y + (i-(n-1)/2)*lh);
+    this.style.opacity = d.k===hlKey ? 1 : Math.min(1,(screen-MINPX)/3+0.35);
+  });
+}
+const zoom = d3.zoom().scaleExtent([1, 80])
+  .filter(ev => (!ev.ctrlKey || ev.type==="wheel") && !ev.button)
+  .on("zoom", ev => { tf = ev.transform; requestAnimationFrame(applyZoom); if(ev.sourceEvent) cancelPress(); });
+svg.call(zoom).on("dblclick.zoom", null);
+
+$("zin").onclick = () => svg.transition().duration(350).call(zoom.scaleBy, 1.8);
+$("zout").onclick = () => svg.transition().duration(350).call(zoom.scaleBy, 1/1.8);
+
+// ---------- select / long-press ----------
+function setSel(k, on){
+  if (on===sel.has(k)) return;
+  on ? sel.add(k) : sel.delete(k);
+  gC.select(`path[data-k="${k}"]`).classed("on", on);
+  gL.selectAll("text").filter(d=>d.k===k).classed("on", on);
+  persist(); updCount(); dismissHint(); updCompare();
+  const lv = levelOf(sel.size);
+  if (on && lv && lv !== levelOf(sel.size-1)) toast(`${T.newLevel}: ${lv}`, 2200);
+  else toast(`${nameOf(k)} ${on?T.added:T.removed}`);
+  if (navigator.vibrate) try{ navigator.vibrate(on?12:[10,40,10]); }catch(e){}
+}
+const IN_APP = /Instagram|FBAN|FBAV|FB_IAB|BytedanceWebview|musical_ly|TikTok|Snapchat|LinkedInApp|Line\//i.test(navigator.userAgent || "");
+let iabSeen = false; try { iabSeen = localStorage.getItem("wmn.iab") === "1"; } catch(e){}
+function updInApp(){ $("iab").hidden = !(IN_APP && !iabSeen && sel.size > 0 && !friend); }
+$("iabX").onclick = () => { iabSeen = true; try { localStorage.setItem("wmn.iab","1"); } catch(e){} updInApp(); };
+function updCount(){ updInApp(); $("clear").disabled = !sel.size; $("nl").textContent = sel.size ? `${T.countries} · ${pctShort(sel.size)}` : T.countries; const n=$("n"); n.textContent = sel.size; n.animate && n.animate([{transform:"scale(1.25)"},{transform:"scale(1)"}],{duration:260,easing:"ease-out"}); }
+let toastT=0; function toast(s, ms){ const t=$("toast"); t.textContent=s; t.classList.add("show"); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove("show"), ms||1300); }
+function dismissHint(){ $("hint").classList.add("gone"); }
+
+let press=null; const ring=$("ring");
+const keyAt = (ev) => { const el = document.elementFromPoint(ev.clientX, ev.clientY); return el && el.classList && el.classList.contains("c") ? el.getAttribute("data-k") : null; };
+function cancelPress(){ if(press){ clearTimeout(press.timer); press=null; } ring.classList.remove("go"); }
+const svgEl = $("map"); let pointers = 0;
+svgEl.addEventListener("pointerdown", ev => {
+  pointers++;
+  if (pointers>1 || ev.button>0){ cancelPress(); return; }
+  const k = keyAt(ev);
+  press = {k, x:ev.clientX, y:ev.clientY, t:performance.now(), done:false};
+  if (k && sel.has(k)){
+    ring.style.left=ev.clientX+"px"; ring.style.top=ev.clientY+"px";
+    ring.classList.remove("go"); void ring.getBoundingClientRect(); ring.classList.add("go");
+  }
+  press.timer = setTimeout(() => { if(press && press.k){ press.done=true; ring.classList.remove("go"); setSel(press.k,false); } }, 520);
+});
+svgEl.addEventListener("pointermove", ev => { if(press && Math.hypot(ev.clientX-press.x, ev.clientY-press.y) > 9) cancelPress(); });
+const up = ev => {
+  pointers = Math.max(0, pointers-1);
+  if (!press) return;
+  const p=press; cancelPress();
+  if (!p.done && p.k && performance.now()-p.t < 520) setSel(p.k, !sel.has(p.k));
+};
+svgEl.addEventListener("pointerup", up);
+svgEl.addEventListener("pointercancel", () => { pointers=Math.max(0,pointers-1); cancelPress(); });
+svgEl.addEventListener("contextmenu", e => e.preventDefault());
+
+// ---------- search ----------
+const index = KEYS.map(k => ({k, n:nameOf(k), f:fold(NM.N[k][0]+" | "+NM.N[k][1]+" | "+labelOf(k)+" "+(NM.S[k]?NM.S[k][0]:"")+" "+k+" "+((NM.A||{})[k]||""))}));
+let hits=[], cur=0;
+const res=$("res"), q=$("q");
+function renderRes(){
+  res.innerHTML="";
+  if (!q.value.trim()){ res.hidden=true; return; }
+  if (!hits.length){ const li=document.createElement("li"); li.innerHTML=`<small>${T.none}</small>`; res.appendChild(li); res.hidden=false; return; }
+  hits.forEach((h,i)=>{ const li=document.createElement("li"); li.setAttribute("role","option"); li.setAttribute("aria-selected", i===cur);
+    const s=document.createElement("span"); s.textContent=h.n; li.appendChild(s);
+    const on = sel.has(h.k), tg=document.createElement("button");
+    tg.type="button"; tg.className="tg"+(on?" on":""); tg.textContent = on ? "✓" : "+"; tg.tabIndex=-1;
+    tg.setAttribute("aria-label", `${on?T.unmark:T.mark}: ${h.n}`);
+    tg.addEventListener("pointerdown", e=>{ e.preventDefault(); e.stopPropagation(); setSel(h.k, !sel.has(h.k)); renderRes(); });
+    li.appendChild(tg);
+    li.addEventListener("pointerdown", e=>{ e.preventDefault(); pick(h.k); });
+    res.appendChild(li); });
+  res.hidden=false;
+}
+q.addEventListener("input", () => {
+  const s=fold(q.value.trim()); cur=0;
+  hits = !s ? [] : index.map(x => { const i=x.f.indexOf(s); const nf=fold(x.n); return i<0?null:{...x, score:(nf.startsWith(s)?0:(x.f.startsWith(s)?1:(/[ |(-]/.test(x.f[i-1]||" ")?2:3)))}; })
+    .filter(Boolean).sort((a,b)=>a.score-b.score||a.n.localeCompare(b.n)).slice(0,7);
+  renderRes();
+});
+q.addEventListener("keydown", e => {
+  if (e.key==="ArrowDown"){ cur=Math.min(cur+1,hits.length-1); renderRes(); e.preventDefault(); }
+  else if (e.key==="ArrowUp"){ cur=Math.max(cur-1,0); renderRes(); e.preventDefault(); }
+  else if (e.key==="Enter" && hits[cur]){ const k=hits[cur].k; if (hlKey===k && res.hidden) setSel(k, !sel.has(k)); else pick(k, true); }
+  else if (e.key==="Escape"){ q.value=""; hits=[]; renderRes(); q.blur(); }
+});
+q.addEventListener("blur", () => setTimeout(()=>{ res.hidden=true; },150));
+q.addEventListener("focus", () => { if(q.value.trim()) renderRes(); });
+
+function pick(k, keepFocus){
+  q.value = nameOf(k); res.hidden=true; if (!keepFocus) q.blur();
+  const l = labels.find(d=>d.k===k);
+  // frame the main landmass (fall back to the whole country)
+  const b = mainBounds(k);
+  const dx=b[1][0]-b[0][0], dy=b[1][1]-b[0][1];
+  const s = Math.max(1, Math.min(36, 0.5/Math.max(dx/W, dy/H)));
+  const cx = l ? l.x : (b[0][0]+b[1][0])/2, cy = l ? l.y : (b[0][1]+b[1][1])/2;
+  const t = d3.zoomIdentity.translate(W/2 - s*cx, H/2 - s*cy).scale(s);
+  hlKey = k;
+  gL.selectAll("text").classed("hl", d=>d.k===k);
+  const p = gC.select(`path[data-k="${k}"]`).raise();
+  p.classed("flash", false); void svgEl.getBoundingClientRect(); p.classed("flash", true);
+  svg.transition().duration(900).ease(d3.easeCubicInOut).call(zoom.transform, t);
+  clearTimeout(hlTimer);
+  hlTimer = setTimeout(()=>{ p.classed("flash",false); hlKey=null; gL.selectAll("text").classed("hl",false); applyZoom(); }, 4000);
+}
+function mainBounds(k){
+  let best=null, ba=0;
+  for (const f of groups.get(k)){ const g=f.geometry; const polys=g.type==="Polygon"?[g.coordinates]:g.coordinates;
+    for (const poly of polys){ const gj={type:"Polygon",coordinates:poly}; const a=path.area(gj); if(a>ba){ba=a;best=gj;} } }
+  const bb = path.bounds(best||geoByKey.get(k));
+  // grow a little so tiny islands get context
+  const m = Math.max(bb[1][0]-bb[0][0], bb[1][1]-bb[0][1], 2);
+  return [[bb[0][0]-m*.25,bb[0][1]-m*.25],[bb[1][0]+m*.25,bb[1][1]+m*.25]];
+}
+
+// ---------- friend's map from a shared link (#wTRDEFR…) ----------
+function parseHash(){
+  let h = ""; try { h = decodeURIComponent(location.hash.slice(1)); } catch(e){}
+  if (!/^w(?:[A-Z]{2})+$/i.test(h)) return null;
+  const ks = h.slice(1).toUpperCase().match(/../g).filter(k => groups.has(k));
+  return ks.length ? new Set(ks) : null;
+}
+let friend = parseHash();
+if (friend && friend.size === sel.size && [...friend].every(k => sel.has(k))) friend = null; // your own link
+function updCompare(){
+  $("cmp").hidden = !friend;
+  gC.selectAll("path").classed("fr", k => !!(friend && friend.has(k)));
+  if (!friend) return;
+  let b=0; friend.forEach(k => { if (sel.has(k)) b++; });
+  $("cF").textContent = friend.size; $("cY").textContent = sel.size; $("cB").textContent = b;
+  $("cmp").querySelector(".tip").hidden = sel.size > 0;
+}
+// opening your own link on a new phone/browser: take the linked map as yours
+$("cmpMine").onclick = () => {
+  if (!friend || sel.size) return;
+  friend.forEach(k => sel.add(k));
+  friend = null; persist(); syncHash();
+  gC.selectAll("path").classed("on", k => sel.has(k));
+  gL.selectAll("text").classed("on", d => sel.has(d.k));
+  updCount(); updCompare(); toast(T.restored, 2000);
+};
+$("cmpX").onclick = () => {
+  friend = null; updCompare();
+  try { history.replaceState(null, "", location.pathname + location.search); } catch(e){}
+};
+window.addEventListener("hashchange", () => { const f = parseHash(); if (f){ friend = f; updCompare(); } });
+
+// ---------- clear all (tap once to arm, tap again to confirm) ----------
+let armT=0;
+$("clear").onclick = () => {
+  const b=$("clear");
+  if (!sel.size) return;
+  if (!b.classList.contains("arm")){ b.classList.add("arm"); toast(T.again); clearTimeout(armT); armT=setTimeout(()=>b.classList.remove("arm"),3000); return; }
+  clearTimeout(armT); b.classList.remove("arm");
+  sel.clear(); gC.selectAll("path").classed("on",false); gL.selectAll("text").classed("on",false);
+  persist(); updCount(); updCompare(); toast(T.cleared);
+};
+
+// ---------- level + world share ----------
+const LEVELS = [[1,"Meraklı Yolcu","Curious Traveler"],[5,"Gezgin","Wanderer"],[10,"Kaşif","Explorer"],[20,"Dünya Gezgini","Globetrotter"],[35,"Pasaport Ustası","Passport Pro"],[60,"Efsane Gezgin","Travel Legend"],[100,"Dünya Vatandaşı","Citizen of the World"]];
+const levelOf = n => { let r=null; for (const l of LEVELS) if (n>=l[0]) r = TR ? l[1] : l[2]; return r; };
+const pctOf = n => n ? Math.max(1, Math.min(100, Math.round(n/195*100))) : 0;
+const trSuf = n => n===100 ? "ü" : n%10 ? ["","i","si","ü","ü","i","sı","si","i","u"][n%10] : ["ı","u","si","u","ı","si","ı","i","i","ı"][n/10];
+const pctShort = n => TR ? `%${pctOf(n)}` : `${pctOf(n)}%`;
+const pctLine = n => TR ? `DÜNYANIN %${pctOf(n)}'${trSuf(pctOf(n))}`.toLocaleUpperCase("tr") : `${pctOf(n)}% OF THE WORLD`;
+
+// ---------- export ----------
+const FORMATS = {story:[1080,1920], square:[1080,1080], wide:[1920,1080]};
+async function renderImage(fmt){
+  try { await document.fonts.load("800 100px 'Bricolage Grotesque'"); await document.fonts.load("700 40px 'Bricolage Grotesque'"); await document.fonts.load("700 20px Figtree"); } catch(e){}
+  const [cw, ch] = FORMATS[fmt];
+  const cv = document.createElement("canvas"); cv.width=cw; cv.height=ch;
+  const ctx = cv.getContext("2d");
+  const cs = getComputedStyle(document.documentElement), v = n => cs.getPropertyValue(n).trim();
+  ctx.fillStyle = v("--ocean"); ctx.fillRect(0,0,cw,ch);
+  const u = Math.min(cw,ch)/100; // 1% of the short side
+  const pad = u*5;
+  const tall = ch >= cw;
+  const n = sel.size, ks = [...sel];
+  const big = fmt==="story" ? u*34 : fmt==="square" ? u*22 : u*17;
+  const FC = {type:"FeatureCollection",features:feats};
+  const spaced = (px) => { if (ctx.letterSpacing!==undefined) ctx.letterSpacing = `${px}px`; };
+
+  // header: traveller level, top left
+  const lvl = levelOf(n);
+  const capS = fmt==="story" ? u*3.2 : u*2.5, titleS = fmt==="story" ? u*8.5 : fmt==="square" ? u*6.2 : u*5.4;
+  let headBottom = pad;
+  if (lvl){
+    ctx.textAlign="left"; ctx.textBaseline="alphabetic";
+    ctx.font = `700 ${capS}px Figtree, system-ui, sans-serif`; spaced(capS*0.14);
+    ctx.fillStyle = v("--muted"); ctx.fillText(T.level, pad, pad + capS);
+    spaced(0);
+    ctx.font = `800 ${titleS}px "Bricolage Grotesque", system-ui, sans-serif`;
+    ctx.fillStyle = v("--ink"); ctx.fillText(lvl, pad - titleS*0.04, pad + capS + titleS*1.05);
+    headBottom = pad + capS + titleS*1.3;
+  }
+
+  // footer metrics (needed to place the map)
+  const bf = fmt==="story" ? u*4.4 : u*3.6;
+  ctx.font = `800 ${bf}px "Bricolage Grotesque", system-ui, sans-serif`;
+  const brandW = ctx.measureText("worldmap.tech").width;
+  const room = cw - pad*2 - brandW - u*4;
+  const lines = [T.visited, pctLine(n)];
+  let sub = Math.max(big*0.13, u*2.4);
+  for (let i=0;i<24;i++){
+    ctx.font = `700 ${sub}px Figtree, system-ui, sans-serif`; spaced(sub*0.12);
+    if (Math.max(...lines.map(s=>ctx.measureText(s).width)) <= room) break; sub *= 0.93;
+  }
+  spaced(0);
+  const lineGap = sub*1.5;
+  const numBase = ch - pad - lineGap - big*0.26;
+  const numTop = numBase - big*0.74;
+
+  // map (+ flags on tall formats)
+  let p2, flagL = null;
+  if (tall){
+    p2 = d3.geoNaturalEarth1().fitWidth(cw - u*4, FC);
+    const b = d3.geoPath(p2).bounds(FC);
+    const mh = b[1][1]-b[0][1], availTop = headBottom + u*3, availBot = numTop - u*3;
+    let blockH = mh;
+    if (ks.length && flagsOK()){
+      const gap = u*6, avail = cw - pad*2, maxH = (availBot - availTop) - mh - gap;
+      let s = u*10, per, rows;
+      for (let i=0;i<60;i++){ per = Math.max(1, Math.floor((avail + s*0.3)/(s*1.3))); rows = Math.ceil(ks.length/per); if (rows*s*1.3 <= maxH) break; s *= 0.93; }
+      if (s >= u*3.2){ flagL = {s, per, rows, gap}; blockH += gap + rows*s*1.3; }
+    }
+    const top = availTop + Math.max(0, (availBot - availTop - blockH)/2);
+    p2.translate([p2.translate()[0] + (cw-(b[1][0]-b[0][0]))/2 - b[0][0], p2.translate()[1] + top - b[0][1]]);
+    if (flagL) flagL.top = top + mh + flagL.gap;
+  } else {
+    // wide: keep the bottom-left corner free for the QR card
+    p2 = d3.geoNaturalEarth1().fitExtent([[u*4 + (qrOn ? u*16 : 0), headBottom + u*2],[cw-u*4, ch-u*19]], FC);
+  }
+  const gp = d3.geoPath(p2, ctx);
+  ctx.lineJoin="round";
+  for (const k of KEYS){
+    ctx.beginPath(); gp(geoByKey.get(k));
+    const on = sel.has(k);
+    ctx.fillStyle = on ? v("--sel") : v("--land"); ctx.fill();
+    ctx.strokeStyle = on ? v("--sel-border") : v("--border"); ctx.lineWidth = 1.1; ctx.stroke();
+  }
+  for (const f of dfeats){
+    ctx.beginPath(); gp(f);
+    ctx.fillStyle = v("--land"); ctx.globalAlpha = .55; ctx.fill(); ctx.globalAlpha = 1;
+    ctx.setLineDash([3,2]); ctx.strokeStyle = v("--border"); ctx.lineWidth = 1.1; ctx.stroke(); ctx.setLineDash([]);
+  }
+  if (flagL){
+    const {s, per, rows, top} = flagL;
+    ctx.font = `${s}px "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif`;
+    ctx.textAlign="center"; ctx.textBaseline="middle";
+    for (let r=0;r<rows;r++){
+      const row = ks.slice(r*per,(r+1)*per), rw = row.length*s*1.3 - s*0.3;
+      row.forEach((k,i)=> drawFlag(ctx, k, (cw-rw)/2 + i*s*1.3 + s/2, top + r*s*1.3 + s/2, s));
+    }
+  }
+
+  // count, bottom right
+  ctx.textBaseline="alphabetic"; ctx.textAlign="right";
+  ctx.fillStyle = v("--accent");
+  ctx.font = `800 ${big}px "Bricolage Grotesque", system-ui, sans-serif`;
+  ctx.fillText(String(n), cw-pad, numBase);
+  ctx.font = `700 ${sub}px Figtree, system-ui, sans-serif`; spaced(sub*0.12);
+  ctx.fillStyle = v("--ink"); ctx.fillText(lines[0], cw-pad, ch-pad-lineGap);
+  ctx.fillStyle = v("--muted"); ctx.fillText(lines[1], cw-pad, ch-pad);
+  spaced(0);
+  // brand, bottom left
+  ctx.textAlign="left";
+  ctx.font = `800 ${bf}px "Bricolage Grotesque", system-ui, sans-serif`;
+  ctx.fillStyle = v("--ink");
+  const w1 = ctx.measureText("worldmap").width; ctx.fillText("worldmap", pad, ch-pad);
+  ctx.fillStyle = v("--accent"); ctx.fillText(".tech", pad+w1, ch-pad);
+  // QR card above the brand: scanning it opens this map in compare mode
+  const qr = qrOn ? qrMatrix(shareURL()) : null;
+  if (qr){
+    const nm = qr.getModuleCount(), want = fmt==="story" ? u*19 : fmt==="square" ? u*15 : u*13.5;
+    const ms = Math.max(2, Math.floor(want/(nm+6))), side = ms*(nm+6);
+    const x0 = Math.round(pad), y0 = Math.round(ch - pad - bf*1.3 - side);
+    ctx.fillStyle = "#ffffff"; ctx.beginPath();
+    ctx.roundRect ? ctx.roundRect(x0, y0, side, side, ms*2) : ctx.rect(x0, y0, side, side); ctx.fill();
+    ctx.fillStyle = "#16212e";
+    for (let r=0;r<nm;r++) for (let c=0;c<nm;c++) if (qr.isDark(r,c)) ctx.fillRect(x0 + (c+3)*ms, y0 + (r+3)*ms, ms, ms);
+    ctx.textAlign="left"; ctx.textBaseline="alphabetic";
+    ctx.font = `700 ${capS*0.9}px Figtree, system-ui, sans-serif`; spaced(capS*0.12);
+    ctx.fillStyle = v("--muted"); ctx.fillText(T.qrCap, x0, y0 - capS*0.7);
+    spaced(0);
+  }
+  return new Promise(r => cv.toBlob(r, "image/png"));
+}
+// QR for the share link. On the real site the scheme+host and the country list go in
+// alphanumeric mode (upper case), which keeps the code small enough to scan off a screen.
+function qrMatrix(url){
+  if (typeof qrcode !== "function") return null;
+  try {
+    const q = qrcode(0, "L");
+    const m = SITE && url.match(/^(https?:\/\/[a-z0-9.:-]+)(\/[^#]*)(#w(?:[A-Z]{2})+)?$/i);
+    if (m){
+      q.addData(m[1].toUpperCase(), "Alphanumeric");
+      q.addData(m[2] + (m[3] ? "#" : ""), "Byte");
+      if (m[3]) q.addData(m[3].slice(1).toUpperCase(), "Alphanumeric");
+    } else q.addData(url, "Byte");
+    q.make(); return q;
+  } catch(e){ return null; }
+}
+const flag = k => String.fromCodePoint(...[...k].map(c => 0x1F1E6 + c.charCodeAt(0) - 65));
+// Emoji sets have no flag for Northern Cyprus, so it is painted by hand.
+function drawFlag(ctx, k, x, y, s){
+  if (k !== "XC"){ ctx.fillText(flag(k), x, y); return; }
+  const w = s*1.12, h = s*0.76, x0 = x - w/2, y0 = y - h/2, red = "#e30a17";   // sized like the emoji flags beside it
+  ctx.save();
+  ctx.beginPath(); ctx.roundRect ? ctx.roundRect(x0, y0, w, h, s*0.06) : ctx.rect(x0, y0, w, h); ctx.clip();
+  ctx.fillStyle = "#fff"; ctx.fillRect(x0, y0, w, h);
+  ctx.fillStyle = red; ctx.fillRect(x0, y0 + h*0.1, w, h*0.06); ctx.fillRect(x0, y0 + h*0.84, w, h*0.06);
+  // crescent and star, as on the flag of Türkiye but smaller and red on white
+  const cx = x - w*0.06, r1 = h*0.21, r2 = r1*0.8;
+  ctx.beginPath(); ctx.arc(cx, y, r1, 0, Math.PI*2); ctx.fill();
+  ctx.fillStyle = "#fff"; ctx.beginPath(); ctx.arc(cx + r1*0.25, y, r2, 0, Math.PI*2); ctx.fill();
+  ctx.fillStyle = red; ctx.beginPath();
+  const sx = cx + r1*0.95, sr = r1*0.42;
+  for (let i=0;i<10;i++){ const a = Math.PI*(i+1)/5, rr = i%2 ? sr*0.4 : sr; ctx.lineTo(sx + rr*Math.cos(a), y + rr*Math.sin(a)); }
+  ctx.closePath(); ctx.fill();
+  ctx.restore();
+  ctx.strokeStyle = "rgba(0,0,0,.18)"; ctx.lineWidth = Math.max(1, s*0.02);
+  ctx.beginPath(); ctx.roundRect ? ctx.roundRect(x0, y0, w, h, s*0.06) : ctx.rect(x0, y0, w, h); ctx.stroke();
+}
+let _fok;
+function flagsOK(){
+  if (_fok!==undefined) return _fok;
+  try { const c=document.createElement("canvas"); c.width=c.height=40; const x=c.getContext("2d");
+    x.font='32px "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif'; x.textBaseline="top"; x.fillText(flag("TR"),0,2);
+    const d=x.getImageData(0,0,40,40).data; let red=0; for(let i=0;i<d.length;i+=4) if(d[i]>170&&d[i+1]<90&&d[i+2]<90&&d[i+3]>120) red++;
+    _fok = red > 30; } catch(e){ _fok=false; }
+  return _fok;
+}
+
+// ---------- save sheet: format, download, link, share ----------
+let blob=null, blobURL=null;
+let fmt = null; try { const f=localStorage.getItem("wmn.fmt"); if (FORMATS[f]) fmt = f; } catch(e){}
+let qrOn = true; try { qrOn = localStorage.getItem("wmn.qr") !== "0"; } catch(e){}
+function updQrT(){ const b=$("qrT"); b.setAttribute("aria-pressed", qrOn); b.title = qrOn ? T.qrOn : T.qrOff; }
+updQrT();
+$("qrT").onclick = () => { qrOn = !qrOn; try{ localStorage.setItem("wmn.qr", qrOn ? "1" : "0"); }catch(e){} updQrT(); refreshShot(); };
+const inArtifact = () => !!(window.claude && window.claude.use) || /claude|anthropic/i.test(location.hostname);
+const ARTIFACT_URL = "https://claude.ai/artifact/P9Rd6YEZQRgFbTn7bJ4cC6";
+const shareURL = () => (SITE ? location.origin + location.pathname : ARTIFACT_URL) + (sel.size ? "#w" + [...sel].join("") : "");
+const shareText = () => TR ? `${sel.size} ülke gezdim, dünyanın %${pctOf(sel.size)}'${trSuf(pctOf(sel.size))}! Senin haritan nasıl?` : `I've been to ${sel.size} countries, ${pctOf(sel.size)}% of the world! What does your map look like?`;
+const fname = () => `worldmap-tech-${sel.size}-${TR?"ulke":"countries"}-${fmt}.png`;
+async function refreshShot(){
+  document.querySelectorAll("#fmt button").forEach(b => b.setAttribute("aria-pressed", b.dataset.f===fmt));
+  $("shot").style.opacity = .5;
+  blob = await renderImage(fmt);
+  if (blobURL) URL.revokeObjectURL(blobURL);
+  blobURL = URL.createObjectURL(blob);
+  $("shot").src = blobURL; $("shot").style.opacity = 1;
+}
+$("save").onclick = async () => {
+  $("save").disabled = true;
+  $("linkout").hidden = true;
+  $("share").hidden = inArtifact() || !(navigator.share && navigator.canShare);
+  $("sheet").hidden = false; renderCode(); showAd();
+  if (!fmt) fmt = (W < 700 || H > W) ? "story" : "wide";
+  await refreshShot();
+  $("save").disabled = false; $("dl").focus();
+};
+document.querySelectorAll("#fmt button").forEach(b => b.onclick = () => { fmt = b.dataset.f; try{ localStorage.setItem("wmn.fmt", fmt); }catch(e){} refreshShot(); });
+$("close").onclick = () => { $("sheet").hidden = true; $("save").focus(); };
+document.addEventListener("keydown", e => {
+  if (e.key !== "Escape") return;
+  if (!$("dlg").hidden) closeDlg(); else if (!$("sheet").hidden) $("close").onclick();
+});
+let downloads = null; if (window.claude && window.claude.use) window.claude.use("downloads").then(d=>{ downloads=d; }).catch(()=>{});
+$("dl").onclick = async () => {
+  if (!blob) return;
+  if (downloads){
+    try { await downloads.save({filename: fname(), data: blob}); toast(T.saved); } catch(e){ if(e && e.code!=="declined") toast(T.saveFail); }
+    return;
+  }
+  const a=document.createElement("a"); a.href=blobURL; a.download=fname(); document.body.appendChild(a); a.click(); a.remove();
+};
+function copyText(t, ok){
+  try { navigator.clipboard.writeText(t).then(() => toast(ok), () => toast(t, 4000)); } catch(e){ toast(t, 4000); }
+}
+$("link").onclick = () => {
+  const url = shareURL(), out = $("linkout");
+  const fallback = () => { out.value = url; out.hidden = false; out.focus(); out.select(); toast(T.copyManual); };
+  try { navigator.clipboard.writeText(url).then(() => { out.hidden = true; toast(T.copied); }, fallback); } catch(e){ fallback(); }
+};
+$("share").onclick = async () => {
+  if (!blob) return;
+  const file = new File([blob], fname(), {type:"image/png"});
+  const data = {files:[file], text: shareText() + " " + shareURL()};
+  try {
+    if (navigator.canShare(data)) await navigator.share(data);
+    else await navigator.share({text: shareText(), url: shareURL()});
+  } catch(e){ if (e && e.name !== "AbortError") toast(T.shareFail); }
+};
+
+// ---------- restore code: server copy of the map, kept in step with every change ----------
+async function api(method, id, s){
+  const r = await fetch("/api/code" + (id ? "/" + id : ""), {method, cache:"no-store",
+    headers: s !== undefined ? {"content-type":"application/json"} : undefined, body: s !== undefined ? JSON.stringify({s}) : undefined});
+  if (r.status === 404){ const e = new Error("not found"); e.notFound = true; throw e; }
+  if (!r.ok) throw new Error("http " + r.status);
+  return r.status === 204 ? null : r.json();
+}
+const prettyCode = c => c.slice(0,4) + "-" + c.slice(4);
+const cleanCode = s => s.toUpperCase().replace(/[IL]/g,"1").replace(/O/g,"0").replace(/[^0-9A-Z]/g,"");
+const selStr = () => [...sel].sort().join("");
+const setOf = s => new Set((s.match(/../g) || []).filter(k => groups.has(k)));
+function saveCodeState(){
+  try {
+    if (code){ localStorage.setItem("wmn.code", code); localStorage.setItem("wmn.codeAt", String(codeAt)); localStorage.setItem("wmn.codeDirty", codeDirty ? "1" : "0"); }
+    else ["wmn.code","wmn.codeAt","wmn.codeDirty"].forEach(k => localStorage.removeItem(k));
+  } catch(e){}
+}
+let pushT = 0;
+function codeChanged(){ if (!code) return; codeDirty = true; saveCodeState(); clearTimeout(pushT); pushT = setTimeout(pushCode, 1200); }
+async function pushCode(){
+  if (!code) return;
+  try { const r = await api("PUT", code, selStr()); codeAt = r.u; codeDirty = false; saveCodeState(); }
+  catch(e){ if (e.notFound){ code = null; saveCodeState(); } }
+}
+// on load: take the server copy if another device changed it (keeping unsynced local marks)
+async function pullCode(){
+  if (!code) return;
+  try {
+    const r = await api("GET", code);
+    if (r.u > codeAt){ const next = setOf(r.s); if (codeDirty) sel.forEach(k => next.add(k)); codeAt = r.u; replaceSel(next, codeDirty); }
+    else if (codeDirty) pushCode();
+  } catch(e){ if (e.notFound){ code = null; saveCodeState(); } }
+}
+function replaceSel(next, push){
+  sel = next;
+  gC.selectAll("path").classed("on", k => sel.has(k));
+  gL.selectAll("text").classed("on", d => sel.has(d.k));
+  try { localStorage.setItem("wmn.sel", JSON.stringify([...sel])); } catch(e){}
+  syncHash(); updCount(); updCompare(); if (sel.size) dismissHint();
+  if (push) codeChanged(); else saveCodeState();
+}
+let delArm = 0;
+function renderCode(){
+  const box = $("codebox");
+  if (!SITE){ box.hidden = true; return; }
+  box.hidden = false; box.innerHTML = "";
+  const btn = txt => { const b = document.createElement("button"); b.type = "button"; b.textContent = txt; box.appendChild(b); return b; };
+  if (code){
+    const l = document.createElement("span"); l.textContent = T.codeL; box.appendChild(l);
+    const v = document.createElement("b"); v.textContent = prettyCode(code); box.appendChild(v);
+    btn(T.codeCopy).onclick = () => copyText(prettyCode(code), T.codeCopied);
+    const d = btn(T.codeDel);
+    d.onclick = async () => {
+      if (!d.classList.contains("arm")){ d.classList.add("arm"); d.textContent = T.codeDelSure; clearTimeout(delArm); delArm = setTimeout(renderCode, 3000); return; }
+      clearTimeout(delArm);
+      try { await api("DELETE", code); } catch(e){ if (!e.notFound){ toast(T.codeNet, 2400); return; } }
+      code = null; codeAt = 0; codeDirty = false; saveCodeState(); renderCode(); toast(T.codeGone, 2400);
+    };
+  } else {
+    const g = btn(T.codeGet);
+    g.onclick = async () => {
+      g.disabled = true;
+      try { const r = await api("POST", null, selStr()); code = r.code; codeAt = r.u; codeDirty = false; saveCodeState(); renderCode(); toast(T.codeReady, 2600); }
+      catch(e){ g.disabled = false; toast(T.codeNet, 2400); }
+    };
+    btn(T.codeHave).onclick = openDlg;
+  }
+}
+function openDlg(){ $("dlg").hidden = false; $("codeIn").value = ""; $("dlgErr").textContent = ""; setTimeout(() => $("codeIn").focus(), 30); }
+function closeDlg(){ $("dlg").hidden = true; }
+$("dlgX").onclick = closeDlg;
+$("dlg").addEventListener("pointerdown", e => { if (e.target === $("dlg")) closeDlg(); });
+$("codeIn").addEventListener("input", e => { const c = cleanCode(e.target.value).slice(0,8); e.target.value = c.length > 4 ? c.slice(0,4) + "-" + c.slice(4) : c; });
+$("dlgF").addEventListener("submit", async e => {
+  e.preventDefault();
+  const c = cleanCode($("codeIn").value);
+  if (!CODE_OK.test(c)){ $("dlgErr").textContent = T.codeBad; return; }
+  $("dlgGo").disabled = true; $("dlgErr").textContent = "";
+  try {
+    const r = await api("GET", c), next = setOf(r.s);
+    const extra = [...sel].some(k => !next.has(k));          // marks only this device has: keep them and send them up
+    sel.forEach(k => next.add(k));
+    code = c; codeAt = r.u; codeDirty = false;
+    replaceSel(next, extra);
+    closeDlg(); $("sheet").hidden = true; toast(T.restored, 2200);
+  } catch(err){ $("dlgErr").textContent = err.notFound ? T.codeNotFound : T.codeNet; }
+  finally { $("dlgGo").disabled = false; }
+});
+
+// ---------- consent + ads: only on the real site, and only once an AdSense id is configured ----------
+// EEA/UK/CH and US visitors get Google's own consent message (certified CMP, set up in AdSense);
+// everyone else gets this banner, and ads load only after "Accept".
+function loadAds(){
+  if (adsLoaded || !ADS) return; adsLoaded = true;
+  // EEA, UK and Switzerland: non-personalised ads only (no ad profiling of visitors there)
+  if (region && GOOGLE_CMP.has(region) && region !== "US") (window.adsbygoogle = window.adsbygoogle || []).requestNonPersonalizedAds = 1;
+  const sc = document.createElement("script"); sc.async = true; sc.crossOrigin = "anonymous";
+  sc.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=" + encodeURIComponent(ADS.client);
+  document.head.appendChild(sc);
+}
+function showAd(){
+  if (!adsLoaded || adShown || !ADS.slot) return; adShown = true;
+  const ins = $("adbox").querySelector("ins");
+  ins.setAttribute("data-ad-client", ADS.client); ins.setAttribute("data-ad-slot", ADS.slot);
+  $("adbox").hidden = false;
+  try { (window.adsbygoogle = window.adsbygoogle || []).push({}); } catch(e){}
+}
+function setConsent(v){
+  consent = v; try { localStorage.setItem("wmn.consent", v); } catch(e){}
+  $("consent").hidden = true;
+  if (v === "y") loadAds(); else if (adsLoaded) location.reload();
+}
+$("cYes").onclick = () => setConsent("y");
+$("cNo").onclick = () => setConsent("n");
+function openPrefs(){
+  if (region && GOOGLE_CMP.has(region)){
+    window.googlefc = window.googlefc || {}; googlefc.callbackQueue = googlefc.callbackQueue || [];
+    googlefc.callbackQueue.push(() => googlefc.showRevocationMessage && googlefc.showRevocationMessage());
+    return;
+  }
+  $("consent").hidden = false; $("cYes").focus();
+}
+async function initConsent(){
+  if (!ADS) return;
+  try { const t = await (await fetch("/cdn-cgi/trace", {cache:"no-store"})).text(); const m = t.match(/^loc=([A-Z]{2})$/m); region = m ? m[1] : null; } catch(e){}
+  if (region && GOOGLE_CMP.has(region)) loadAds();
+  else if (consent === "y") loadAds();
+  else if (consent !== "n") $("consent").hidden = false;
+}
+
+// ---------- bottom strip: disclaimer + legal links (+ language switch on the site) ----------
+function renderLegal(){
+  const f = $("legal"), BASE = SITE ? "" : "https://worldmap.tech";
+  const L = TR ? {terms:"/kosullar/", privacy:"/gizlilik/", faq:"/sss/", contact:"/kosullar/#iletisim", other:"/", lang:"en"} : {terms:"/terms/", privacy:"/privacy/", faq:"/faq/", contact:"/terms/#contact", other:"/tr/", lang:"tr"};
+  const sep = () => { const i = document.createElement("i"); i.textContent = "·"; i.setAttribute("aria-hidden","true"); f.appendChild(i); };
+  const link = (href, text) => { sep(); const a = document.createElement("a"); a.href = BASE + href; a.textContent = text; if (!SITE){ a.target = "_blank"; a.rel = "noopener"; } f.appendChild(a); return a; };
+  f.innerHTML = ""; const d = document.createElement("span"); d.textContent = T.footer; f.appendChild(d);
+  link(L.terms, T.terms); link(L.privacy, T.privacy); link(L.faq, T.faq); link(L.contact, T.contact);
+  if (ADS){ sep(); const b = document.createElement("button"); b.type = "button"; b.textContent = T.prefs; b.onclick = openPrefs; f.appendChild(b); }
+  if (SITE){
+    const a = link(L.other, T.langName); a.hreflang = a.lang = L.lang;
+    a.onclick = () => { try { localStorage.setItem("wmn.lang", L.lang); } catch(e){} a.href = L.other + location.hash; };
+  }
+  const setH = () => document.documentElement.style.setProperty("--legal-h", f.offsetHeight + "px");
+  setH(); if (window.ResizeObserver) new ResizeObserver(setH).observe(f);
+}
+
+// ---------- boot ----------
+updCount();
+let rz=0; window.addEventListener("resize", () => { clearTimeout(rz); rz=setTimeout(()=>{
+  // only a width change (rotation, window resize) re-lays the map; a keyboard opening changes height only
+  const r=$("app").getBoundingClientRect(); if (Math.abs(r.width-W) > 2 || Math.abs(r.height-H) > H*0.45) build(); }, 150); });
+const start = () => { $("loading").remove(); build(); updCompare(); syncHash(); if (sel.size || friend) dismissHint(); pullCode(); initConsent(); };
+// label widths are measured with Figtree, so wait for it (briefly)
+(document.fonts ? Promise.race([Promise.all([document.fonts.ready, document.fonts.load("600 16px Figtree"), document.fonts.load("700 16px Figtree")]), new Promise(r=>setTimeout(r,1500))]) : Promise.resolve()).then(start);
+};
+// libraries load with `defer` on the site, so start once the document is parsed
+document.readyState === "loading" ? document.addEventListener("DOMContentLoaded", boot) : boot();
+</script>
+
+</html>
