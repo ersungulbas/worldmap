@@ -22,7 +22,12 @@
   // no request logs: the privacy policy says we keep no IP addresses
   "observability": { "enabled": false },
 
-  // worldmap.<account>.workers.dev for testing; branch builds get preview URLs
+  // the public address; Cloudflare creates the DNS record and certificate on deploy
+  "routes": [
+    { "pattern": "worldmap.tech", "custom_domain": true }
+  ],
+
+  // worldmap.<account>.workers.dev stays on for testing; branch builds get preview URLs
   "workers_dev": true,
   "preview_urls": true
 }

@@ -25,9 +25,10 @@ Workers & Pages → Create → Import a repository → `ersungulbas/worldmap`.
   **Cloudflare Access** seçeneğini aç ve yalnızca kendi e-postana izin ver.
 - Testler bitene kadar alan adını bağlama.
 
-## 3. Alan adı
-Test bitince `wrangler.jsonc` dosyasına alan adı satırı eklenir ve yayınlanır; Cloudflare DNS kaydını ve sertifikayı kendisi kurar.
-Ardından **Rules** → **Redirect Rules** → şablon *Redirect from WWW to root* ile `www` → `worldmap.tech` (301).
+## 3. Alan adı (yapıldı: 20 Ekim 2026)
+`wrangler.jsonc` içindeki `routes` satırı `worldmap.tech` adresini Worker'a bağlar; Cloudflare DNS kaydını ve sertifikayı yayında kendisi kurar.
+`www` için (isteğe bağlı): **DNS** → **Records** → `www` adına, Proxied (turuncu bulut) bir `A` kaydı ekle, adres `192.0.2.1`.
+Sonra **Rules** → **Redirect Rules** → şablon *Redirect from WWW to root* ile `www` → `worldmap.tech` (301).
 
 ## 4. İletişim adresi
 **Email** → **Email Routing** → `iletisim@worldmap.tech` adresini kendi e-postana yönlendir.
