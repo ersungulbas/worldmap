@@ -26,18 +26,18 @@ Workers & Pages → Create → Import a repository → `ersungulbas/worldmap`.
 - Testler bitene kadar alan adını bağlama.
 
 ## 3. Alan adı (yapıldı: 20 Ekim 2026)
-`wrangler.jsonc` içindeki `routes` satırı `worldmap.tech` adresini Worker'a bağlar; Cloudflare DNS kaydını ve sertifikayı yayında kendisi kurar.
-`www` için (isteğe bağlı): **DNS** → **Records** → `www` adına, Proxied (turuncu bulut) bir `A` kaydı ekle, adres `192.0.2.1`.
-Sonra **Rules** → **Redirect Rules** → şablon *Redirect from WWW to root* ile `www` → `worldmap.tech` (301).
+`wrangler.jsonc` içindeki `routes` satırları `worldmap.tech` ve `www.worldmap.tech` adreslerini Worker'a bağlar;
+Cloudflare DNS kayıtlarını ve sertifikaları yayında kendisi kurar.
+`www` adresini ana adrese yönlendirmek için: worldmap.tech → **Rules** → **Overview** → **Create rule** →
+**Redirect Rule** → şablon *Redirect from WWW to root* → **Deploy**. Bu kural Worker'dan önce çalışır.
 
 ## 4. İletişim adresi
 **Email** → **Email Routing** → `iletisim@worldmap.tech` adresini kendi e-postana yönlendir.
 Bu adres gizlilik politikasında ve koşullarda yazıyor (KVKK başvuruları ve 5651 iletişim yükümlülüğü).
 
-## 5. Kötüye kullanım sınırı (zorunlu, alan adı bağlandıktan sonra)
-`worldmap.tech` alan adı → **Security** → **WAF** → **Rate limiting rules** → yeni kural:
-URI Path *starts with* `/api/code` → IP başına 10 saniyede 20 istek → Block (10 saniye).
-Bu kural olmadan biri kodları deneme yoluyla tahmin etmeye çalışabilir veya veritabanını doldurabilir.
+## 5. Kötüye kullanım sınırı (kodda)
+`server/_worker.js`, aynı bağlantıdan 10 saniyede 20'den fazla `/api/` isteğini ve 5'ten fazla yeni kodu 429 ile reddeder.
+Sayaçlar yalnızca birkaç saniye bellekte tutulur, IP adresi hiçbir yere yazılmaz. Ücretli WAF kuralı gerekmez.
 
 ## 6. Ziyaretçi istatistiği
 **Analytics & Logs** → **Web Analytics** → **Add a site** → `worldmap.tech` → otomatik kurulum. Çerezsizdir, onay gerektirmez.
@@ -77,5 +77,4 @@ Kaynak değişince `npm run build` çalıştırıp `site/` klasörünü de commi
 - `iletisim@worldmap.tech` yönlendirmesi çalışıyor (adım 4).
 - Cloudflare'a KVKK standart sözleşmesi (veri sorumlusundan veri işleyene) soruldu. İmzalanırsa
   5 iş günü içinde KVKK'ya *Standart Sözleşme Bildirim Modülü* veya KEP ile bildirilir.
-- WAF kuralı (adım 5) açık.
 - Metinler bir avukata bir kez okutuldu; AdSense geliri için mali müşavire danışıldı.

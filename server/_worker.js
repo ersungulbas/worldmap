@@ -15,6 +15,23 @@ const SEL = /^(?:[A-Z]{2}){0,300}$/;
 const KEEP_MS = 730 * 86400000;                            // drop codes unused for 24 months
 const DAY = 86400000;
 
+// Best-effort abuse limit (code guessing, filling the database). Counters live only in this isolate's
+// memory for a few seconds; IP addresses are never written anywhere.
+const WINDOW_MS = 10000, MAX_CALLS = 20, MAX_NEW = 5;
+const hits = new Map();
+function tooMany(req){
+  const ip = req.headers.get("cf-connecting-ip");
+  if (!ip) return false;
+  const now = Date.now();
+  let h = hits.get(ip);
+  if (!h || now - h.t > WINDOW_MS){
+    if (hits.size > 10000) for (const [k, v] of hits) if (now - v.t > WINDOW_MS) hits.delete(k);
+    h = {t: now, n: 0, w: 0}; hits.set(ip, h);
+  }
+  h.n++; if (req.method === "POST") h.w++;
+  return h.n > MAX_CALLS || h.w > MAX_NEW;
+}
+
 let tableReady = false;
 async function db(env){
   if (!tableReady){
@@ -92,6 +109,8 @@ export default {
     const url = new URL(req.url);
     if (url.pathname.startsWith("/api/")){
       try {
+        if (tooMany(req)) return new Response(JSON.stringify({error: "too many requests"}), {status: 429,
+          headers: {"content-type": "application/json; charset=utf-8", "cache-control": "no-store", "retry-after": "10"}});
         if (url.pathname.startsWith("/api/code")) return await codes(req, env, ctx, url);
         return json({error: "not found"}, 404);
       } catch (e){

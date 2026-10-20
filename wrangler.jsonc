@@ -24,7 +24,9 @@
 
   // the public address; Cloudflare creates the DNS record and certificate on deploy
   "routes": [
-    { "pattern": "worldmap.tech", "custom_domain": true }
+    { "pattern": "worldmap.tech", "custom_domain": true },
+    // www is sent to worldmap.tech by a Redirect Rule (Cloudflare dashboard), which runs before the Worker
+    { "pattern": "www.worldmap.tech", "custom_domain": true }
   ],
 
   // worldmap.<account>.workers.dev stays on for testing; branch builds get preview URLs
