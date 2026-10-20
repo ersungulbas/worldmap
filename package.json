@@ -4,7 +4,7 @@
   "description": "worldmap.tech: mark the countries you've visited",
   "scripts": {
     "build": "node build.js",
-    "dev": "wrangler pages dev site --d1 DB=worldmap-local --port 8788",
+    "dev": "wrangler dev --port 8788",
     "labels": "node dumplabels.js && node build.js",
     "test": "node tests/test8.js && node tests/test9.js && node tests/linkcheck.js",
     "test:consent": "ADS_CLIENT=ca-pub-1234567890123456 ADS_SLOT=1234567890 node build.js && node tests/test9.js consent; node build.js"

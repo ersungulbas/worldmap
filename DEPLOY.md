@@ -1,60 +1,47 @@
-# worldmap.tech yayına alma (Cloudflare Pages)
+# worldmap.tech yayına alma (Cloudflare Workers)
 
-Site, bu depodaki `site/` klasörüdür. Cloudflare bir şey derlemez, klasörü olduğu gibi yayınlar.
-`site/_worker.js` yalnızca `/api/*` isteklerini (geri yükleme kodu) karşılar, geri kalan her şey statik dosyadır.
+Site, bu depodaki `site/` klasörüdür ve önceden derlenmiştir. Cloudflare bir şey derlemez, yalnızca
+`npx wrangler deploy` çalıştırır. Bütün ayarlar `wrangler.jsonc` dosyasındadır:
+- `site/` klasörü statik dosya olarak yayınlanır.
+- `/api/*` istekleri `server/_worker.js` ile karşılanır (geri yükleme kodu).
+- `worldmap` adlı D1 veritabanı ilk yayında kendiliğinden oluşturulur, sonraki yayınlarda aynısı kullanılır.
+- İstek kayıtları (Workers Logs) kapalıdır.
 
-## 1. Pages projesini GitHub'a bağla
-1. Cloudflare paneli → **Workers & Pages** → **Create** → **Pages** → **Connect to Git** → GitHub → `ersungulbas/worldmap`.
-2. Ayarlar:
-   - Production branch: `main`
-   - Framework preset: **None**
-   - Build command: *(boş bırak)*
-   - Build output directory: `site`
-   - **Environment variables** → `SKIP_DEPENDENCY_INSTALL` = `1` (site önceden derlenmiş; gereksiz paket kurulumunu atlar)
-3. **Save and Deploy**. Site `https://<proje>.pages.dev` adresinde açılır.
+Panelden binding veya değişken ekleme: her yayında `wrangler.jsonc` esas alınır, panelde elle eklenenler silinir.
 
-## 2. Geri yükleme kodu veritabanı (D1)
-1. **Workers & Pages** → **D1 SQL Database** → **Create** → ad: `worldmap`.
-   *Location* seçeneği varsa **Eastern Europe** seç (Türkiye'ye en yakın bölge).
-2. Pages projesi → **Settings** → **Bindings** → **Add** → **D1 database**
-   - Variable name: `DB`
-   - D1 database: `worldmap`
-   - Production ve Preview için ayrı ayrı ekle.
-3. **Deployments** → en son yayın → **Retry deployment** (bağlantının devreye girmesi için).
-Tablo ilk istekte kendiliğinden oluşur. Saklanan tek şey: 8 haneli kod, ülke listesi, zaman damgaları.
-IP adresi ve tarayıcı bilgisi saklanmaz. 24 ay kullanılmayan kodlar kendiliğinden silinir.
-Not: D1'in *Time Travel* yedeği silinen kayıtları 7 gün (ücretli planda 30 gün) daha tutar ve kapatılamaz;
-gizlilik metninde "en fazla 30 gün" olarak yazıyor.
+## 1. Worker'ı GitHub'a bağla (yapıldı: 20 Ekim 2026)
+Workers & Pages → Create → Import a repository → `ersungulbas/worldmap`.
+- Project name: `worldmap` (`wrangler.jsonc` içindeki adla aynı olmalı)
+- Build command: boş
+- Deploy command: `npx wrangler deploy`
+- Non-production branch deploy command: `npx wrangler versions upload`
+- Variables: `SKIP_DEPENDENCY_INSTALL` = `1` (isteğe bağlı, kurulumu hızlandırır)
 
-4. Pages projesi → **Settings** → **Functions** (veya *Observability*) bölümünde **Workers Logs** / kalıcı
-   istek kayıtları açıksa kapat. Kendi tarafımızda IP kaydı tutmamak gizlilik metnindeki sözümüz.
+`main` dalına her gönderim canlıya çıkar. Diğer dallar yalnızca önizleme adresi alır.
 
-## 3. Kapalı devre test
-- `main` dışındaki her dal ayrı bir önizleme adresi alır (ör. `test` dalı → `https://test.<proje>.pages.dev`).
-  Önizleme adreslerini Cloudflare arama motorlarına kapatır.
-- Önizlemeleri yalnızca sana açmak için: Pages projesi → **Settings** → **General** → **Access policy** →
-  *Enable access policy*. Cloudflare Access'te yalnızca kendi e-posta adresine izin ver.
-- Testler bitene kadar alan adını bağlama (adım 4).
+## 2. Kapalı devre test
+- Worker sayfası → **Settings** → **Domains & Routes** bölümünde `worldmap.<hesap>.workers.dev` adresi görünür.
+- Bu adres yalnızca bilenler tarafından açılabilir. Tamamen kapatmak için aynı yerde workers.dev satırındaki
+  **Cloudflare Access** seçeneğini aç ve yalnızca kendi e-postana izin ver.
+- Testler bitene kadar alan adını bağlama.
 
-## 4. Alan adı
-1. Pages projesi → **Custom domains** → **Set up a custom domain** → `worldmap.tech`.
-   Alan adı Cloudflare'da olduğu için DNS kaydı kendiliğinden eklenir.
-2. `www.worldmap.tech` için de aynısını yap, sonra **Rules** → **Redirect Rules** → şablon
-   *Redirect from WWW to root* ile `www` → `worldmap.tech` (301).
+## 3. Alan adı
+Test bitince `wrangler.jsonc` dosyasına alan adı satırı eklenir ve yayınlanır; Cloudflare DNS kaydını ve sertifikayı kendisi kurar.
+Ardından **Rules** → **Redirect Rules** → şablon *Redirect from WWW to root* ile `www` → `worldmap.tech` (301).
 
-## 5. İletişim adresi
+## 4. İletişim adresi
 **Email** → **Email Routing** → `iletisim@worldmap.tech` adresini kendi e-postana yönlendir.
 Bu adres gizlilik politikasında ve koşullarda yazıyor (KVKK başvuruları ve 5651 iletişim yükümlülüğü).
 
-## 6. Ziyaretçi istatistiği
-Pages projesi → **Metrics** → **Web Analytics** → **Enable**. Çerezsizdir, onay gerektirmez.
-
-## 7. Kötüye kullanım sınırı (zorunlu)
-**Security** → **WAF** → **Rate limiting rules** → yeni kural:
+## 5. Kötüye kullanım sınırı (zorunlu, alan adı bağlandıktan sonra)
+`worldmap.tech` alan adı → **Security** → **WAF** → **Rate limiting rules** → yeni kural:
 URI Path *starts with* `/api/code` → IP başına 10 saniyede 20 istek → Block (10 saniye).
 Bu kural olmadan biri kodları deneme yoluyla tahmin etmeye çalışabilir veya veritabanını doldurabilir.
 
-## 8. AdSense (site alan adında yayına girdikten sonra)
+## 6. Ziyaretçi istatistiği
+**Analytics & Logs** → **Web Analytics** → **Add a site** → `worldmap.tech` → otomatik kurulum. Çerezsizdir, onay gerektirmez.
+
+## 7. AdSense (site alan adında yayına girdikten sonra)
 1. https://adsense.google.com → site olarak `worldmap.tech` ekle ve başvur.
 2. **Ads** → **By ad unit** → **Display ads** → yatay, responsive bir birim oluştur.
 3. Yayıncı kimliğini (`ca-pub-…`) ve birim numarasını (slot) Claude'a yaz. `site.config.json` → `ads`
@@ -65,23 +52,29 @@ Bu kural olmadan biri kodları deneme yoluyla tahmin etmeye çalışabilir veya 
 5. **Auto ads**'i kapalı tut: reklam yalnızca "Kaydet" ekranındaki birimde görünür, haritanın üstüne ve
    indirilen görsele asla gelmez.
 
+## Veritabanı notları
+Saklanan tek şey: 8 haneli kod, ülke listesi, zaman damgaları. IP adresi ve tarayıcı bilgisi saklanmaz.
+24 ay kullanılmayan kodlar kendiliğinden silinir. D1'in *Time Travel* yedeği silinen kayıtları 7 gün
+(ücretli planda 30 gün) daha tutar ve kapatılamaz; gizlilik metninde "en fazla 30 gün" olarak yazıyor.
+
 ## Geliştirme
 ```
 npm install
 npm run build          # site/ ve önizleme dosyasını üretir
-npm run dev            # http://127.0.0.1:8788 (yerel D1 ile)
+npm run dev            # http://127.0.0.1:8788 (wrangler dev, yerel D1 ile)
 npm run labels         # harita etiketlerini yeniden hesaplar (dev sunucusu açıkken)
 npm test               # dev sunucusu açıkken uçtan uca testler (Playwright)
 npm run test:consent   # izin çubuğu ve reklam yüklemesi testi (deneme kimlikleriyle)
 ```
+Kaynak değişince `npm run build` çalıştırıp `site/` klasörünü de commit et; Cloudflare derleme yapmaz.
+
 `site.config.json`: alan adı, iletişim adresi, veri sorumlusu adı/şehri/telefonu (`owner`), AdSense kimlikleri.
-`owner.name` ve `owner.city` boşken gizlilik ve koşul sayfalarında sarı "eklenecek" işareti görünür;
-alan adı herkese açılmadan önce doldurulmalı. `owner.phone` doluysa İletişim bölümüne telefon satırı eklenir.
+`owner.phone` doluysa İletişim bölümüne telefon satırı eklenir.
 
 ## Yayından önce yasal kontrol listesi
 - `owner` bilgileri dolduruldu (5651: ad soyad, yerleşim yeri, e-posta; telefon için avukata danış).
-- `iletisim@worldmap.tech` yönlendirmesi çalışıyor (adım 5).
+- `iletisim@worldmap.tech` yönlendirmesi çalışıyor (adım 4).
 - Cloudflare'a KVKK standart sözleşmesi (veri sorumlusundan veri işleyene) soruldu. İmzalanırsa
   5 iş günü içinde KVKK'ya *Standart Sözleşme Bildirim Modülü* veya KEP ile bildirilir.
-- WAF kuralı (adım 7) açık, Workers Logs kapalı (adım 2.4).
+- WAF kuralı (adım 5) açık.
 - Metinler bir avukata bir kez okutuldu; AdSense geliri için mali müşavire danışıldı.

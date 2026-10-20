@@ -1,6 +1,6 @@
 // Builds two things from src.html:
 //   worldmapnet.html  self-contained preview (claude.ai artifact): data inlined, libraries from CDNs
-//   site/             worldmap.tech for Cloudflare Pages: /, /tr/, text pages, assets, _worker.js
+//   site/             worldmap.tech static files for Cloudflare Workers (wrangler.jsonc): /, /tr/, text pages, assets
 // Inputs: data/ (map + names), content/ (copy + legal texts), static/ (icons, page.css), server/_worker.js,
 // site.config.json (domain, contact, owner, AdSense ids).
 const fs = require('fs'), path = require('path'), crypto = require('crypto');
@@ -280,8 +280,6 @@ ${urls.flatMap(k => ['en', 'tr'].map(l => `  <url><loc>${C.origin}${PAGES[l][k]}
 /favicon.ico
   Cache-Control: public, max-age=604800
 `);
-  write('_routes.json', JSON.stringify({ version: 1, include: ['/api/*'], exclude: [] }, null, 2) + '\n');
-  copy('server/_worker.js', '_worker.js');
 
   const size = f => fs.statSync(path.join(OUT, f)).size;
   console.log('artifact', artifact.length, '| site index', size('index.html'), 'tr', size('tr/index.html'), 'world', size('assets/world.json'));

@@ -1,5 +1,5 @@
-// worldmap.tech server: static files come from Pages; /api/code keeps anonymous restore codes in D1.
-// Bindings (Pages project > Settings > Bindings): D1 database as `DB`.
+// worldmap.tech server: static files come from Workers static assets (site/); /api/code keeps anonymous
+// restore codes in D1. Bindings are set in wrangler.jsonc: assets as `ASSETS`, D1 database as `DB`.
 //
 //   POST   /api/code          {s:"TRDEFR"}  -> 201 {code, u}
 //   GET    /api/code/:code                  -> {s, u}

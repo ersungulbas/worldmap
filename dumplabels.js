@@ -1,5 +1,5 @@
 // Precompute map labels (position, size, line breaks) for both languages with the real fonts,
-// using the site build served by `wrangler pages dev site` on :8788. Writes data/labels.json.
+// using the site build served by `npm run dev` (wrangler dev) on :8788. Writes data/labels.json.
 const {chromium}=require('/opt/node-tools/node_modules/playwright');
 const fs=require('fs');
 (async()=>{

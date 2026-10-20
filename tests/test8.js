@@ -1,4 +1,4 @@
-// Real-site flow against `wrangler pages dev site` on :8788 (D1 local)
+// Real-site flow against `npm run dev` (wrangler dev) on :8788 (D1 local)
 const {chromium}=require('/opt/node-tools/node_modules/playwright');
 const fs=require('fs');
 const B='http://127.0.0.1:8788';
