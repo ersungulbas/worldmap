@@ -13,6 +13,9 @@ const hash = buf => crypto.createHash('sha1').update(buf).digest('hex').slice(0,
 const OUT = 'site';
 // ADS_CLIENT/ADS_SLOT override the config for local consent tests
 const ADS = process.env.ADS_CLIENT ? { client: process.env.ADS_CLIENT, slot: process.env.ADS_SLOT || '' } : C.ads;
+if (ADS.client && !/^ca-pub-\d{16}$/.test(ADS.client)) throw new Error(`ads.client should look like ca-pub-0000000000000000, got ${ADS.client}`);
+// client id alone: site verification only (meta tag + ads.txt); client + slot: consent banner and ads
+const ADS_ON = !!(ADS.client && ADS.slot);
 const write = (f, data) => { const p = path.join(OUT, f); fs.mkdirSync(path.dirname(p), { recursive: true }); fs.writeFileSync(p, data); };
 const copy = (from, to) => write(to, fs.readFileSync(from));
 
@@ -148,7 +151,7 @@ ${langRedirect}
     // the bottom strip is in the HTML from the start (first paint); the app re-renders it with handlers
     const o = other(lang), Ts = T[lang], sepI = '<i aria-hidden="true">·</i>';
     const strip = `<span>${esc(Ts.foot)}</span>${sepI}<a href="${P.terms}">${Ts.terms}</a>${sepI}<a href="${P.privacy}">${Ts.privacy}</a>${sepI}<a href="${P.faq}">${Ts.faq}</a>${sepI}<a href="${Ts.contactP}">${Ts.contact}</a>`
-      + (ADS.client ? `${sepI}<button type="button">${lang === 'tr' ? 'Çerez tercihleri' : 'Cookie preferences'}</button>` : '')
+      + (ADS_ON ? `${sepI}<button type="button">${lang === 'tr' ? 'Çerez tercihleri' : 'Cookie preferences'}</button>` : '')
       + `${sepI}<a href="${PAGES[o].app}" hreflang="${o}" lang="${o}">${T[o].self}</a>`;
     html = html.replace('<footer id="legal"></footer>', `<footer id="legal">${strip}</footer>`);
     write(P.app.slice(1) + 'index.html', `<!doctype html>\n<html lang="${lang}">\n${html}\n</html>\n`);

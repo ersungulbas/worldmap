@@ -231,7 +231,8 @@ const TR = CFG.lang ? CFG.lang === "tr" : /^tr\b/i.test(navigator.language || ""
 // ?dumplabels: lay labels out from scratch and expose them (build step that precomputes NM.L / NM.B)
 const DUMP = /[?&]dumplabels\b/.test(location.search);
 // ads/consent state (used by the legal strip, which renders before the map data arrives)
-const ADS = SITE && CFG.ads && CFG.ads.client ? CFG.ads : null;
+// ads (and the consent banner) start only once there is an ad unit; a client id alone just verifies the site
+const ADS = SITE && CFG.ads && CFG.ads.client && CFG.ads.slot ? CFG.ads : null;
 const GOOGLE_CMP = new Set("AT BE BG HR CY CZ DK EE FI FR DE GR HU IE IT LV LT LU MT NL PL PT RO SK SI ES SE IS LI NO GB CH US".split(" "));
 let consent = null; try { consent = localStorage.getItem("wmn.consent"); } catch(e){}
 let region = null, adsLoaded = false, adShown = false;
