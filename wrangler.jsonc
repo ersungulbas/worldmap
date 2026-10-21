@@ -31,5 +31,11 @@
 
   // worldmap.<account>.workers.dev stays on for testing; branch builds get preview URLs
   "workers_dev": true,
-  "preview_urls": true
+  "preview_urls": true,
+
+  // branch builds run `npx wrangler preview`, which needs this block. Previews inherit no bindings,
+  // so they have no DB: the site works, restore codes answer 503. Logs stay off there too.
+  "previews": {
+    "observability": { "enabled": false }
+  }
 }

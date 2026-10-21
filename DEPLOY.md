@@ -14,10 +14,12 @@ Workers & Pages → Create → Import a repository → `ersungulbas/worldmap`.
 - Project name: `worldmap` (`wrangler.jsonc` içindeki adla aynı olmalı)
 - Build command: boş
 - Deploy command: `npx wrangler deploy`
-- Non-production branch deploy command: `npx wrangler versions upload`
+- Non-production branch deploy command: `npx wrangler preview`
 - Variables: `SKIP_DEPENDENCY_INSTALL` = `1` (isteğe bağlı, kurulumu hızlandırır)
 
-`main` dalına her gönderim canlıya çıkar. Diğer dallar yalnızca önizleme adresi alır.
+`main` dalına her gönderim canlıya çıkar. Diğer dallar yalnızca önizleme adresi alır; adres, GitHub'daki
+değişiklik isteğine (PR) Cloudflare'in yazdığı yorumda görünür. Önizlemeler `wrangler.jsonc` içindeki `previews`
+bloğunu kullanır ve veritabanına bağlı değildir: site çalışır, yalnızca geri yükleme kodu önizlemede çalışmaz.
 
 ## 2. Kapalı devre test
 - Worker sayfası → **Settings** → **Domains & Routes** bölümünde `worldmap.<hesap>.workers.dev` adresi görünür.
