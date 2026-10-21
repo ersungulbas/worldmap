@@ -88,8 +88,28 @@ const FAQ = { tr: readJ(content('faq.tr.json')), en: readJ(content('faq.en.json'
   for (const f of fs.readdirSync('static/assets')) asset(f, fs.readFileSync('static/assets/' + f));
   copy('static/favicon.ico', 'favicon.ico');
 
-  const PAGES = { tr: { app: '/tr/', faq: '/sss/', privacy: '/gizlilik/', terms: '/kosullar/' }, en: { app: '/', faq: '/faq/', privacy: '/privacy/', terms: '/terms/' } };
+  const PAGES = { tr: { app: '/tr/', faq: '/sss/', about: '/hakkinda/', privacy: '/gizlilik/', terms: '/kosullar/' }, en: { app: '/', faq: '/faq/', about: '/about/', privacy: '/privacy/', terms: '/terms/' } };
   const other = l => l === 'tr' ? 'en' : 'tr';
+  // guides ("Rehber"): content/guides/<key>.<lang>.md, each with a small front matter (slug, title, description)
+  const front = s => {
+    const m = s.match(/^---\n([\s\S]*?)\n---\n/), meta = {};
+    if (m) for (const l of m[1].split('\n')) { const i = l.indexOf(':'); if (i > 0) meta[l.slice(0, i).trim()] = l.slice(i + 1).trim(); }
+    return { meta, body: m ? s.slice(m[0].length) : s };
+  };
+  const GUIDES = {}, GUIDE_ORDER = ['countries', 'counting', 'levels', 'routes', 'projections', 'sharing'];
+  if (fs.existsSync(content('guides'))) for (const f of fs.readdirSync(content('guides')).sort()) {
+    const m = f.match(/^([a-z0-9-]+)\.(tr|en)\.md$/);
+    if (m) (GUIDES[m[1]] ??= {})[m[2]] = front(read(content('guides/' + f)));
+  }
+  const gkeys = Object.keys(GUIDES).filter(k => GUIDES[k].tr && GUIDES[k].en)
+    .sort((a, b) => ((GUIDE_ORDER.indexOf(a) + 1) || 99) - ((GUIDE_ORDER.indexOf(b) + 1) || 99));
+  PAGES.tr.guides = '/rehber/'; PAGES.en.guides = '/guides/';
+  for (const k of gkeys) for (const l of ['tr', 'en']) {
+    const g = GUIDES[k][l].meta;
+    if (!/^[a-z0-9-]+$/.test(g.slug || '') || !g.title || !g.description) throw new Error(`guides/${k}.${l}.md: slug, title and description are required`);
+    PAGES[l]['g:' + k] = (l === 'tr' ? '/rehber/' : '/guides/') + g.slug + '/';
+  }
+  const GUIDES_DATE = '2026-10-21';
   const icons = `<link rel="icon" href="/favicon.ico" sizes="48x48">
 <link rel="icon" href="/assets/icon.svg?v=${V['icon.svg']}" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=${V['apple-touch-icon.png']}">
@@ -116,8 +136,8 @@ const FAQ = { tr: readJ(content('faq.tr.json')), en: readJ(content('faq.en.json'
   const adsMeta = ADS.client ? `<meta name="google-adsense-account" content="${esc(ADS.client)}">` : '';
 
   const T = {
-    tr: { back: 'Haritaya dön', other: 'English', foot: S.__FOOTER_TR__, faq: 'SSS', privacy: 'Gizlilik', terms: 'Koşullar', contact: 'İletişim', contactP: '/kosullar/#iletisim', rights: 'Tüm hakları saklıdır.', self: 'Türkçe' },
-    en: { back: 'Back to the map', other: 'Türkçe', foot: S.__FOOTER_EN__, faq: 'FAQ', privacy: 'Privacy', terms: 'Terms', contact: 'Contact', contactP: '/terms/#contact', rights: 'All rights reserved.', self: 'English' }
+    tr: { back: 'Haritaya dön', other: 'English', foot: S.__FOOTER_TR__, faq: 'SSS', about: 'Hakkında', guides: 'Rehber', privacy: 'Gizlilik', terms: 'Koşullar', contact: 'İletişim', contactP: '/kosullar/#iletisim', rights: 'Tüm hakları saklıdır.', self: 'Türkçe' },
+    en: { back: 'Back to the map', other: 'Türkçe', foot: S.__FOOTER_EN__, faq: 'FAQ', about: 'About', guides: 'Guides', privacy: 'Privacy', terms: 'Terms', contact: 'Contact', contactP: '/terms/#contact', rights: 'All rights reserved.', self: 'English' }
   };
   // app pages: "/" is English, "/tr/" Turkish; Turkish browsers landing on "/" go to "/tr/" unless they chose English
   const langRedirect = `<script>(function(){try{var p=localStorage.getItem("wmn.lang"),h=location.hash,t=location.pathname;if(t==="/"&&(p==="tr"||(!p&&/^tr\\b/i.test(navigator.language||""))))location.replace("/tr/"+h);else if(t==="/tr/"&&p==="en")location.replace("/"+h);}catch(e){}})();</script>`;
@@ -141,7 +161,7 @@ ${langRedirect}
 <script type="application/ld+json">${JSON.stringify(ld)}</script>`;
     const noscript = `<noscript><div style="position:fixed;inset:0;z-index:50;background:var(--ocean);padding:32px 20px;font:500 17px/1.6 var(--f-body)">
 <p><b>worldmap.tech</b></p><p>${esc(m.description)}</p><p>${lang === 'tr' ? 'Harita JavaScript ile çalışır.' : 'The map needs JavaScript.'}</p>
-<p><a href="${P.faq}">${lang === 'tr' ? 'Sıkça sorulan sorular' : 'FAQ'}</a> · <a href="${P.privacy}">${lang === 'tr' ? 'Gizlilik' : 'Privacy'}</a> · <a href="${P.terms}">${lang === 'tr' ? 'Koşullar' : 'Terms'}</a></p></div></noscript>`;
+<p><a href="${P.guides}">${lang === 'tr' ? 'Rehber' : 'Guides'}</a> · <a href="${P.about}">${lang === 'tr' ? 'Hakkında' : 'About'}</a> · <a href="${P.faq}">${lang === 'tr' ? 'Sıkça sorulan sorular' : 'FAQ'}</a> · <a href="${P.privacy}">${lang === 'tr' ? 'Gizlilik' : 'Privacy'}</a> · <a href="${P.terms}">${lang === 'tr' ? 'Koşullar' : 'Terms'}</a></p></div></noscript>`;
     let html = fill(src, {
       cfg: { env: 'site', lang, ads: ADS }, worldSrc: ` data-src="/assets/world.json?v=${V['world.json']}"`,
       head, libs: `<script defer src="/assets/d3.min.js?v=${V['d3.min.js']}"></script>
@@ -150,7 +170,7 @@ ${langRedirect}
     html = html.replace('<div id="app">', noscript + '\n<div id="app">');
     // the bottom strip is in the HTML from the start (first paint); the app re-renders it with handlers
     const o = other(lang), Ts = T[lang], sepI = '<i aria-hidden="true">·</i>';
-    const strip = `<span>${esc(Ts.foot)}</span>${sepI}<a href="${P.terms}">${Ts.terms}</a>${sepI}<a href="${P.privacy}">${Ts.privacy}</a>${sepI}<a href="${P.faq}">${Ts.faq}</a>${sepI}<a href="${Ts.contactP}">${Ts.contact}</a>`
+    const strip = `<span>${esc(Ts.foot)}</span>${sepI}<a href="${P.guides}">${Ts.guides}</a>${sepI}<a href="${P.terms}">${Ts.terms}</a>${sepI}<a href="${P.privacy}">${Ts.privacy}</a>${sepI}<a href="${P.faq}">${Ts.faq}</a>${sepI}<a href="${Ts.contactP}">${Ts.contact}</a>`
       + (ADS_ON ? `${sepI}<button type="button">${lang === 'tr' ? 'Çerez tercihleri' : 'Cookie preferences'}</button>` : '')
       + `${sepI}<a href="${PAGES[o].app}" hreflang="${o}" lang="${o}">${T[o].self}</a>`;
     html = html.replace('<footer id="legal"></footer>', `<footer id="legal">${strip}</footer>`);
@@ -187,13 +207,13 @@ ${ld ? `<script type="application/ld+json">${JSON.stringify(ld)}</script>` : ''}
 <main><article class="card">
 ${body}
 </article></main>
-<footer class="foot">${esc(t.foot)}<br><a href="${P.terms}">${t.terms}</a><i>·</i><a href="${P.privacy}">${t.privacy}</a><i>·</i><a href="${P.faq}">${t.faq}</a><i>·</i><a href="${t.contactP}">${t.contact}</a><i>·</i><a href="mailto:${C.email}">${C.email}</a><br>© 2026 worldmap.tech · ${t.rights}</footer>
+<footer class="foot">${esc(t.foot)}<br><a href="${P.guides}">${t.guides}</a> <i>·</i> <a href="${P.about}">${t.about}</a> <i>·</i> <a href="${P.terms}">${t.terms}</a> <i>·</i> <a href="${P.privacy}">${t.privacy}</a> <i>·</i> <a href="${P.faq}">${t.faq}</a> <i>·</i> <a href="${t.contactP}">${t.contact}</a> <i>·</i> <a href="mailto:${C.email}">${C.email}</a><br>© 2026 worldmap.tech · ${t.rights}</footer>
 </html>
 `;
   };
   const md = s => s.split(/\n{2,}/).map(b => {
     b = b.trim(); if (!b) return '';
-    const inl = x => esc(x).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>');
+    const inl = x => esc(x).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, '<a href="$2">$1</a>');
     if (b.startsWith('### ')) return `<h3>${inl(b.slice(4))}</h3>`;
     if (b.startsWith('## ')) return `<h2>${inl(b.slice(3))}</h2>`;
     if (b.startsWith('# ')) return `<h2>${inl(b.slice(2))}</h2>`;
@@ -223,6 +243,46 @@ ${md(read(content(`about.${lang}.md`)))}
     }
   }
 
+  // about pages
+  for (const lang of ['tr', 'en']) {
+    const f = content(`aboutpage.${lang}.md`); if (!fs.existsSync(f)) continue;
+    const tr = lang === 'tr', title = tr ? 'worldmap.tech hakkında' : 'About worldmap.tech';
+    const desc = tr ? 'worldmap.tech nedir, kim yapıyor, harita verileri nereden geliyor, gizlilik ve iletişim bilgileri.'
+      : 'What worldmap.tech is, who makes it, where the map data comes from, privacy and how to get in touch.';
+    write(PAGES[lang].about.slice(1) + 'index.html', page({ lang, key: 'about', title: title + ' | worldmap.tech', desc,
+      ld: { '@context': 'https://schema.org', '@type': 'AboutPage', name: title, inLanguage: lang, url: C.origin + PAGES[lang].about },
+      body: `<h1>${esc(title)}</h1>\n${ownerFill(md(read(f)), lang)}\n<p><a class="btn" href="${PAGES[lang].app}">${T[lang].back}</a></p>` }));
+  }
+
+  // guide pages and the guide index
+  const fmtDate = (d, lang) => new Date(d + 'T12:00:00Z').toLocaleDateString(lang === 'tr' ? 'tr-TR' : 'en-US', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+  for (const lang of ['tr', 'en']) {
+    const P = PAGES[lang], t = T[lang], tr = lang === 'tr';
+    const card = k => { const g = GUIDES[k][lang].meta; return `<li><a href="${P['g:' + k]}">${esc(g.title)}</a><br><span class="meta">${esc(g.description)}</span></li>`; };
+    const idxTitle = tr ? 'Rehber: ülkeler, rotalar ve seyahat haritaları' : 'Guides: countries, routes and travel maps';
+    const idxDesc = tr ? 'Dünyada kaç ülke var, hangi ziyaret sayılır, gezgin seviyeleri, çok ülkeli rotalar, harita projeksiyonları ve haritanı paylaşma üzerine yazılar.'
+      : 'How many countries there are, what counts as a visit, traveler levels, multi-country routes, map projections and sharing your travel map.';
+    if (gkeys.length) write(P.guides.slice(1) + 'index.html', page({ lang, key: 'guides', title: idxTitle + ' | worldmap.tech', desc: idxDesc,
+      ld: { '@context': 'https://schema.org', '@type': 'CollectionPage', name: idxTitle, inLanguage: lang, url: C.origin + P.guides,
+        hasPart: gkeys.map(k => ({ '@type': 'Article', headline: GUIDES[k][lang].meta.title, url: C.origin + P['g:' + k] })) },
+      body: `<h1>${tr ? 'Rehber' : 'Guides'}</h1>\n<p class="lead">${esc(idxDesc)}</p>\n<ul class="guides">${gkeys.map(card).join('')}</ul>\n<p><a class="btn" href="${P.app}">${t.back}</a></p>` }));
+    for (const k of gkeys) {
+      const g = GUIDES[k][lang], key = 'g:' + k, url = C.origin + P[key];
+      const ld = { '@context': 'https://schema.org', '@type': 'Article', headline: g.meta.title, description: g.meta.description, inLanguage: lang,
+        datePublished: GUIDES_DATE, dateModified: GUIDES_DATE, mainEntityOfPage: url, image: `${C.origin}/assets/og-${lang}.png`,
+        author: C.owner.name ? { '@type': 'Person', name: C.owner.name } : { '@type': 'Organization', name: 'worldmap.tech' },
+        publisher: { '@type': 'Organization', name: 'worldmap.tech', url: C.origin + PAGES.en.app, logo: { '@type': 'ImageObject', url: `${C.origin}/assets/icon-512.png` } } };
+      const more = gkeys.filter(x => x !== k);
+      const body = `<p class="meta"><a href="${P.guides}">${t.guides}</a> · ${fmtDate(GUIDES_DATE, lang)}</p>
+<h1>${esc(g.meta.title)}</h1>
+${md(g.body)}
+<p><a class="btn" href="${P.app}">${tr ? 'Haritanı işaretle' : 'Mark your map'}</a></p>
+${more.length ? `<h2>${tr ? 'Diğer yazılar' : 'More guides'}</h2>
+<ul class="guides">${more.map(card).join('')}</ul>` : ''}`;
+      write(P[key].slice(1) + 'index.html', page({ lang, key, title: g.meta.title + ' | worldmap.tech', desc: g.meta.description, body, ld }));
+    }
+  }
+
   // 404: both languages, not indexed
   const NF = readJ(content('notfound.json'));
   write('404.html', `<!doctype html>
@@ -241,17 +301,19 @@ ${fontsHead}
 `);
 
   // crawler + platform files
-  const urls = ['app', 'faq', 'privacy', 'terms'];
+  const urls = ['app', 'faq', 'about', 'privacy', 'terms'].concat(gkeys.length ? ['guides', ...gkeys.map(k => 'g:' + k)] : []);
+  const lastmod = k => k === 'guides' || k === 'about' || k.startsWith('g:') ? GUIDES_DATE : '2026-10-09';
   write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
-${urls.flatMap(k => ['en', 'tr'].map(l => `  <url><loc>${C.origin}${PAGES[l][k]}</loc><lastmod>2026-10-09</lastmod>
+${urls.flatMap(k => ['en', 'tr'].map(l => `  <url><loc>${C.origin}${PAGES[l][k]}</loc><lastmod>${lastmod(k)}</lastmod>
     <xhtml:link rel="alternate" hreflang="en" href="${C.origin}${PAGES.en[k]}"/>
     <xhtml:link rel="alternate" hreflang="tr" href="${C.origin}${PAGES.tr[k]}"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="${C.origin}${PAGES.en[k]}"/></url>`)).join('\n')}
 </urlset>
 `);
   write('robots.txt', `User-agent: *\nAllow: /\nDisallow: /api/\n\nSitemap: ${C.origin}/sitemap.xml\n`);
-  write('llms.txt', read(content('llms.txt')));
+  write('llms.txt', read(content('llms.txt')).trimEnd() + (gkeys.length ? '\n\n## Guides\n\n' + gkeys.flatMap(k => ['en', 'tr'].map(l =>
+    `- [${GUIDES[k][l].meta.title}](${C.origin}${PAGES[l]['g:' + k]}): ${GUIDES[k][l].meta.description}`)).join('\n') : '') + '\n');
   // third-party notices, linked from the terms pages
   const lic = [
     ['Natural Earth (map data)', 'licenses/natural-earth.txt'],

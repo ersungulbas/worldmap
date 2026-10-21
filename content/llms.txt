@@ -5,7 +5,7 @@
 Key facts:
 
 - Tap a country to mark it as visited (it turns soft blue); tap again to remove it. A search box (top right) finds and highlights a country, which can be marked from the results.
-- World % = visited count / 195 (the 193 UN member states plus Vatican City and Palestine). 232 places are selectable in total, so the count can exceed 195.
+- World % = visited count / 195 (the 193 UN member states plus Vatican City and Palestine). 233 places are selectable in total, so the count can exceed 195.
 - A traveller level title appears at 1, 5, 10, 20, 35, 60 and 100 countries.
 - Save generates an image on the device in Story (1080×1920), Square (1080×1080) or Wide (1920×1080) format, showing count, level, world %, flags of visited countries (taller formats) and an optional QR code linking to the map.
 - Share link: the map is encoded in the URL (worldmap.tech/#w…). Opening a friend's link shows both maps compared: the friend in orange, you in blue, countries in common in purple.

@@ -5,7 +5,7 @@
 Key facts:
 
 - Tap a country to mark it as visited (it turns soft blue); tap again to remove it. A search box (top right) finds and highlights a country, which can be marked from the results.
-- World % = visited count / 195 (the 193 UN member states plus Vatican City and Palestine). 232 places are selectable in total, so the count can exceed 195.
+- World % = visited count / 195 (the 193 UN member states plus Vatican City and Palestine). 233 places are selectable in total, so the count can exceed 195.
 - A traveller level title appears at 1, 5, 10, 20, 35, 60 and 100 countries.
 - Save generates an image on the device in Story (1080×1920), Square (1080×1080) or Wide (1920×1080) format, showing count, level, world %, flags of visited countries (taller formats) and an optional QR code linking to the map.
 - Share link: the map is encoded in the URL (worldmap.tech/#w…). Opening a friend's link shows both maps compared: the friend in orange, you in blue, countries in common in purple.
@@ -24,3 +24,18 @@ Key facts:
 - [Gizlilik](https://worldmap.tech/gizlilik/): Privacy policy in Turkish.
 - [Terms](https://worldmap.tech/terms/): Terms of use for worldmap.tech.
 - [Koşullar](https://worldmap.tech/kosullar/): Terms of use in Turkish.
+
+## Guides
+
+- [How Many Countries Are There in the World?](https://worldmap.tech/guides/how-many-countries-are-there/): Most lists say 195, but it depends on who's counting. How UN members, observer states and territories add up, and how our map counts them.
+- [Dünyada Kaç Ülke Var? Cevap Kime Sorduğuna Bağlı](https://worldmap.tech/rehber/dunyada-kac-ulke-var/): En yaygın cevap 195, ama sayı listeyi kimin tuttuğuna göre değişiyor. BM üyeleri, gözlemci devletler, bağımlı bölgeler ve haritamızın sayma yöntemi.
+- [What Counts as Visiting a Country?](https://worldmap.tech/guides/what-counts-as-visiting-a-country/): Airport layovers, cruise stops, border hops and microstates: practical rules for deciding which countries count, and why consistency matters most.
+- [Bir Ülkeye Gitmiş Sayılmak İçin Ne Gerekir?](https://worldmap.tech/rehber/hangi-ziyaret-sayilir/): Aktarma, kruvaziyer molası, birkaç saatlik sınır geçişi, mini devletler: hangi ziyaretin sayılacağına karar vermen için pratik kurallar.
+- [Traveler Levels and Your % of the World, Explained](https://worldmap.tech/guides/traveler-levels/): What each worldmap.tech traveler level looks like in real life, how your % of the world is calculated out of 195, and honest ways to reach the next level.
+- [Gezgin Seviyeleri ve Dünya Yüzdesi Nasıl Hesaplanır?](https://worldmap.tech/rehber/gezgin-seviyeleri/): worldmap.tech'te gezgin seviyeleri gerçekte neye benzer, dünyanın yüzde kaçını gördüğün 195 üzerinden nasıl hesaplanır, sonraki seviyeye nasıl geçersin?
+- [How to Visit Several Countries in One Trip](https://worldmap.tech/guides/visit-many-countries-in-one-trip/): Nine regions where small, close-together countries make multi-country trips easy, from Benelux and the Baltics to the Caucasus, with routes and tips.
+- [Bir Seyahatte Birden Çok Ülke Gezebileceğin 9 Bölge](https://worldmap.tech/rehber/bir-seyahatte-cok-ulke/): Küçük ve birbirine yakın ülkeler sayesinde tek seyahatte birkaç ülke görebileceğin 9 bölge: örnek rotalar, ulaşım seçenekleri ve pratik ipuçları.
+- [Map Projections: Why Every World Map Is a Little Wrong](https://worldmap.tech/guides/map-projections/): Why Greenland looks as big as Africa, what Mercator, Gall-Peters and Robinson get right and wrong, and which projection worldmap.tech uses.
+- [Harita Projeksiyonları: Grönland Neden Bu Kadar Büyük?](https://worldmap.tech/rehber/harita-projeksiyonlari/): Grönland neden Afrika kadar görünür? Mercator, Gall-Peters ve Robinson neyi doğru, neyi yanlış gösterir; worldmap.tech hangi projeksiyonu kullanır?
+- [How to Share Your Travel Map: Formats, Links and Ideas](https://worldmap.tech/guides/share-your-travel-map/): Pick the right image format, add a QR code, send a link that holds your whole map, compare with friends and keep your privacy in mind when you post.
+- [Seyahat Haritanı Paylaşmak: Format, Link ve Fikirler](https://worldmap.tech/rehber/seyahat-haritasi-paylasma/): Doğru görsel formatını seç, QR kod ekle, bütün haritanı taşıyan linki gönder, arkadaşlarınla karşılaştır ve paylaşırken gizliliğini unutma.

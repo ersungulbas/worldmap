@@ -27,6 +27,10 @@ for (const f of feats){
   if (!k) throw new Error('no key '+n);
   (byKey[k] ||= []).push(f.geometry);
 }
+// Tuvalu, a UN member, is missing from the 50m file; take it from the 10m one
+const raw10=JSON.parse(fs.readFileSync('data/package/countries-10m.json'));
+const tv=topojson.feature(raw10,raw10.objects.countries).features.find(f=>String(f.id)==='798');
+if(!tv) throw new Error('no tuvalu'); (byKey.TV ||= []).push(tv.geometry);
 // Crimea: lift the polygon out of Russia
 const ru=byKey.RU[0]; const ruP=polysOf(ru);
 const ci=ruP.findIndex(p=>{const c=d3.geoCentroid({type:'Polygon',coordinates:p}); return c[0]>32&&c[0]<37&&c[1]>44&&c[1]<46.3;});

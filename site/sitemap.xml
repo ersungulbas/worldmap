@@ -16,6 +16,14 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://worldmap.tech/faq/"/>
     <xhtml:link rel="alternate" hreflang="tr" href="https://worldmap.tech/sss/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://worldmap.tech/faq/"/></url>
+  <url><loc>https://worldmap.tech/about/</loc><lastmod>2026-10-21</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://worldmap.tech/about/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://worldmap.tech/hakkinda/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://worldmap.tech/about/"/></url>
+  <url><loc>https://worldmap.tech/hakkinda/</loc><lastmod>2026-10-21</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://worldmap.tech/about/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://worldmap.tech/hakkinda/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://worldmap.tech/about/"/></url>
   <url><loc>https://worldmap.tech/privacy/</loc><lastmod>2026-10-09</lastmod>
     <xhtml:link rel="alternate" hreflang="en" href="https://worldmap.tech/privacy/"/>
     <xhtml:link rel="alternate" hreflang="tr" href="https://worldmap.tech/gizlilik/"/>
@@ -32,4 +40,60 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://worldmap.tech/terms/"/>
     <xhtml:link rel="alternate" hreflang="tr" href="https://worldmap.tech/kosullar/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://worldmap.tech/terms/"/></url>
+  <url><loc>https://worldmap.tech/guides/</loc><lastmod>2026-10-21</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://worldmap.tech/guides/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://worldmap.tech/rehber/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://worldmap.tech/guides/"/></url>
+  <url><loc>https://worldmap.tech/rehber/</loc><lastmod>2026-10-21</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://worldmap.tech/guides/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://worldmap.tech/rehber/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://worldmap.tech/guides/"/></url>
+  <url><loc>https://worldmap.tech/guides/how-many-countries-are-there/</loc><lastmod>2026-10-21</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://worldmap.tech/guides/how-many-countries-are-there/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://worldmap.tech/rehber/dunyada-kac-ulke-var/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://worldmap.tech/guides/how-many-countries-are-there/"/></url>
+  <url><loc>https://worldmap.tech/rehber/dunyada-kac-ulke-var/</loc><lastmod>2026-10-21</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://worldmap.tech/guides/how-many-countries-are-there/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://worldmap.tech/rehber/dunyada-kac-ulke-var/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://worldmap.tech/guides/how-many-countries-are-there/"/></url>
+  <url><loc>https://worldmap.tech/guides/what-counts-as-visiting-a-country/</loc><lastmod>2026-10-21</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://worldmap.tech/guides/what-counts-as-visiting-a-country/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://worldmap.tech/rehber/hangi-ziyaret-sayilir/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://worldmap.tech/guides/what-counts-as-visiting-a-country/"/></url>
+  <url><loc>https://worldmap.tech/rehber/hangi-ziyaret-sayilir/</loc><lastmod>2026-10-21</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://worldmap.tech/guides/what-counts-as-visiting-a-country/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://worldmap.tech/rehber/hangi-ziyaret-sayilir/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://worldmap.tech/guides/what-counts-as-visiting-a-country/"/></url>
+  <url><loc>https://worldmap.tech/guides/traveler-levels/</loc><lastmod>2026-10-21</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://worldmap.tech/guides/traveler-levels/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://worldmap.tech/rehber/gezgin-seviyeleri/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://worldmap.tech/guides/traveler-levels/"/></url>
+  <url><loc>https://worldmap.tech/rehber/gezgin-seviyeleri/</loc><lastmod>2026-10-21</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://worldmap.tech/guides/traveler-levels/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://worldmap.tech/rehber/gezgin-seviyeleri/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://worldmap.tech/guides/traveler-levels/"/></url>
+  <url><loc>https://worldmap.tech/guides/visit-many-countries-in-one-trip/</loc><lastmod>2026-10-21</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://worldmap.tech/guides/visit-many-countries-in-one-trip/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://worldmap.tech/rehber/bir-seyahatte-cok-ulke/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://worldmap.tech/guides/visit-many-countries-in-one-trip/"/></url>
+  <url><loc>https://worldmap.tech/rehber/bir-seyahatte-cok-ulke/</loc><lastmod>2026-10-21</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://worldmap.tech/guides/visit-many-countries-in-one-trip/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://worldmap.tech/rehber/bir-seyahatte-cok-ulke/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://worldmap.tech/guides/visit-many-countries-in-one-trip/"/></url>
+  <url><loc>https://worldmap.tech/guides/map-projections/</loc><lastmod>2026-10-21</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://worldmap.tech/guides/map-projections/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://worldmap.tech/rehber/harita-projeksiyonlari/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://worldmap.tech/guides/map-projections/"/></url>
+  <url><loc>https://worldmap.tech/rehber/harita-projeksiyonlari/</loc><lastmod>2026-10-21</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://worldmap.tech/guides/map-projections/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://worldmap.tech/rehber/harita-projeksiyonlari/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://worldmap.tech/guides/map-projections/"/></url>
+  <url><loc>https://worldmap.tech/guides/share-your-travel-map/</loc><lastmod>2026-10-21</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://worldmap.tech/guides/share-your-travel-map/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://worldmap.tech/rehber/seyahat-haritasi-paylasma/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://worldmap.tech/guides/share-your-travel-map/"/></url>
+  <url><loc>https://worldmap.tech/rehber/seyahat-haritasi-paylasma/</loc><lastmod>2026-10-21</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://worldmap.tech/guides/share-your-travel-map/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://worldmap.tech/rehber/seyahat-haritasi-paylasma/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://worldmap.tech/guides/share-your-travel-map/"/></url>
 </urlset>
