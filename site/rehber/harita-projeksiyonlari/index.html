@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="tr">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Harita Projeksiyonları: Grönland Neden Bu Kadar Büyük? | worldmap.tech</title>
+<meta name="description" content="Grönland neden Afrika kadar görünür? Mercator, Gall-Peters ve Robinson neyi doğru, neyi yanlış gösterir; worldmap.tech hangi projeksiyonu kullanır?">
+<link rel="canonical" href="https://worldmap.tech/rehber/harita-projeksiyonlari/">
+<link rel="alternate" hreflang="en" href="https://worldmap.tech/guides/map-projections/">
+<link rel="alternate" hreflang="tr" href="https://worldmap.tech/rehber/harita-projeksiyonlari/">
+<link rel="alternate" hreflang="x-default" href="https://worldmap.tech/guides/map-projections/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="worldmap.tech">
+<meta property="og:url" content="https://worldmap.tech/rehber/harita-projeksiyonlari/">
+<meta property="og:title" content="Harita Projeksiyonları: Grönland Neden Bu Kadar Büyük? | worldmap.tech">
+<meta property="og:description" content="Grönland neden Afrika kadar görünür? Mercator, Gall-Peters ve Robinson neyi doğru, neyi yanlış gösterir; worldmap.tech hangi projeksiyonu kullanır?">
+<meta property="og:image" content="https://worldmap.tech/assets/og-tr.png?v=859e022de0">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Dünyanın yüzde kaçını gördün?">
+<meta property="og:locale" content="tr_TR">
+<meta property="og:locale:alternate" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/assets/icon.svg?v=2f3b2bb51b" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=b5c8c66347">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#e9f0f6" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0c141e" media="(prefers-color-scheme: dark)">
+<link rel="preload" href="/assets/fonts/figtree-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/fonts.css?v=d1df592a3e">
+<link rel="preload" href="/assets/fonts/bricolage-grotesque-latin-800-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/figtree-latin-500-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/figtree-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/page.css?v=d70848aa22">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Harita Projeksiyonları: Grönland Neden Bu Kadar Büyük?","description":"Grönland neden Afrika kadar görünür? Mercator, Gall-Peters ve Robinson neyi doğru, neyi yanlış gösterir; worldmap.tech hangi projeksiyonu kullanır?","inLanguage":"tr","datePublished":"2026-10-21","dateModified":"2026-10-21","mainEntityOfPage":"https://worldmap.tech/rehber/harita-projeksiyonlari/","image":"https://worldmap.tech/assets/og-tr.png","author":{"@type":"Person","name":"Kemal Ersun Gülbaş"},"publisher":{"@type":"Organization","name":"worldmap.tech","url":"https://worldmap.tech/","logo":{"@type":"ImageObject","url":"https://worldmap.tech/assets/icon-512.png"}}}</script>
+<header class="top"><a class="brand" href="/tr/">worldmap<span>.tech</span></a>
+<nav><a class="btn ghost" href="/guides/map-projections/" hreflang="en" lang="en">English</a><a class="btn" href="/tr/">Haritaya dön</a></nav></header>
+<main><article class="card">
+<p class="meta"><a href="/rehber/">Rehber</a> · 21 Ekim 2026</p>
+<h1>Harita Projeksiyonları: Grönland Neden Bu Kadar Büyük?</h1>
+<p>Düz bir dünya haritası mutlaka bir şeyi bozar, çünkü bir kürenin yüzeyi esnetilmeden ya da yırtılmadan düzleştirilemez. Harita projeksiyonu, haritacının neyden vazgeçeceğine dair verdiği karardır: şekillerin doğruluğundan mı, büyüklüklerin doğruluğundan mı, yoksa ikisinden biraz biraz mı? Grönland'ın bir haritada kıta gibi, başka bir haritada büyükçe bir ada gibi durmasının sebebi bu. worldmap.tech'teki harita Natural Earth projeksiyonunu kullanır: bütün dünyayı tek bakışta, hiçbir bölgeyi aşırı şişirmeden göstermek için tasarlanmış bir uzlaşma projeksiyonu.</p>
+<h2>Kusursuz bir düz harita neden yok?</h2>
+<p>Bir portakalı soy ve kabuğunu masaya dümdüz bastırmayı dene. Ya yırtılır ya da bazı yerlerini esnetmen gerekir. Matematikçi Carl Friedrich Gauss bunun matematiksel karşılığını kanıtladı: bir kürenin yüzeyi, bozulma olmadan bir düzleme aktarılamaz. Bu yüzden her dünya haritası bir takastır ve projeksiyonlar kabaca üç aileye ayrılır:</p>
+<ul><li><b>Açı koruyan (konform)</b> projeksiyonlar açıları ve küçük alanların şeklini doğru tutar, ama büyüklükler kayar.</li><li><b>Alan koruyan (eşit alanlı)</b> projeksiyonlar her bölgeyi gerçek oranıyla gösterir, ama bunun için şekilleri büker.</li><li><b>Uzlaşma</b> projeksiyonları ikisinde de kusursuzluktan vazgeçer ve her türlü hatayı makul düzeyde tutmaya çalışır.</li></ul>
+<p>Bunların hiçbiri &quot;doğru harita&quot; değil. Her biri farklı bir soruya cevap veriyor.</p>
+<h2>Mercator: Grönland ve Rusya neden dev gibi?</h2>
+<p>Flaman haritacı Gerardus Mercator projeksiyonunu 1569'da tanıttı. Açı koruyan bir projeksiyondur ve denizcilerin çok sevdiği bir özelliği vardır: pusulada sabit bir yönü izleyen rota, haritada düz bir çizgi olarak görünür. Pusulayla yön bulan biri için tam aranan şey.</p>
+<p>Bedeli ise büyüklük. Mercator karaları ekvatordan uzaklaştıkça giderek daha çok büyütür. 60. enlemde, kabaca Helsinki'nin bulunduğu yerde, her şey hem enine hem boyuna iki kat uzar; yani bir alan, ekvatordaki aynı büyüklükteki alana göre dört kat büyük görünür. Kutuplara doğru bu uzama hiç durmaz. Antarktika'nın haritanın altında uçsuz bucaksız beyaz bir şerit gibi durması bundan. Birkaç gerçek rakam farkı netleştiriyor:</p>
+<ul><li><b>Grönland ve Afrika:</b> Grönland yaklaşık 2,17 milyon km², Afrika yaklaşık 30,4 milyon km². Yani Afrika aşağı yukarı 14 kat büyük, ama Mercator haritasında ikisi neredeyse aynı boyda görünür.</li><li><b>Rusya ve Afrika:</b> Rusya yaklaşık 17,1 milyon km². Mercator'da Afrika'dan büyük görünür, oysa Afrika onun neredeyse iki katı.</li><li><b>Grönland ve Türkiye:</b> Türkiye'nin yüzölçümü yaklaşık 783 bin km². Grönland bunun üç katından biraz az; Cezayir (yaklaşık 2,38 milyon km²) ve Kongo Demokratik Cumhuriyeti (yaklaşık 2,34 milyon km²) ise Grönland'dan biraz daha büyük.</li></ul>
+<p>Peki Mercator internette neden hâlâ her yerde? Google Haritalar 2005'te onun bir türevini benimsedi (genellikle Web Mercator denir) ve bu, web haritalarının standardı hâline geldi; OpenStreetMap, Bing Haritalar ve Mapbox da aynısını kullanıyor. Bir şehre yakınlaştığında önemli olan, sokakların doğru açılarla kesişmesi ve bir dönel kavşağın yuvarlak görünmesidir. Neredeyse açı koruyan bir projeksiyon her yakınlaştırma düzeyinde tam bunu sağlar. Bu servisler, kutuplar sonsuz uzakta kalacağı için haritayı kuzeyde ve güneyde yaklaşık 85. enlemde keser. Kısacası Mercator, yakındaki bir kafeyi bulmak için harika; gezegenin bütününü anlamak içinse yanıltıcı.</p>
+<h2>Eşit alanlı haritalar: gerçek büyüklük, alışılmadık şekiller</h2>
+<p>Eşit alanlı projeksiyonlar büyüklük sorununu çözer: küre üzerinde aynı büyüklükte olan iki bölge, haritada da aynı yeri kaplar. En bilineni <b>Gall-Peters</b> projeksiyonudur. İlk kez 1855'te James Gall tarafından tanımlandı, 1973'ten itibaren de Arno Peters onu dünyanın daha adil bir resmi olarak tanıttı. Afrika'yı ve Güney Amerika'yı gerçek büyüklükleriyle gösterir, ama tropik bölgeler o kadar uzar ki Afrika kuzey-güney yönünde aşırı uzun görünür. ABD'de Boston devlet okulları Mart 2017'de sınıflarda Gall-Peters haritalarına geçmeye başlayınca tartışma yeniden gündeme geldi.</p>
+<p>Daha doğal görünen eşit alanlı projeksiyonlar da var. İlk kez 1805'te yayımlanan <b>Mollweide</b>, dünyayı 2'ye 1 oranında bir elips içinde gösterir; büyüklükler doğrudur, ama kenarlara yaklaştıkça şekiller belirgin biçimde bozulur. 2018'de Bojan Šavrič, Bernhard Jenny ve Tom Patterson tarafından yayımlanan <b>Equal Earth</b> ise Boston haberlerinin ardından Gall-Peters'a göze daha hoş gelen bir alternatif olarak tasarlandı. Popüler Robinson haritasına epey benzer, ama her alanı gerçek oranında tutar.</p>
+<h2>Uzlaşma haritaları: Robinson, Winkel Tripel ve Natural Earth</h2>
+<p>Atlasların çoğu uzlaşma projeksiyonlarını tercih eder. Arthur H. Robinson, <b>Robinson</b> projeksiyonunu 1963'te geliştirdi; National Geographic de 1988'den itibaren dünya haritalarında bunu kullandı. 1998'de ise Oswald Winkel'in 1921'de önerdiği <b>Winkel Tripel</b> projeksiyonuna geçti. Almancada &quot;üçlü&quot; anlamına gelen &quot;Tripel&quot;, Winkel'in üç tür bozulmayı birden azaltma hedefinden geliyor: alan, yön ve mesafe.</p>
+<p><b>Natural Earth</b> projeksiyonu bu ailenin daha genç bir üyesi. ABD Ulusal Park Servisi'nden haritacı Tom Patterson onu 2007'de tasarladı; Robinson projeksiyonundan yola çıktı ve haritayı biraz daha yüksek yaptı. Ne açı koruyan ne de eşit alanlıdır. Onu, haritanın yan kenarlarının düz kutup çizgileriyle buluştuğu yuvarlatılmış köşelerinden tanıyabilirsin; Dünya'nın yuvarlak olduğunu hatırlatan küçük bir ayrıntı. Robinson gibi o da yüksek enlemleri biraz büyütür, ama bu büyütme Mercator'dakinin yanında çok hafif kalır.</p>
+<h2>worldmap.tech hangisini kullanıyor ve neden?</h2>
+<p>worldmap.tech'teki <a href="/tr/">dünya haritası</a>, Natural Earth projeksiyonuyla çiziliyor (d3'ün geoNaturalEarth1 projeksiyonu). Ülke sınırları da Natural Earth'ten geliyor: gönüllülerin hazırladığı, Kuzey Amerikalı kartografların derneği NACIS'in desteklediği, kamu malı bir harita veri seti. Biz onun orta ölçekli 1:50m sürümünü kullanıyoruz. İsim benzerliği tesadüf değil: projeksiyonu tasarlayan Tom Patterson, veri setinin ilk yazarlarından biri. Yine de ikisi ayrı şeyler: biri kürenin nasıl düzleştirildiği, öteki ülkelerin şekilleri.</p>
+<p>Gezdiğin ülkeleri gösteren bir harita için uzlaşma mantıklı bir seçim. Bütün dünyayı tek ekranda görmek, her kıtayı bir bakışta tanımak istersin ve Grönland'ın ya da Rusya'nın resmin yarısını yutmasını istemezsin. Küçük ülkeler elbette yine küçük kalır; arama kutusu tam da bunun için var.</p>
+<h2>Büyük mavi alan, dünyadan büyük pay demek değil</h2>
+<p>Bu fark, kendi haritana bakarken önemli. Büyük bir ülke ekranın büyük kısmını kaplar, ama uygulamada yine tek bir ülkedir. Yüzde, toprak büyüklüğünü değil ülke sayısını ölçer: işaretlediğin ülke sayısı 195'e bölünür, yani BM'ye üye 193 ülke artı Vatikan ve Filistin. Rusya dünyadaki karaların yaklaşık %11'ini kaplar, ama onu işaretlemek de Vatikan'ı işaretlemek de sana aynı 1/195'i, yani yaklaşık 0,5 puanı kazandırır.</p>
+<p>Bu iki yönlü işler. Rusya, Kanada, Çin, ABD, Brezilya ve Avustralya'yı, yani yüzölçümü en büyük altı ülkeyi gezersen haritan göz alıcı biçimde maviye boyanır, ama dünyanın yalnızca %3'ünü görmüş olursun. Birkaç yazı Avrupa'da yirmi ülke gezerek geçirirsen mavi alan oldukça küçük kalır, ama %10'a ulaşmış ve Dünya Gezgini olmuşsundur. 195 sayısının nereden geldiğini <a href="/rehber/dunyada-kac-ulke-var/">dünyada kaç ülke var</a> yazısında, her eşiği de <a href="/rehber/gezgin-seviyeleri/">gezgin seviyeleri</a> rehberinde bulabilirsin.</p>
+<p>Haritayı aç, gittiğin ülkelere dokun ve ekranın ne kadarının maviye döndüğünü gerçek ülke sayınla bir karşılaştır.</p>
+<p><a class="btn" href="/tr/">Haritanı işaretle</a></p>
+<h2>Diğer yazılar</h2>
+<ul class="guides"><li><a href="/rehber/dunyada-kac-ulke-var/">Dünyada Kaç Ülke Var? Cevap Kime Sorduğuna Bağlı</a><br><span class="meta">En yaygın cevap 195, ama sayı listeyi kimin tuttuğuna göre değişiyor. BM üyeleri, gözlemci devletler, bağımlı bölgeler ve haritamızın sayma yöntemi.</span></li><li><a href="/rehber/hangi-ziyaret-sayilir/">Bir Ülkeye Gitmiş Sayılmak İçin Ne Gerekir?</a><br><span class="meta">Aktarma, kruvaziyer molası, birkaç saatlik sınır geçişi, mini devletler: hangi ziyaretin sayılacağına karar vermen için pratik kurallar.</span></li><li><a href="/rehber/gezgin-seviyeleri/">Gezgin Seviyeleri ve Dünya Yüzdesi Nasıl Hesaplanır?</a><br><span class="meta">worldmap.tech'te gezgin seviyeleri gerçekte neye benzer, dünyanın yüzde kaçını gördüğün 195 üzerinden nasıl hesaplanır, sonraki seviyeye nasıl geçersin?</span></li><li><a href="/rehber/bir-seyahatte-cok-ulke/">Bir Seyahatte Birden Çok Ülke Gezebileceğin 9 Bölge</a><br><span class="meta">Küçük ve birbirine yakın ülkeler sayesinde tek seyahatte birkaç ülke görebileceğin 9 bölge: örnek rotalar, ulaşım seçenekleri ve pratik ipuçları.</span></li><li><a href="/rehber/seyahat-haritasi-paylasma/">Seyahat Haritanı Paylaşmak: Format, Link ve Fikirler</a><br><span class="meta">Doğru görsel formatını seç, QR kod ekle, bütün haritanı taşıyan linki gönder, arkadaşlarınla karşılaştır ve paylaşırken gizliliğini unutma.</span></li></ul>
+</article></main>
+<footer class="foot">Bilgiler genel amaçlıdır ve hiçbir garanti verilmeden sunulur.<br><a href="/rehber/">Rehber</a> <i>·</i> <a href="/hakkinda/">Hakkında</a> <i>·</i> <a href="/kosullar/">Koşullar</a> <i>·</i> <a href="/gizlilik/">Gizlilik</a> <i>·</i> <a href="/sss/">SSS</a> <i>·</i> <a href="/kosullar/#iletisim">İletişim</a> <i>·</i> <a href="mailto:iletisim@worldmap.tech">iletisim@worldmap.tech</a><br>© 2026 worldmap.tech · Tüm hakları saklıdır.</footer>
+</html>

@@ -6,7 +6,7 @@ Haritada bir ülkeye dokun, açık maviye dönsün; bir daha dokunursan geri al�
 
 ### Kaydet, paylaş, karşılaştır
 
-Kaydet'e dokun; Hikâye, Kare ya da Geniş formatta temiz bir görsel doğrudan cihazında hazırlansın, istersen haritana giden bir QR kodla. Linkini arkadaşlarına gönder: birinin linkini açtığında iki harita tek ekranda buluşur, ikinizin de gittiği ülkeler mor yanar.
+Kaydet'e dokun; Hikâye, Kare ya da Yatay formatta temiz bir görsel doğrudan cihazında hazırlansın, istersen haritana giden bir QR kodla. Linkini arkadaşlarına gönder: birinin linkini açtığında iki harita tek ekranda buluşur, ikinizin de gittiği ülkeler mor yanar.
 
 ### Üyelik yok, dert yok
 

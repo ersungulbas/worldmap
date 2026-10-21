@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Map Projections: Why Every World Map Is a Little Wrong | worldmap.tech</title>
+<meta name="description" content="Why Greenland looks as big as Africa, what Mercator, Gall-Peters and Robinson get right and wrong, and which projection worldmap.tech uses.">
+<link rel="canonical" href="https://worldmap.tech/guides/map-projections/">
+<link rel="alternate" hreflang="en" href="https://worldmap.tech/guides/map-projections/">
+<link rel="alternate" hreflang="tr" href="https://worldmap.tech/rehber/harita-projeksiyonlari/">
+<link rel="alternate" hreflang="x-default" href="https://worldmap.tech/guides/map-projections/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="worldmap.tech">
+<meta property="og:url" content="https://worldmap.tech/guides/map-projections/">
+<meta property="og:title" content="Map Projections: Why Every World Map Is a Little Wrong | worldmap.tech">
+<meta property="og:description" content="Why Greenland looks as big as Africa, what Mercator, Gall-Peters and Robinson get right and wrong, and which projection worldmap.tech uses.">
+<meta property="og:image" content="https://worldmap.tech/assets/og-en.png?v=5e120716b3">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="How much of the world have you seen?">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="tr_TR">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/assets/icon.svg?v=2f3b2bb51b" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=b5c8c66347">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#e9f0f6" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0c141e" media="(prefers-color-scheme: dark)">
+<link rel="preload" href="/assets/fonts/figtree-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/fonts.css?v=d1df592a3e">
+<link rel="preload" href="/assets/fonts/bricolage-grotesque-latin-800-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/figtree-latin-500-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/figtree-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/page.css?v=d70848aa22">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Map Projections: Why Every World Map Is a Little Wrong","description":"Why Greenland looks as big as Africa, what Mercator, Gall-Peters and Robinson get right and wrong, and which projection worldmap.tech uses.","inLanguage":"en","datePublished":"2026-10-21","dateModified":"2026-10-21","mainEntityOfPage":"https://worldmap.tech/guides/map-projections/","image":"https://worldmap.tech/assets/og-en.png","author":{"@type":"Person","name":"Kemal Ersun Gülbaş"},"publisher":{"@type":"Organization","name":"worldmap.tech","url":"https://worldmap.tech/","logo":{"@type":"ImageObject","url":"https://worldmap.tech/assets/icon-512.png"}}}</script>
+<header class="top"><a class="brand" href="/">worldmap<span>.tech</span></a>
+<nav><a class="btn ghost" href="/rehber/harita-projeksiyonlari/" hreflang="tr" lang="tr">Türkçe</a><a class="btn" href="/">Back to the map</a></nav></header>
+<main><article class="card">
+<p class="meta"><a href="/guides/">Guides</a> · October 21, 2026</p>
+<h1>Map Projections: Why Every World Map Is a Little Wrong</h1>
+<p>Every flat world map distorts something, because the surface of a globe cannot be spread flat without stretching or tearing it. A map projection is the mapmaker's choice of what to give up: true shapes, true sizes, or a little of each. That choice is why Greenland can look like a continent on one map and a large island on another. worldmap.tech uses the Natural Earth projection, a compromise that shows the whole world at once without any region looking wildly out of proportion.</p>
+<h2>Why no flat map can be perfect</h2>
+<p>Peel an orange and try to press the peel flat. It splits, or you have to stretch parts of it. The mathematician Carl Friedrich Gauss proved the formal version: the surface of a sphere cannot be shown on a plane without distortion. So every world map is a trade-off, and projections fall into three broad families:</p>
+<ul><li><b>Conformal</b> projections keep angles and the shapes of small areas correct, but let sizes drift.</li><li><b>Equal-area</b> projections keep every region at its true relative size, but bend shapes to do it.</li><li><b>Compromise</b> projections give up on perfection in both, aiming to keep every kind of error modest.</li></ul>
+<p>None of them is &quot;the correct map&quot;; each answers a different question.</p>
+<h2>Mercator: why Greenland and Russia look enormous</h2>
+<p>Flemish mapmaker Gerardus Mercator presented his projection in 1569. It is conformal, and sailors loved one property in particular: a course with a constant compass bearing is a straight line on the map.</p>
+<p>The cost is size: Mercator enlarges land more the farther it lies from the equator. At 60° latitude, roughly where Helsinki sits, everything is stretched to twice its width and twice its height, so areas look four times bigger than at the equator. Toward the poles the stretching never stops, which is why Antarctica becomes an endless white strip along the bottom. Some real numbers:</p>
+<ul><li><b>Greenland vs Africa:</b> Greenland covers about 2.17 million km² and Africa about 30.4 million km², so Africa is roughly 14 times larger. On a Mercator map they look about the same size.</li><li><b>Russia vs Africa:</b> Russia covers about 17.1 million km². On Mercator it looks bigger than Africa, yet Africa is nearly twice its size.</li><li><b>Greenland vs Algeria:</b> Algeria, at about 2.38 million km², is slightly larger than Greenland.</li></ul>
+<p>So why is Mercator still everywhere online? Google Maps adopted a variant called Web Mercator in 2005, and it became the standard for web maps, used by OpenStreetMap, Bing Maps and Mapbox too. When you zoom into a city, you need streets to cross at the right angles and roundabouts to look round, and a near-conformal projection delivers that at every zoom level. These services simply cut the map off at about 85° north and south, since the poles would sit infinitely far away. Mercator is excellent for finding a café and a poor picture of the whole planet.</p>
+<h2>Equal-area maps: true sizes, unusual shapes</h2>
+<p>Equal-area projections fix the size problem: two regions that are equally large on the globe take up equal space on the map. The best known is the <b>Gall-Peters</b> projection, first described by James Gall in 1855 and promoted by Arno Peters from 1973 as a fairer picture of the world. It does show Africa and South America at their true size, but the tropics get stretched so much that Africa looks extremely elongated from north to south. Boston Public Schools began phasing in Gall-Peters maps in March 2017.</p>
+<p>Other equal-area projections look more natural. <b>Mollweide</b>, first published in 1805, draws the world as a 2:1 ellipse; sizes are true, while shapes get noticeably distorted toward the edges. <b>Equal Earth</b>, published in 2018 by Bojan Šavrič, Bernhard Jenny and Tom Patterson, was designed after the Boston coverage as a better-looking alternative to Gall-Peters: it resembles the popular Robinson map but keeps every area true.</p>
+<h2>Compromise maps: Robinson, Winkel Tripel and Natural Earth</h2>
+<p>Most atlases favor compromises. Arthur H. Robinson devised the <b>Robinson</b> projection in 1963, and National Geographic used it for its world maps from 1988. In 1998 the society switched to the <b>Winkel Tripel</b>, proposed by Oswald Winkel in 1921. &quot;Tripel&quot; is German for triple, after Winkel's goal of minimizing three kinds of distortion: area, direction and distance.</p>
+<p>The <b>Natural Earth</b> projection is a younger member of this family. Cartographer Tom Patterson of the US National Park Service designed it in 2007, starting from the Robinson projection and making it slightly taller. Neither conformal nor equal-area, it is easy to recognize by its rounded corners where the sides meet the flat pole lines, a small hint that the Earth is round. Like Robinson, it still enlarges high latitudes somewhat, just nowhere near as much as Mercator does.</p>
+<h2>What worldmap.tech uses, and why</h2>
+<p>The <a href="/">world map</a> on worldmap.tech is drawn with the Natural Earth projection (d3's geoNaturalEarth1). The country outlines come from Natural Earth's public domain dataset, built by volunteers with support from the North American Cartographic Information Society, at its medium 1:50m scale. The shared name is no coincidence: Tom Patterson designed the projection and co-authored the original dataset. Still, they are separate things: one flattens the globe, the other draws the countries.</p>
+<p>For a visited-countries map, a compromise makes sense. You want the whole world on one screen, every continent recognizable at a glance, and no Greenland or Russia swallowing half the picture. Small countries are still small, of course, which is what the search box is for.</p>
+<h2>A big blue area is not a big share of the world</h2>
+<p>A large country fills a lot of the screen, but in the app it is still one country. The percentage counts countries, not land: it is the number of countries you've marked divided by 195, the 193 UN member states plus Vatican City and Palestine. Russia covers about 11% of the world's land, yet marking it adds the same 1/195, about half a percentage point, as marking Vatican City.</p>
+<p>That cuts both ways. Visit Russia, Canada, China, the United States, Brazil and Australia, the six largest countries by area, and your map turns impressively blue, but you are at 3%. Spend a few summers crossing twenty European countries and the blue patch stays fairly small, yet you are at 10% and already a Globetrotter. <a href="/guides/how-many-countries-are-there/">How many countries there are</a> explains the 195, and the <a href="/guides/traveler-levels/">traveler levels guide</a> covers each milestone.</p>
+<p>Open the map, tap the countries you've been to, and compare how much turns blue with your actual count.</p>
+<p><a class="btn" href="/">Mark your map</a></p>
+<h2>More guides</h2>
+<ul class="guides"><li><a href="/guides/how-many-countries-are-there/">How Many Countries Are There in the World?</a><br><span class="meta">Most lists say 195, but it depends on who's counting. How UN members, observer states and territories add up, and how our map counts them.</span></li><li><a href="/guides/what-counts-as-visiting-a-country/">What Counts as Visiting a Country?</a><br><span class="meta">Airport layovers, cruise stops, border hops and microstates: practical rules for deciding which countries count, and why consistency matters most.</span></li><li><a href="/guides/traveler-levels/">Traveler Levels and Your % of the World, Explained</a><br><span class="meta">What each worldmap.tech traveler level looks like in real life, how your % of the world is calculated out of 195, and honest ways to reach the next level.</span></li><li><a href="/guides/visit-many-countries-in-one-trip/">How to Visit Several Countries in One Trip</a><br><span class="meta">Nine regions where small, close-together countries make multi-country trips easy, from Benelux and the Baltics to the Caucasus, with routes and tips.</span></li><li><a href="/guides/share-your-travel-map/">How to Share Your Travel Map: Formats, Links and Ideas</a><br><span class="meta">Pick the right image format, add a QR code, send a link that holds your whole map, compare with friends and keep your privacy in mind when you post.</span></li></ul>
+</article></main>
+<footer class="foot">Information is for general purposes only and provided without warranty.<br><a href="/guides/">Guides</a> <i>·</i> <a href="/about/">About</a> <i>·</i> <a href="/terms/">Terms</a> <i>·</i> <a href="/privacy/">Privacy</a> <i>·</i> <a href="/faq/">FAQ</a> <i>·</i> <a href="/terms/#contact">Contact</a> <i>·</i> <a href="mailto:iletisim@worldmap.tech">iletisim@worldmap.tech</a><br>© 2026 worldmap.tech · All rights reserved.</footer>
+</html>
