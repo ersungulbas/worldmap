@@ -37,9 +37,22 @@
 [hidden]{display:none!important}
 #cmp,#iab,#linkout{box-sizing:border-box}
 html,body{height:100%}
-body{background:var(--ocean);color:var(--ink);font-family:var(--f-body);overflow:hidden;
+body{background:var(--ocean);color:var(--ink);font-family:var(--f-body);overflow-x:hidden;overflow-y:auto;
   -webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
 #app{position:fixed;inset:0}
+/* site only: the map fills the first screen and the intro text sits below it */
+body:has(#intro){margin:0}
+body:has(#intro) #app{position:relative;inset:auto;height:100vh;height:100svh}
+#intro{max-width:760px;margin:0 auto;padding:40px 20px calc(48px + env(safe-area-inset-bottom,0px));font-size:16.5px;line-height:1.65;-webkit-user-select:text;user-select:text}
+#intro h2{font:800 clamp(24px,4.4vw,32px)/1.2 var(--f-display);margin:36px 0 12px;letter-spacing:-.01em}
+#intro h2:first-child{margin-top:0}
+#intro ul{padding-left:20px}
+#intro li{margin:6px 0}
+#intro a{color:var(--accent);font-weight:700}
+#intro details{border-top:1px solid var(--chrome-line);padding:10px 0}
+#intro summary{font-weight:700;cursor:pointer}
+#intro details p{margin:8px 0 0}
+#intro .more{color:var(--muted);font-size:14px;border-top:1px solid var(--chrome-line);margin-top:36px;padding-top:16px}
 #map{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none;cursor:grab}
 #map:active{cursor:grabbing}
 .c{fill:var(--land);stroke:var(--border);stroke-width:.7;vector-effect:non-scaling-stroke;stroke-linejoin:round;transition:fill .25s ease}
@@ -128,7 +141,7 @@ button:focus-visible,#q:focus-visible{outline:2px solid var(--accent);outline-of
   background:color-mix(in srgb,var(--ocean) 84%,transparent);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-top:1px solid var(--chrome-line)}
 #legal a,#legal button{color:inherit;font:inherit;font-weight:700;text-decoration:none;background:none;border:0;padding:0;cursor:pointer;white-space:nowrap}
 #legal a:hover,#legal button:hover{color:var(--ink);text-decoration:underline}
-#legal i{font-style:normal;opacity:.45;margin:0 6px}
+#legal i{font-style:normal;opacity:.45;margin:0 6px;display:inline-block}
 a:focus-visible,#legal button:focus-visible,#res .tg:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:3px}
 .sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 /* consent banner: Accept and Reject look the same on purpose */
@@ -200,6 +213,7 @@ a:focus-visible,#legal button:focus-visible,#res .tg:focus-visible{outline:2px s
   <div id="consent" class="chip" role="region" aria-labelledby="consentP" hidden><p id="consentP"></p><div class="btns"><button id="cNo"></button><button id="cYes"></button></div></div>
   <footer id="legal"></footer>
 </div>
+<!--INTRO-->
 <div id="sheet" role="dialog" aria-modal="true" hidden>
   <div class="fmtrow"><div id="fmt" class="seg chip" role="group"><button data-f="story"></button><button data-f="square"></button><button data-f="wide"></button></div><button id="qrT" class="chip" aria-pressed="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 3h8v8H3zm2 2v4h4V5zm8-2h8v8h-8zm2 2v4h4V5zM3 13h8v8H3zm2 2v4h4v-4zm8-2h3v3h-3zm5 0h3v3h-3zm-5 5h3v3h-3zm5 0h3v3h-3zm-2.5-2.5h3v3h-3z"/></svg>QR</button></div>
   <div id="shotbox"><img id="shot" alt=""></div>
@@ -248,7 +262,7 @@ const T = TR ? {
   codeReady:"Kodun hazır, bir yere not et", codeCopied:"Kod kopyalandı", codeGone:"Kod ve sunucudaki kaydı silindi", codeTitle:"Geri yükleme kodu",
   codeText:"Başka cihazda aldığın 8 haneli kodu yaz, haritan buraya gelsin.", codeLoad:"Yükle", cancel:"Vazgeç", codeBad:"Kod 8 karakter olmalı.",
   codeNotFound:"Bu kodla kayıtlı bir harita bulamadık.", codeNet:"Bağlantı kurulamadı, biraz sonra tekrar dene.", haveCode:"Başka cihazda başladıysan: kodla geri yükle",
-  footer:"__FOOTER_TR__", guides:"Rehber", terms:"Koşullar", privacy:"Gizlilik", faq:"SSS", contact:"İletişim", prefs:"Çerez tercihleri", langName:"English",
+  footer:"__FOOTER_TR__", how:"Nasıl çalışır?", guides:"Rehber", terms:"Koşullar", privacy:"Gizlilik", faq:"SSS", contact:"İletişim", prefs:"Çerez tercihleri", langName:"English",
   consent:"__CONSENT_TR__", accept:"__ACCEPT_TR__", reject:"__REJECT_TR__", ad:"Reklam"
 } : {
   search:"Search a country", hint:"Tap to mark · Tap again to remove", countries:"countries", save:"Save",
@@ -261,7 +275,7 @@ const T = TR ? {
   codeReady:"Your code is ready, write it down", codeCopied:"Code copied", codeGone:"Code and its server copy deleted", codeTitle:"Restore code",
   codeText:"Enter the 8-character code you got on your other device to bring your map here.", codeLoad:"Restore", cancel:"Cancel", codeBad:"The code has 8 characters.",
   codeNotFound:"We couldn't find a map with this code.", codeNet:"Couldn't connect, please try again in a moment.", haveCode:"Started on another device? Restore with a code",
-  footer:"__FOOTER_EN__", guides:"Guides", terms:"Terms", privacy:"Privacy", faq:"FAQ", contact:"Contact", prefs:"Cookie preferences", langName:"Türkçe",
+  footer:"__FOOTER_EN__", how:"How it works", guides:"Guides", terms:"Terms", privacy:"Privacy", faq:"FAQ", contact:"Contact", prefs:"Cookie preferences", langName:"Türkçe",
   consent:"__CONSENT_EN__", accept:"__ACCEPT_EN__", reject:"__REJECT_EN__", ad:"Advertisement"
 };
 document.documentElement.lang = TR ? "tr" : "en";
@@ -604,6 +618,12 @@ $("cmpX").onclick = () => {
   try { history.replaceState(null, "", location.pathname + location.search); } catch(e){}
 };
 window.addEventListener("hashchange", () => { const f = parseHash(); if (f){ friend = f; updCompare(); } });
+// in-page links (#intro, #app) scroll without touching the hash, which holds the map link
+document.addEventListener("click", e => {
+  const a = e.target.closest && e.target.closest('a[href^="#"]'); if (!a) return;
+  const t = document.getElementById(a.getAttribute("href").slice(1)); if (!t) return;
+  e.preventDefault(); t.scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"});
+});
 
 // ---------- clear all (tap once to arm, tap again to confirm) ----------
 let armT=0;
@@ -992,6 +1012,7 @@ function renderLegal(){
   const sep = () => { const i = document.createElement("i"); i.textContent = "·"; i.setAttribute("aria-hidden","true"); f.appendChild(i); };
   const link = (href, text) => { sep(); const a = document.createElement("a"); a.href = BASE + href; a.textContent = text; if (!SITE){ a.target = "_blank"; a.rel = "noopener"; } f.appendChild(a); return a; };
   f.innerHTML = ""; const d = document.createElement("span"); d.textContent = T.footer; f.appendChild(d);
+  if (SITE && $("intro")) link("#intro", T.how);
   link(L.guides, T.guides); link(L.terms, T.terms); link(L.privacy, T.privacy); link(L.faq, T.faq); link(L.contact, T.contact);
   if (ADS){ sep(); const b = document.createElement("button"); b.type = "button"; b.textContent = T.prefs; b.onclick = openPrefs; f.appendChild(b); }
   if (SITE){

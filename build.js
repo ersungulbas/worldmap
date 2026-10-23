@@ -50,7 +50,7 @@ const FAQ = { tr: readJ(content('faq.tr.json')), en: readJ(content('faq.en.json'
   for (const [k, v] of Object.entries(S)) src = src.split(k).join(String(v).replace(/\\/g, '\\\\').replace(/"/g, '\\"'));
   const fill = (h, o) => h.replace('__CFG__', () => JSON.stringify(o.cfg)).replace('__WORLDSRC__', () => o.worldSrc || '')
     .replace('__WORLD__', () => o.world || '').replace('__NAMES__', () => names).replace('__QR__', () => qrMin)
-    .replace('<!--HEAD-->', () => o.head).replace('<!--LIBS-->', () => o.libs);
+    .replace('<!--HEAD-->', () => o.head).replace('<!--LIBS-->', () => o.libs).replace('<!--INTRO-->', () => o.intro || '');
 
   // ---------- 1. artifact preview ----------
   const artifact = fill(src, {
@@ -139,6 +139,16 @@ const FAQ = { tr: readJ(content('faq.tr.json')), en: readJ(content('faq.en.json'
     tr: { back: 'Haritaya dön', other: 'English', foot: S.__FOOTER_TR__, faq: 'SSS', about: 'Hakkında', guides: 'Rehber', privacy: 'Gizlilik', terms: 'Koşullar', contact: 'İletişim', contactP: '/kosullar/#iletisim', rights: 'Tüm hakları saklıdır.', self: 'Türkçe' },
     en: { back: 'Back to the map', other: 'Türkçe', foot: S.__FOOTER_EN__, faq: 'FAQ', about: 'About', guides: 'Guides', privacy: 'Privacy', terms: 'Terms', contact: 'Contact', contactP: '/terms/#contact', rights: 'All rights reserved.', self: 'English' }
   };
+  // small markdown: ## headings, - lists, **bold**, [links](/path/)
+  const md = s => s.split(/\n{2,}/).map(b => {
+    b = b.trim(); if (!b) return '';
+    const inl = x => esc(x).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, '<a href="$2">$1</a>');
+    if (b.startsWith('### ')) return `<h3>${inl(b.slice(4))}</h3>`;
+    if (b.startsWith('## ')) return `<h2>${inl(b.slice(3))}</h2>`;
+    if (b.startsWith('# ')) return `<h2>${inl(b.slice(2))}</h2>`;
+    if (/^- /m.test(b)) return '<ul>' + b.split('\n').map(l => `<li>${inl(l.replace(/^- /, ''))}</li>`).join('') + '</ul>';
+    return `<p>${inl(b.replace(/\n/g, ' '))}</p>`;
+  }).join('\n');
   // app pages: "/" is English, "/tr/" Turkish; Turkish browsers landing on "/" go to "/tr/" unless they chose English
   const langRedirect = `<script>(function(){try{var p=localStorage.getItem("wmn.lang"),h=location.hash,t=location.pathname;if(t==="/"&&(p==="tr"||(!p&&/^tr\\b/i.test(navigator.language||""))))location.replace("/tr/"+h);else if(t==="/tr/"&&p==="en")location.replace("/"+h);}catch(e){}})();</script>`;
   for (const lang of ['en', 'tr']) {
@@ -162,15 +172,26 @@ ${langRedirect}
     const noscript = `<noscript><div style="position:fixed;inset:0;z-index:50;background:var(--ocean);padding:32px 20px;font:500 17px/1.6 var(--f-body)">
 <p><b>worldmap.tech</b></p><p>${esc(m.description)}</p><p>${lang === 'tr' ? 'Harita JavaScript ile çalışır.' : 'The map needs JavaScript.'}</p>
 <p><a href="${P.guides}">${lang === 'tr' ? 'Rehber' : 'Guides'}</a> · <a href="${P.about}">${lang === 'tr' ? 'Hakkında' : 'About'}</a> · <a href="${P.faq}">${lang === 'tr' ? 'Sıkça sorulan sorular' : 'FAQ'}</a> · <a href="${P.privacy}">${lang === 'tr' ? 'Gizlilik' : 'Privacy'}</a> · <a href="${P.terms}">${lang === 'tr' ? 'Koşullar' : 'Terms'}</a></p></div></noscript>`;
+    // text under the map: what the tool is, how to use it, a few FAQ answers and the guides
+    const tr = lang === 'tr', homeF = content(`home.${lang}.md`);
+    const intro = fs.existsSync(homeF) ? `<section id="intro" aria-label="${tr ? 'worldmap.tech hakkında' : 'About worldmap.tech'}">
+${md(read(homeF))}
+<h2>${tr ? 'Sıkça sorulan sorular' : 'Frequently asked questions'}</h2>
+${FAQ[lang].slice(0, 5).map(x => `<details><summary>${esc(x.q)}</summary><p>${esc(x.a)}</p></details>`).join('\n')}
+<p><a href="${P.faq}">${tr ? 'Tüm sorular ve cevaplar' : 'All questions and answers'}</a></p>
+${gkeys.length ? `<h2>${tr ? 'Rehber' : 'Guides'}</h2>
+<ul>${gkeys.map(k => { const g = GUIDES[k][lang].meta; return `<li><a href="${P['g:' + k]}">${esc(g.title)}</a><br>${esc(g.description)}</li>`; }).join('')}</ul>` : ''}
+<p class="more"><a href="${P.about}">${T[lang].about}</a> · <a href="${P.guides}">${T[lang].guides}</a> · <a href="${P.faq}">${T[lang].faq}</a> · <a href="${P.privacy}">${T[lang].privacy}</a> · <a href="${P.terms}">${T[lang].terms}</a> · <a href="#app">${T[lang].back}</a></p>
+</section>` : '';
     let html = fill(src, {
-      cfg: { env: 'site', lang, ads: ADS }, worldSrc: ` data-src="/assets/world.json?v=${V['world.json']}"`,
+      cfg: { env: 'site', lang, ads: ADS }, intro, worldSrc: ` data-src="/assets/world.json?v=${V['world.json']}"`,
       head, libs: `<script defer src="/assets/d3.min.js?v=${V['d3.min.js']}"></script>
 <script defer src="/assets/topojson-client.min.js?v=${V['topojson-client.min.js']}"></script>`
     });
     html = html.replace('<div id="app">', noscript + '\n<div id="app">');
     // the bottom strip is in the HTML from the start (first paint); the app re-renders it with handlers
     const o = other(lang), Ts = T[lang], sepI = '<i aria-hidden="true">·</i>';
-    const strip = `<span>${esc(Ts.foot)}</span>${sepI}<a href="${P.guides}">${Ts.guides}</a>${sepI}<a href="${P.terms}">${Ts.terms}</a>${sepI}<a href="${P.privacy}">${Ts.privacy}</a>${sepI}<a href="${P.faq}">${Ts.faq}</a>${sepI}<a href="${Ts.contactP}">${Ts.contact}</a>`
+    const strip = `<span>${esc(Ts.foot)}</span>${intro ? `${sepI}<a href="#intro">${tr ? 'Nasıl çalışır?' : 'How it works'}</a>` : ''}${sepI}<a href="${P.guides}">${Ts.guides}</a>${sepI}<a href="${P.terms}">${Ts.terms}</a>${sepI}<a href="${P.privacy}">${Ts.privacy}</a>${sepI}<a href="${P.faq}">${Ts.faq}</a>${sepI}<a href="${Ts.contactP}">${Ts.contact}</a>`
       + (ADS_ON ? `${sepI}<button type="button">${lang === 'tr' ? 'Çerez tercihleri' : 'Cookie preferences'}</button>` : '')
       + `${sepI}<a href="${PAGES[o].app}" hreflang="${o}" lang="${o}">${T[o].self}</a>`;
     html = html.replace('<footer id="legal"></footer>', `<footer id="legal">${strip}</footer>`);
@@ -211,15 +232,6 @@ ${body}
 </html>
 `;
   };
-  const md = s => s.split(/\n{2,}/).map(b => {
-    b = b.trim(); if (!b) return '';
-    const inl = x => esc(x).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, '<a href="$2">$1</a>');
-    if (b.startsWith('### ')) return `<h3>${inl(b.slice(4))}</h3>`;
-    if (b.startsWith('## ')) return `<h2>${inl(b.slice(3))}</h2>`;
-    if (b.startsWith('# ')) return `<h2>${inl(b.slice(2))}</h2>`;
-    if (/^- /m.test(b)) return '<ul>' + b.split('\n').map(l => `<li>${inl(l.replace(/^- /, ''))}</li>`).join('') + '</ul>';
-    return `<p>${inl(b.replace(/\n/g, ' '))}</p>`;
-  }).join('\n');
   for (const lang of ['tr', 'en']) {
     const m = META[lang], P = PAGES[lang];
     const faqLd = { '@context': 'https://schema.org', '@type': 'FAQPage', inLanguage: lang,
