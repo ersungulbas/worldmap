@@ -1008,7 +1008,7 @@ async function initConsent(){
 // ---------- bottom strip: disclaimer + legal links (+ language switch on the site) ----------
 function renderLegal(){
   const f = $("legal"), BASE = SITE ? "" : "https://worldmap.tech";
-  const L = TR ? {guides:"/rehber/", terms:"/kosullar/", privacy:"/gizlilik/", faq:"/sss/", contact:"/kosullar/#iletisim", other:"/", lang:"en"} : {guides:"/guides/", terms:"/terms/", privacy:"/privacy/", faq:"/faq/", contact:"/terms/#contact", other:"/tr/", lang:"tr"};
+  const L = TR ? {guides:"/rehber/", terms:"/kosullar/", privacy:"/gizlilik/", faq:"/sss/", contact:"/iletisim/", other:"/", lang:"en"} : {guides:"/guides/", terms:"/terms/", privacy:"/privacy/", faq:"/faq/", contact:"/contact/", other:"/tr/", lang:"tr"};
   const sep = () => { const i = document.createElement("i"); i.textContent = "·"; i.setAttribute("aria-hidden","true"); f.appendChild(i); };
   const link = (href, text) => { sep(); const a = document.createElement("a"); a.href = BASE + href; a.textContent = text; if (!SITE){ a.target = "_blank"; a.rel = "noopener"; } f.appendChild(a); return a; };
   f.innerHTML = ""; const d = document.createElement("span"); d.textContent = T.footer; f.appendChild(d);

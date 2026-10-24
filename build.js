@@ -88,7 +88,8 @@ const FAQ = { tr: readJ(content('faq.tr.json')), en: readJ(content('faq.en.json'
   for (const f of fs.readdirSync('static/assets')) asset(f, fs.readFileSync('static/assets/' + f));
   copy('static/favicon.ico', 'favicon.ico');
 
-  const PAGES = { tr: { app: '/tr/', faq: '/sss/', about: '/hakkinda/', privacy: '/gizlilik/', terms: '/kosullar/' }, en: { app: '/', faq: '/faq/', about: '/about/', privacy: '/privacy/', terms: '/terms/' } };
+  const PAGES = { tr: { app: '/tr/', faq: '/sss/', about: '/hakkinda/', contact: '/iletisim/', privacy: '/gizlilik/', terms: '/kosullar/' },
+    en: { app: '/', faq: '/faq/', about: '/about/', contact: '/contact/', privacy: '/privacy/', terms: '/terms/' } };
   const other = l => l === 'tr' ? 'en' : 'tr';
   // guides ("Rehber"): content/guides/<key>.<lang>.md, each with a small front matter (slug, title, description)
   const front = s => {
@@ -136,8 +137,8 @@ const FAQ = { tr: readJ(content('faq.tr.json')), en: readJ(content('faq.en.json'
   const adsMeta = ADS.client ? `<meta name="google-adsense-account" content="${esc(ADS.client)}">` : '';
 
   const T = {
-    tr: { back: 'Haritaya dön', other: 'English', foot: S.__FOOTER_TR__, faq: 'SSS', about: 'Hakkında', guides: 'Rehber', privacy: 'Gizlilik', terms: 'Koşullar', contact: 'İletişim', contactP: '/kosullar/#iletisim', rights: 'Tüm hakları saklıdır.', self: 'Türkçe' },
-    en: { back: 'Back to the map', other: 'Türkçe', foot: S.__FOOTER_EN__, faq: 'FAQ', about: 'About', guides: 'Guides', privacy: 'Privacy', terms: 'Terms', contact: 'Contact', contactP: '/terms/#contact', rights: 'All rights reserved.', self: 'English' }
+    tr: { back: 'Haritaya dön', other: 'English', foot: S.__FOOTER_TR__, faq: 'SSS', about: 'Hakkında', guides: 'Rehber', privacy: 'Gizlilik', terms: 'Koşullar', contact: 'İletişim', contactP: '/iletisim/', map: 'Harita', rights: 'Tüm hakları saklıdır.', self: 'Türkçe' },
+    en: { back: 'Back to the map', other: 'Türkçe', foot: S.__FOOTER_EN__, faq: 'FAQ', about: 'About', guides: 'Guides', privacy: 'Privacy', terms: 'Terms', contact: 'Contact', contactP: '/contact/', map: 'Map', rights: 'All rights reserved.', self: 'English' }
   };
   // small markdown: ## headings, - lists, **bold**, [links](/path/)
   const md = s => s.split(/\n{2,}/).map(b => {
@@ -171,7 +172,7 @@ ${langRedirect}
 <script type="application/ld+json">${JSON.stringify(ld)}</script>`;
     const noscript = `<noscript><div style="position:fixed;inset:0;z-index:50;background:var(--ocean);padding:32px 20px;font:500 17px/1.6 var(--f-body)">
 <p><b>worldmap.tech</b></p><p>${esc(m.description)}</p><p>${lang === 'tr' ? 'Harita JavaScript ile çalışır.' : 'The map needs JavaScript.'}</p>
-<p><a href="${P.guides}">${lang === 'tr' ? 'Rehber' : 'Guides'}</a> · <a href="${P.about}">${lang === 'tr' ? 'Hakkında' : 'About'}</a> · <a href="${P.faq}">${lang === 'tr' ? 'Sıkça sorulan sorular' : 'FAQ'}</a> · <a href="${P.privacy}">${lang === 'tr' ? 'Gizlilik' : 'Privacy'}</a> · <a href="${P.terms}">${lang === 'tr' ? 'Koşullar' : 'Terms'}</a></p></div></noscript>`;
+<p><a href="${P.guides}">${lang === 'tr' ? 'Rehber' : 'Guides'}</a> · <a href="${P.about}">${lang === 'tr' ? 'Hakkında' : 'About'}</a> · <a href="${P.faq}">${lang === 'tr' ? 'Sıkça sorulan sorular' : 'FAQ'}</a> · <a href="${P.privacy}">${lang === 'tr' ? 'Gizlilik' : 'Privacy'}</a> · <a href="${P.terms}">${lang === 'tr' ? 'Koşullar' : 'Terms'}</a> · <a href="${P.contact}">${T[lang].contact}</a></p></div></noscript>`;
     // text under the map: what the tool is, how to use it, a few FAQ answers and the guides
     const tr = lang === 'tr', homeF = content(`home.${lang}.md`);
     const intro = fs.existsSync(homeF) ? `<section id="intro" aria-label="${tr ? 'worldmap.tech hakkında' : 'About worldmap.tech'}">
@@ -181,7 +182,7 @@ ${FAQ[lang].slice(0, 5).map(x => `<details><summary>${esc(x.q)}</summary><p>${es
 <p><a href="${P.faq}">${tr ? 'Tüm sorular ve cevaplar' : 'All questions and answers'}</a></p>
 ${gkeys.length ? `<h2>${tr ? 'Rehber' : 'Guides'}</h2>
 <ul>${gkeys.map(k => { const g = GUIDES[k][lang].meta; return `<li><a href="${P['g:' + k]}">${esc(g.title)}</a><br>${esc(g.description)}</li>`; }).join('')}</ul>` : ''}
-<p class="more"><a href="${P.about}">${T[lang].about}</a> · <a href="${P.guides}">${T[lang].guides}</a> · <a href="${P.faq}">${T[lang].faq}</a> · <a href="${P.privacy}">${T[lang].privacy}</a> · <a href="${P.terms}">${T[lang].terms}</a> · <a href="#app">${T[lang].back}</a></p>
+<p class="more"><a href="${P.about}">${T[lang].about}</a> · <a href="${P.guides}">${T[lang].guides}</a> · <a href="${P.faq}">${T[lang].faq}</a> · <a href="${P.privacy}">${T[lang].privacy}</a> · <a href="${P.terms}">${T[lang].terms}</a> · <a href="${P.contact}">${T[lang].contact}</a> · <a href="#app">${T[lang].back}</a></p>
 </section>` : '';
     let html = fill(src, {
       cfg: { env: 'site', lang, ads: ADS }, intro, worldSrc: ` data-src="/assets/world.json?v=${V['world.json']}"`,
@@ -207,6 +208,11 @@ ${gkeys.length ? `<h2>${tr ? 'Rehber' : 'Guides'}</h2>
     .replace(/\{\{UPDATED\}\}/g, C.updated[lang]);
   const page = ({ lang, key, title, desc, body, ld, extraHead = '', robots = '' }) => {
     const P = PAGES[lang], url = C.origin + P[key], t = T[lang];
+    // site menu under the header; the current page (or section, for guide articles) is marked
+    const cur = k => key === k ? ' aria-current="page"' : k === 'guides' && key.startsWith('g:') ? ' aria-current="true"' : '';
+    const menu = `<nav class="menu" aria-label="${lang === 'tr' ? 'Site menüsü' : 'Site menu'}">`
+      + (gkeys.length ? `<a href="${P.guides}"${cur('guides')}>${t.guides}</a>` : '')
+      + ['faq', 'about', 'contact'].map(k => `<a href="${P[k]}"${cur(k)}>${t[k]}</a>`).join('') + '</nav>';
     return `<!doctype html>
 <html lang="${lang}">
 <meta charset="utf-8">
@@ -225,6 +231,7 @@ ${fontsHead}
 ${ld ? `<script type="application/ld+json">${JSON.stringify(ld)}</script>` : ''}${extraHead}
 <header class="top"><a class="brand" href="${P.app}">worldmap<span>.tech</span></a>
 <nav><a class="btn ghost" href="${PAGES[other(lang)][key]}" hreflang="${other(lang)}" lang="${other(lang)}">${t.other}</a><a class="btn" href="${P.app}">${t.back}</a></nav></header>
+${menu}
 <main><article class="card">
 ${body}
 </article></main>
@@ -263,6 +270,18 @@ ${md(read(content(`about.${lang}.md`)))}
       : 'What worldmap.tech is, who makes it, where the map data comes from, privacy and how to get in touch.';
     write(PAGES[lang].about.slice(1) + 'index.html', page({ lang, key: 'about', title: title + ' | worldmap.tech', desc,
       ld: { '@context': 'https://schema.org', '@type': 'AboutPage', name: title, inLanguage: lang, url: C.origin + PAGES[lang].about },
+      body: `<h1>${esc(title)}</h1>\n${ownerFill(md(read(f)), lang)}\n<p><a class="btn" href="${PAGES[lang].app}">${T[lang].back}</a></p>` }));
+  }
+
+  // contact pages
+  for (const lang of ['tr', 'en']) {
+    const f = content(`contact.${lang}.md`); if (!fs.existsSync(f)) continue;
+    const tr = lang === 'tr', title = tr ? 'İletişim' : 'Contact';
+    const desc = tr ? 'worldmap.tech ile iletişim: e-posta adresi, hangi konularda yazabileceğin, yanıt süreleri ve kişisel veri başvuruları.'
+      : 'How to contact worldmap.tech: email address, what to write about, reply times and personal data requests.';
+    write(PAGES[lang].contact.slice(1) + 'index.html', page({ lang, key: 'contact', title: title + ' | worldmap.tech', desc,
+      ld: { '@context': 'https://schema.org', '@type': 'ContactPage', name: title, inLanguage: lang, url: C.origin + PAGES[lang].contact,
+        mainEntity: { '@type': 'Organization', name: 'worldmap.tech', url: C.origin + PAGES.en.app, email: C.email } },
       body: `<h1>${esc(title)}</h1>\n${ownerFill(md(read(f)), lang)}\n<p><a class="btn" href="${PAGES[lang].app}">${T[lang].back}</a></p>` }));
   }
 
@@ -313,8 +332,8 @@ ${fontsHead}
 `);
 
   // crawler + platform files
-  const urls = ['app', 'faq', 'about', 'privacy', 'terms'].concat(gkeys.length ? ['guides', ...gkeys.map(k => 'g:' + k)] : []);
-  const lastmod = k => k === 'guides' || k === 'about' || k.startsWith('g:') ? GUIDES_DATE : '2026-10-09';
+  const urls = ['app', 'faq', 'about', 'privacy', 'terms'].concat(fs.existsSync(content('contact.en.md')) ? ['contact'] : [], gkeys.length ? ['guides', ...gkeys.map(k => 'g:' + k)] : []);
+  const lastmod = k => k === 'contact' ? '2026-10-24' : k === 'guides' || k === 'about' || k.startsWith('g:') ? GUIDES_DATE : '2026-10-09';
   write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
 ${urls.flatMap(k => ['en', 'tr'].map(l => `  <url><loc>${C.origin}${PAGES[l][k]}</loc><lastmod>${lastmod(k)}</lastmod>

@@ -218,7 +218,7 @@ a:focus-visible,#legal button:focus-visible,#res .tg:focus-visible{outline:2px s
 
 <noscript><div style="position:fixed;inset:0;z-index:50;background:var(--ocean);padding:32px 20px;font:500 17px/1.6 var(--f-body)">
 <p><b>worldmap.tech</b></p><p>Tap the countries you've visited, see how much of the world you've seen and your traveller level, then save a shareable image or compare maps with friends.</p><p>The map needs JavaScript.</p>
-<p><a href="/guides/">Guides</a> · <a href="/about/">About</a> · <a href="/faq/">FAQ</a> · <a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a></p></div></noscript>
+<p><a href="/guides/">Guides</a> · <a href="/about/">About</a> · <a href="/faq/">FAQ</a> · <a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a> · <a href="/contact/">Contact</a></p></div></noscript>
 <div id="app">
   <h1 class="sr" id="h1">worldmap.tech</h1>
   <div id="loading">worldmap.tech</div>
@@ -247,7 +247,7 @@ a:focus-visible,#legal button:focus-visible,#res .tg:focus-visible{outline:2px s
     <button id="save"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 20h14"/></svg><span class="t" id="savet"></span></button>
   </div>
   <div id="consent" class="chip" role="region" aria-labelledby="consentP" hidden><p id="consentP"></p><div class="btns"><button id="cNo"></button><button id="cYes"></button></div></div>
-  <footer id="legal"><span>Information is for general purposes only and provided without warranty.</span><i aria-hidden="true">·</i><a href="#intro">How it works</a><i aria-hidden="true">·</i><a href="/guides/">Guides</a><i aria-hidden="true">·</i><a href="/terms/">Terms</a><i aria-hidden="true">·</i><a href="/privacy/">Privacy</a><i aria-hidden="true">·</i><a href="/faq/">FAQ</a><i aria-hidden="true">·</i><a href="/terms/#contact">Contact</a><i aria-hidden="true">·</i><a href="/tr/" hreflang="tr" lang="tr">Türkçe</a></footer>
+  <footer id="legal"><span>Information is for general purposes only and provided without warranty.</span><i aria-hidden="true">·</i><a href="#intro">How it works</a><i aria-hidden="true">·</i><a href="/guides/">Guides</a><i aria-hidden="true">·</i><a href="/terms/">Terms</a><i aria-hidden="true">·</i><a href="/privacy/">Privacy</a><i aria-hidden="true">·</i><a href="/faq/">FAQ</a><i aria-hidden="true">·</i><a href="/contact/">Contact</a><i aria-hidden="true">·</i><a href="/tr/" hreflang="tr" lang="tr">Türkçe</a></footer>
 </div>
 <section id="intro" aria-label="About worldmap.tech">
 <h2>A free map of the countries you've visited</h2>
@@ -269,7 +269,7 @@ a:focus-visible,#legal button:focus-visible,#res .tg:focus-visible{outline:2px s
 <p><a href="/faq/">All questions and answers</a></p>
 <h2>Guides</h2>
 <ul><li><a href="/guides/how-many-countries-are-there/">How Many Countries Are There in the World?</a><br>Most lists say 195, but it depends on who's counting. How UN members, observer states and territories add up, and how our map counts them.</li><li><a href="/guides/what-counts-as-visiting-a-country/">What Counts as Visiting a Country?</a><br>Airport layovers, cruise stops, border hops and microstates: practical rules for deciding which countries count, and why consistency matters most.</li><li><a href="/guides/traveler-levels/">Traveler Levels and Your % of the World, Explained</a><br>What each worldmap.tech traveler level looks like in real life, how your % of the world is calculated out of 195, and honest ways to reach the next level.</li><li><a href="/guides/visit-many-countries-in-one-trip/">How to Visit Several Countries in One Trip</a><br>Nine regions where small, close-together countries make multi-country trips easy, from Benelux and the Baltics to the Caucasus, with routes and tips.</li><li><a href="/guides/map-projections/">Map Projections: Why Every World Map Is a Little Wrong</a><br>Why Greenland looks as big as Africa, what Mercator, Gall-Peters and Robinson get right and wrong, and which projection worldmap.tech uses.</li><li><a href="/guides/share-your-travel-map/">How to Share Your Travel Map: Formats, Links and Ideas</a><br>Pick the right image format, add a QR code, send a link that holds your whole map, compare with friends and keep your privacy in mind when you post.</li></ul>
-<p class="more"><a href="/about/">About</a> · <a href="/guides/">Guides</a> · <a href="/faq/">FAQ</a> · <a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a> · <a href="#app">Back to the map</a></p>
+<p class="more"><a href="/about/">About</a> · <a href="/guides/">Guides</a> · <a href="/faq/">FAQ</a> · <a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a> · <a href="/contact/">Contact</a> · <a href="#app">Back to the map</a></p>
 </section>
 <div id="sheet" role="dialog" aria-modal="true" hidden>
   <div class="fmtrow"><div id="fmt" class="seg chip" role="group"><button data-f="story"></button><button data-f="square"></button><button data-f="wide"></button></div><button id="qrT" class="chip" aria-pressed="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 3h8v8H3zm2 2v4h4V5zm8-2h8v8h-8zm2 2v4h4V5zM3 13h8v8H3zm2 2v4h4v-4zm8-2h3v3h-3zm5 0h3v3h-3zm-5 5h3v3h-3zm5 0h3v3h-3zm-2.5-2.5h3v3h-3z"/></svg>QR</button></div>
@@ -1069,7 +1069,7 @@ async function initConsent(){
 // ---------- bottom strip: disclaimer + legal links (+ language switch on the site) ----------
 function renderLegal(){
   const f = $("legal"), BASE = SITE ? "" : "https://worldmap.tech";
-  const L = TR ? {guides:"/rehber/", terms:"/kosullar/", privacy:"/gizlilik/", faq:"/sss/", contact:"/kosullar/#iletisim", other:"/", lang:"en"} : {guides:"/guides/", terms:"/terms/", privacy:"/privacy/", faq:"/faq/", contact:"/terms/#contact", other:"/tr/", lang:"tr"};
+  const L = TR ? {guides:"/rehber/", terms:"/kosullar/", privacy:"/gizlilik/", faq:"/sss/", contact:"/iletisim/", other:"/", lang:"en"} : {guides:"/guides/", terms:"/terms/", privacy:"/privacy/", faq:"/faq/", contact:"/contact/", other:"/tr/", lang:"tr"};
   const sep = () => { const i = document.createElement("i"); i.textContent = "·"; i.setAttribute("aria-hidden","true"); f.appendChild(i); };
   const link = (href, text) => { sep(); const a = document.createElement("a"); a.href = BASE + href; a.textContent = text; if (!SITE){ a.target = "_blank"; a.rel = "noopener"; } f.appendChild(a); return a; };
   f.innerHTML = ""; const d = document.createElement("span"); d.textContent = T.footer; f.appendChild(d);
