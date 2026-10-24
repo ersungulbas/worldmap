@@ -40,6 +40,14 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://worldmap.tech/terms/"/>
     <xhtml:link rel="alternate" hreflang="tr" href="https://worldmap.tech/kosullar/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://worldmap.tech/terms/"/></url>
+  <url><loc>https://worldmap.tech/contact/</loc><lastmod>2026-10-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://worldmap.tech/contact/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://worldmap.tech/iletisim/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://worldmap.tech/contact/"/></url>
+  <url><loc>https://worldmap.tech/iletisim/</loc><lastmod>2026-10-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://worldmap.tech/contact/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://worldmap.tech/iletisim/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://worldmap.tech/contact/"/></url>
   <url><loc>https://worldmap.tech/guides/</loc><lastmod>2026-10-21</lastmod>
     <xhtml:link rel="alternate" hreflang="en" href="https://worldmap.tech/guides/"/>
     <xhtml:link rel="alternate" hreflang="tr" href="https://worldmap.tech/rehber/"/>

@@ -44,7 +44,13 @@ Sayaçlar yalnızca birkaç saniye bellekte tutulur, IP adresi hiçbir yere yaz�
 ## 6. Ziyaretçi istatistiği
 **Analytics & Logs** → **Web Analytics** → **Add a site** → `worldmap.tech` → otomatik kurulum. Çerezsizdir, onay gerektirmez.
 
-## 7. AdSense (site alan adında yayına girdikten sonra)
+## 7. Google Search Console
+https://search.google.com/search-console → **Add property** → **Domain** → `worldmap.tech`. Google alan adının
+Cloudflare'de olduğunu görür ve doğrulama kaydını Cloudflare'e kendisi ekler. Sonra **Sitemaps** → `sitemap.xml`
+gönder. AdSense incelemesi, sayfaları Google'ın dizininde görmeyi bekler; **Pages** raporunda sayfalar "Indexed"
+olmadan yeniden inceleme istemek genelde boşa gider.
+
+## 8. AdSense (site alan adında yayına girdikten sonra)
 1. https://adsense.google.com → site olarak `worldmap.tech` ekle ve başvur.
 2. **Ads** → **By ad unit** → **Display ads** → yatay, responsive bir birim oluştur.
 3. Yayıncı kimliğini (`ca-pub-…`) ve birim numarasını (slot) Claude'a yaz. `site.config.json` → `ads`

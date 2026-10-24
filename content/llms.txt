@@ -24,3 +24,5 @@ Key facts:
 - [Gizlilik](https://worldmap.tech/gizlilik/): Privacy policy in Turkish.
 - [Terms](https://worldmap.tech/terms/): Terms of use for worldmap.tech.
 - [Koşullar](https://worldmap.tech/kosullar/): Terms of use in Turkish.
+- [Contact](https://worldmap.tech/contact/): How to reach worldmap.tech by email, what to write about and reply times.
+- [İletişim](https://worldmap.tech/iletisim/): Contact page in Turkish.
