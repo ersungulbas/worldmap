@@ -2,6 +2,8 @@
 slug: dunyada-kac-ulke-var
 title: Dünyada Kaç Ülke Var? Cevap Kime Sorduğuna Bağlı
 description: En yaygın cevap 195, ama sayı listeyi kimin tuttuğuna göre değişiyor. BM üyeleri, gözlemci devletler, bağımlı bölgeler ve haritamızın sayma yöntemi.
+updated: 2026-11-04
+related: continents, counting, levels
 ---
 En sık duyacağın cevap 195: Birleşmiş Milletler'e üye 193 ülke, artı BM'de gözlemci devlet statüsündeki Vatikan ve Filistin. Ama bu sayı bir doğa kanunu değil, bir uzlaşma. Tanınması tartışmalı yerleri ya da kendi işlerini büyük ölçüde kendisi yöneten bağımlı bölgeleri de eklediğinde, 300'ü rahatça aşan ciddi listelerle karşılaşırsın. Hangi sayının "doğru" olduğu, aslında hangi soruyu sorduğuna bağlı.
 
@@ -12,6 +14,8 @@ Birleşmiş Milletler'in bugün 193 üyesi var. En son üye olan ülke, Temmuz 2
 Vatikan'ın durumu biraz ilginç. BM'deki koltuk ve diplomatik ilişkiler aslında Kutsal Makam'a ait; Vatikan Şehir Devleti ise Kutsal Makam'ın faaliyet gösterdiği, Roma'nın içindeki minicik toprak parçası. Gezgin açısından bu ayrımın pek önemi yok: Aziz Petrus Meydanı'nda yürüdüysen Vatikan'a gitmişsin demektir.
 
 193 üyeye iki gözlemciyi eklediğinde 195 çıkıyor. Atlasların, bilgi yarışmalarının ve seyahat uygulamalarının çoğunun bu sayıyı kullanması bundan. Savunması kolay, net bir çizgi; worldmap.tech'in yüzde hesabı da aşağıda göreceğin gibi bunu temel alıyor.
+
+![Dünya haritası: BM üyesi ülkeler mavi, Vatikan ve Filistin koyu mavi, Kosova, Tayvan ve KKTC turuncu, bağımlı bölgeler gri.](fig:status-world "Mavi: BM'nin 193 üyesi. Koyu mavi (noktalı): gözlemci devletler Vatikan ve Filistin. Turuncu: Kosova, Tayvan ve KKTC. Gri: Grönland ve Porto Riko gibi bağımlı bölgeler ile Hong Kong ve Makao. Hepsini worldmap.tech'te işaretleyebilirsin.")
 
 ## Tanınması tartışmalı yerler
 

@@ -6,7 +6,8 @@ Gittiğin ülkeleri haritada işaretle, dünyanın yüzde kaçını gördüğün
 - `build.js`: `site/` (Cloudflare Workers, ayarlar `wrangler.jsonc` içinde) ve `worldmapnet.html` (tek dosyalık önizleme) üretir
 - `server/_worker.js`: `/api/code` geri yükleme kodu servisi (Cloudflare D1)
 - `content/`: SSS, meta metinleri, gizlilik ve koşullar, hakkında ve iletişim sayfaları
-- `content/guides/`: rehber yazıları (`<anahtar>.tr.md` ve `<anahtar>.en.md`, başta slug/title/description)
+- `content/guides/`: rehber yazıları (`<anahtar>.tr.md` ve `<anahtar>.en.md`, başta slug/title/description, isteğe bağlı date/updated/related); görsel için ayrı bir paragrafta `![alt metin](fig:kimlik "altyazı")`
+- `figures.js`: rehber görsellerini `data/` içindeki haritadan çizer (`static/guides/*.webp`, boyutlar `data/figures.json`); `data/regions.json` kıta ve BM üyeliği listesi
 - `data/`: harita (Natural Earth / world-atlas, Türkiye Cumhuriyeti'nin resmi tutumlarına göre sınırlar), ülke adları, önceden hesaplanmış etiketler
 - `prep2.js`, `names.js`: harita verisini kaynaktan yeniden üretir (Natural Earth dosyaları gerekir)
 

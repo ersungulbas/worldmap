@@ -1,0 +1,112 @@
+{
+ "continents": {
+  "w": 1600,
+  "h": 820,
+  "lang": false
+ },
+ "landlocked": {
+  "w": 1600,
+  "h": 820,
+  "lang": false
+ },
+ "largest": {
+  "w": 1600,
+  "h": 820,
+  "lang": false
+ },
+ "level-20": {
+  "w": 1600,
+  "h": 820,
+  "lang": false
+ },
+ "level-60": {
+  "w": 1600,
+  "h": 820,
+  "lang": false
+ },
+ "microstates": {
+  "w": 1200,
+  "h": 1100,
+  "lang": true
+ },
+ "proj-gallpeters": {
+  "w": 1600,
+  "h": 1050,
+  "lang": false
+ },
+ "proj-mercator": {
+  "w": 1600,
+  "h": 1050,
+  "lang": false
+ },
+ "proj-naturalearth": {
+  "w": 1600,
+  "h": 820,
+  "lang": false
+ },
+ "route-balkans": {
+  "w": 1200,
+  "h": 1100,
+  "lang": true
+ },
+ "route-baltics": {
+  "w": 1200,
+  "h": 1000,
+  "lang": true
+ },
+ "route-caucasus": {
+  "w": 1200,
+  "h": 800,
+  "lang": true
+ },
+ "route-central-america": {
+  "w": 1200,
+  "h": 900,
+  "lang": true
+ },
+ "route-central-europe": {
+  "w": 1200,
+  "h": 900,
+  "lang": true
+ },
+ "route-gulf": {
+  "w": 1200,
+  "h": 900,
+  "lang": true
+ },
+ "route-mekong": {
+  "w": 1000,
+  "h": 1150,
+  "lang": true
+ },
+ "schengen": {
+  "w": 1200,
+  "h": 1150,
+  "lang": false
+ },
+ "share-compare": {
+  "w": 1280,
+  "h": 760,
+  "lang": true
+ },
+ "share-formats": {
+  "w": 1600,
+  "h": 504,
+  "lang": true
+ },
+ "smallest": {
+  "w": 1600,
+  "h": 820,
+  "lang": false
+ },
+ "status-world": {
+  "w": 1600,
+  "h": 820,
+  "lang": false
+ },
+ "turkiye-neighbors": {
+  "w": 1200,
+  "h": 800,
+  "lang": true
+ }
+}

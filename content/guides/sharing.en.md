@@ -2,6 +2,8 @@
 slug: share-your-travel-map
 title: How to Share Your Travel Map: Formats, Links and Ideas
 description: Pick the right image format, add a QR code, send a link that holds your whole map, compare with friends and keep your privacy in mind when you post.
+updated: 2026-11-04
+related: levels, routes, countries
 ---
 The simplest way to share your travel map is to do two things: save it as an image in the format that fits where you're posting, and send your share link to anyone who should be able to open the real map. The image is for looking at; the link is for exploring and comparing. Everything below builds on that pair, from choosing a format to yearly before/after posts and a few privacy habits worth keeping.
 
@@ -13,7 +15,9 @@ When you tap Save, you choose between three sizes. Each one shows your country c
 - **Square (1080×1080):** the classic shape for a feed post.
 - **Wide (1920×1080):** a desktop wallpaper, a slide in a presentation, a post on X/Twitter or a blog header.
 
-The taller formats, Story and Square, also add the flags of the countries you've marked, which makes a long list easier to take in than a map full of tiny shapes. If most of your travels are in small countries, like a weekend in Luxembourg or a run of Caribbean islands, the flags do a lot of the work, because those places are hard to spot on a world map at phone size.
+The tall Story format also adds the flags of the countries you've marked, which makes a long list easier to take in than a map full of tiny shapes. If most of your travels are in small countries, like a weekend in Luxembourg or a run of Caribbean islands, the flags do a lot of the work, because those places are hard to spot on a world map at phone size.
+
+![The same 20-country map in the three save formats side by side: a tall Story with flags, Square and Wide.](fig:share-formats "One map, three formats: Story, Square and Wide. Each shows the count, level, world % and the QR code; the flags are in the Story.")
 
 The image is made right on your own device. Before you save, give your map one last look: it's easy to forget a country you only crossed for a day. If you're not sure whether a quick stop counts, our guide on [what counts as visiting a country](/guides/what-counts-as-visiting-a-country/) can help you decide.
 
@@ -26,6 +30,8 @@ The share link (worldmap.tech/#w…) contains your whole map, so nobody needs an
 ## Compare maps with friends and family
 
 When a friend opens your link, or you open theirs, both maps meet on one screen. Their countries show in orange, yours in blue, and the ones you've both visited in purple. It's a quick way to see who's been where, and it tends to start better conversations than a plain count does.
+
+![Two maps compared on worldmap.tech: the friend's countries in orange, yours in blue, shared ones in purple.](fig:share-compare "Opening a friend's link: countries only they have been to are orange, yours are blue and the ones you share are purple. The box at the top counts all three.")
 
 A few ways to use it:
 

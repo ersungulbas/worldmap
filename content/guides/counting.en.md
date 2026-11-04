@@ -2,6 +2,8 @@
 slug: what-counts-as-visiting-a-country
 title: What Counts as Visiting a Country?
 description: Airport layovers, cruise stops, border hops and microstates: practical rules for deciding which countries count, and why consistency matters most.
+updated: 2026-11-04
+related: countries, smallest, levels
 ---
 There's no official definition of "visiting" a country, so the honest answer is: whatever your rule says, as long as you apply it the same way every time. Most travelers draw the line somewhere between "I set foot on its soil" and "I spent a night there." The arguments happen in the gray zones: airport layovers, quick border crossings, cruise stops and microstates small enough to see in a day.
 
@@ -38,6 +40,8 @@ Whichever you choose, write it down and apply it to every trip, old ones include
 ## Microstates and enclaves
 
 Europe's smallest countries come up in almost every debate, mostly because they're so easy to visit that it feels like cheating. Under a "set foot" rule, they count like any other country.
+
+![Map of western and southern Europe with seven small countries marked: Luxembourg, Liechtenstein, Andorra, Monaco, San Marino, Vatican City and Malta.](fig:microstates "Europe's small countries among their big neighbors. The ones too small to tap on the world map are easy to find and mark with the search box.")
 
 **Vatican City** is the world's smallest country by both area and population, and it sits entirely inside Rome. St. Peter's Square, St. Peter's Basilica and the Vatican Museums are all on Vatican territory, and there are no passport checks when you walk in from Italy, so a morning in the museums puts it on your map.
 

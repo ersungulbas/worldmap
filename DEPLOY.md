@@ -72,6 +72,7 @@ npm install
 npm run build          # site/ ve önizleme dosyasını üretir
 npm run dev            # http://127.0.0.1:8788 (wrangler dev, yerel D1 ile)
 npm run labels         # harita etiketlerini yeniden hesaplar (dev sunucusu açıkken)
+npm run figures        # rehber görsellerini yeniden çizer (paylaşım görselleri için dev sunucusu açık olmalı)
 npm test               # dev sunucusu açıkken uçtan uca testler (Playwright)
 npm run test:consent   # izin çubuğu ve reklam yüklemesi testi (deneme kimlikleriyle)
 ```

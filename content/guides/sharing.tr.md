@@ -2,6 +2,8 @@
 slug: seyahat-haritasi-paylasma
 title: Seyahat Haritanı Paylaşmak: Format, Link ve Fikirler
 description: Doğru görsel formatını seç, QR kod ekle, bütün haritanı taşıyan linki gönder, arkadaşlarınla karşılaştır ve paylaşırken gizliliğini unutma.
+updated: 2026-11-04
+related: levels, routes, countries
 ---
 Seyahat haritanı paylaşmanın en kolay yolu iki adımdan oluşur: haritanı paylaşacağın yere uyan formatta görsel olarak kaydet, gerçek haritayı açabilmesini istediğin kişilere de paylaşım linkini gönder. Görsel bakmak için, link ise keşfetmek ve karşılaştırmak için. Aşağıdaki her şey bu ikilinin üzerine kurulu: format seçiminden yıllık "önce/sonra" paylaşımlarına ve aklında tutman gereken birkaç gizlilik alışkanlığına kadar.
 
@@ -13,7 +15,9 @@ Kaydet'e dokunduğunda üç boyuttan birini seçersin. Hepsinde ülke sayın, ge
 - **Kare (1080×1080):** akışta paylaşacağın gönderiler için klasik ölçü.
 - **Yatay (1920×1080):** bilgisayar duvar kâğıdı, sunumda bir slayt, X/Twitter gönderisi ya da blog kapağı için.
 
-Hikâye ve Kare formatları, işaretlediğin ülkelerin bayraklarını da ekler. Bu, uzun bir listeyi küçük şekillerle dolu bir haritadan çok daha kolay okutur. Gezilerin daha çok küçük ülkelere olduysa, mesela bir hafta sonu Lüksemburg ya da art arda birkaç Karayip adası, bayraklar işin büyük kısmını üstlenir; çünkü böyle yerler telefon ekranındaki bir dünya haritasında zor seçilir.
+Dikey Hikâye formatı, işaretlediğin ülkelerin bayraklarını da ekler. Bu, uzun bir listeyi küçük şekillerle dolu bir haritadan çok daha kolay okutur. Gezilerin daha çok küçük ülkelere olduysa, mesela bir hafta sonu Lüksemburg ya da art arda birkaç Karayip adası, bayraklar işin büyük kısmını üstlenir; çünkü böyle yerler telefon ekranındaki bir dünya haritasında zor seçilir.
+
+![Aynı 20 ülkelik haritanın üç kayıt formatı yan yana: bayraklı dikey Hikâye, Kare ve Yatay.](fig:share-formats "Aynı harita üç formatta: Hikâye, Kare ve Yatay. Ülke sayısı, seviye, dünya yüzdesi ve QR kod hepsinde var; bayraklar Hikâye'de.")
 
 Görsel doğrudan senin cihazında hazırlanır. Kaydetmeden önce haritana son bir kez bak: bir günlüğüne geçtiğin bir ülkeyi unutmak çok kolay. Kısa bir durağın sayılıp sayılmayacağından emin değilsen, [hangi ziyaret sayılır](/rehber/hangi-ziyaret-sayilir/) yazımız karar vermene yardım eder.
 
@@ -26,6 +30,8 @@ Paylaşım linki (worldmap.tech/#w…) bütün haritanı içinde taşır; bu yü
 ## Arkadaşınla, ailenle karşılaştır
 
 Bir arkadaşın senin linkini açtığında ya da sen onunkini açtığında, iki harita tek ekranda buluşur. Onun gittiği ülkeler turuncu, seninkiler mavi, ikinizin de gittiği ülkeler mor görünür. Kimin nerelere gittiğini bir bakışta görürsün ve bu, tek başına bir sayıdan çok daha keyifli sohbetler açar.
+
+![worldmap.tech'te iki haritanın karşılaştırması: arkadaşın ülkeleri turuncu, seninkiler mavi, ortak ülkeler mor.](fig:share-compare "Bir arkadaşının linkini açtığında: yalnızca onun gittiği ülkeler turuncu, yalnızca seninkiler mavi, ikinizin de gittikleri mor. Üstteki kutu üç sayıyı da gösteriyor.")
 
 Bunu kullanmanın birkaç yolu:
 

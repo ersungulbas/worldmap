@@ -2,6 +2,8 @@
 slug: traveler-levels
 title: Traveler Levels and Your % of the World, Explained
 description: What each worldmap.tech traveler level looks like in real life, how your % of the world is calculated out of 195, and honest ways to reach the next level.
+updated: 2026-11-04
+related: counting, routes, continents
 ---
 Your traveler level on worldmap.tech depends on one thing: how many countries you've marked. You start as a Curious Traveler with your first country, then become a Wanderer at 5, an Explorer at 10, a Globetrotter at 20, a Passport Pro at 35, a Travel Legend at 60 and a Citizen of the World at 100. Next to your level sits your % of the world, which is your count divided by 195. Here is what each milestone tends to look like on a real map, how the math works, and some realistic ways to move up.
 
@@ -27,9 +29,13 @@ When you cross a threshold, a "New level" message pops up on screen, and your le
 
 **Getting to 20.** Globetrotter usually takes a couple of regions. Twenty could be a good chunk of Western Europe plus a trip around mainland Southeast Asia, or the Balkans, the Caucasus and a stopover in the Gulf. It's also exactly 10% of the world, a nice round number to put on a story.
 
+![A sample Globetrotter map: 20 countries in blue across Europe, the Caucasus, the Gulf, Egypt, Thailand and the United States.](fig:level-20 "A sample 20-country map: Globetrotter level, 10% of the world. Most of it is in Europe, plus a few long-haul trips.")
+
 **Getting to 35.** This is where people start choosing destinations partly because they're new. By now you've probably repeated the "several countries in one trip" trick a few times and spent time on at least two or three continents.
 
 **Getting to 60.** Geography starts working against you here. Even by a broad definition, Europe has about 50 sovereign states, so you can't reach 60 on one continent's worth of easy train rides. Getting here usually means a long trip or two, plus a few destinations that needed extra planning.
+
+![A sample Travel Legend map: 60 countries in blue, covering most of Europe plus North Africa, the Middle East, Asia, North America, Brazil, East and southern Africa and Australia.](fig:level-60 "A sample 60-country map: Travel Legend level, 31% of the world. Most of Europe is filled in and the rest is spread over five continents.")
 
 **Getting to 100.** Citizen of the World is a long-term project. At 100 you've passed the halfway mark of 195, and the countries still missing tend to be the ones that take more effort to reach, with fewer flights and longer journeys.
 

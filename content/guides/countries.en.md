@@ -2,6 +2,8 @@
 slug: how-many-countries-are-there
 title: How Many Countries Are There in the World?
 description: Most lists say 195, but it depends on who's counting. How UN members, observer states and territories add up, and how our map counts them.
+updated: 2026-11-04
+related: continents, counting, levels
 ---
 The most common answer is 195: the 193 member states of the United Nations plus its two observer states, the Holy See (Vatican City) and Palestine. That number is a convention, though, not a law of nature. Add places whose recognition is split, or territories that run much of their own affairs, and you'll find serious lists with well over 300 entries. Which number is "right" depends on the question you're actually asking.
 
@@ -12,6 +14,8 @@ The United Nations currently has 193 member states. The most recent to join was 
 The Vatican is a slightly unusual case. Strictly speaking, it's the Holy See that holds the UN seat and maintains diplomatic relations, while Vatican City is the tiny city-state in Rome from which it operates. For a traveler the distinction hardly matters: if you've walked across St. Peter's Square, you've been there.
 
 Add the two observers to the 193 members and you get 195. That's why so many atlases, quizzes and travel apps settle on that figure. It's a clean line that's easy to defend, and it's the one worldmap.tech uses for its percentage, as you'll see below.
+
+![World map: UN member states in blue, Vatican City and Palestine in dark blue, Kosovo, Taiwan and Northern Cyprus in orange, territories in gray.](fig:status-world "Blue: the 193 UN members. Dark blue (dots): the observer states, Vatican City and Palestine. Orange: Kosovo, Taiwan and Northern Cyprus. Gray: territories such as Greenland and Puerto Rico, plus Hong Kong and Macau. You can mark all of them on worldmap.tech.")
 
 ## Places where recognition is split
 
