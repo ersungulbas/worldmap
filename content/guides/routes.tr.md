@@ -2,6 +2,8 @@
 slug: bir-seyahatte-cok-ulke
 title: Bir Seyahatte Birden Çok Ülke Gezebileceğin 9 Bölge
 description: Küçük ve birbirine yakın ülkeler sayesinde tek seyahatte birkaç ülke görebileceğin 9 bölge: örnek rotalar, ulaşım seçenekleri ve pratik ipuçları.
+updated: 2026-11-04
+related: schengen, neighbors, levels
 ---
 Tek seyahatte birden çok ülke görmenin en kolay yolu, ülkelerin küçük ve sınırların birbirine yakın olduğu bir bölge seçmek: Benelüks, Orta Avrupa, Baltık ülkeleri, Batı Balkanlar, Avrupa'nın mini devletleri, Gürcistan ile Ermenistan, Güneydoğu Asya, Orta Amerika ve Körfez. Aşağıda her biri için örnek bir rota, bölgede ulaşımın genelde nasıl yapıldığı ve işine yarayacak bir ipucu var. Giriş kuralları pasaportuna göre değişir ve sık güncellenir; bilet almadan önce vatandaşı olduğun ülkenin dışişleri bakanlığına ve gideceğin ülkenin resmî sitesine mutlaka bak.
 
@@ -19,6 +21,8 @@ Burada her işi tren görür. Amsterdam ile Brüksel arasında yaklaşık iki sa
 
 Dört başkent de birbirine direkt trenlerle bağlı. Prag'dan Viyana'ya tren dört saati biraz geçiyor. Viyana ile Bratislava arası yalnızca 55 km kadar, trenle yaklaşık bir saat; Bratislava'dan Budapeşte'ye de iki buçuk saat civarında süren direkt trenler var. **İpucu:** vaktin azsa Viyana'da kal, Bratislava'yı günübirlik gez.
 
+![Orta Avrupa haritası: Belçika, Hollanda ve Lüksemburg mavi; Çekya, Avusturya, Slovakya ve Macaristan mor.](fig:route-central-europe "Mavi: Benelüks ülkeleri. Mor: Çekya, Avusturya, Slovakya ve Macaristan. İki rotayı Almanya üzerinden tek bir yolculukta birleştirebilirsin.")
+
 ## Baltık ülkeleri ve Batı Balkanlar
 
 ### Estonya, Letonya ve Litvanya
@@ -27,11 +31,15 @@ Dört başkent de birbirine direkt trenlerle bağlı. Prag'dan Viyana'ya tren d�
 
 Üç başkent arasında şehirlerarası otobüsler çalışıyor. Bunun yanında Estonya ile Letonya sınırındaki Valga'da tek ve kolay bir aktarmayla günlük bir tren bağlantısı da var. **İpucu:** sınır ötesi tren rağbet görüyor ve dolabiliyor, biletler satışa çıkar çıkmaz al.
 
+![Baltık haritası: Estonya, Letonya ve Litvanya mavi; çevrede Finlandiya, Rusya, Belarus ve Polonya.](fig:route-baltics "Estonya, Letonya ve Litvanya kuzeyden güneye sıralanıyor. Helsinki, Finlandiya Körfezi'nin karşı kıyısında.")
+
 ### Batı Balkanlar
 
 **Rota:** Dubrovnik (Hırvatistan) → Kotor (Karadağ), oradan iç kesime Mostar ve Saraybosna'ya (Bosna-Hersek) ya da güneye, Arnavutluk üzerinden Kuzey Makedonya'ya.
 
 Bu bölgede işin büyük kısmını otobüsler ve minibüsler görür. Dubrovnik'ten Kotor'a otobüsle iki saatten biraz fazla sürüyor, üstüne sınırda geçen zamanı ekle. Saraybosna ile Mostar arasında ise yaklaşık iki saatlik, manzarasıyla meşhur bir tren hattı var. **İpucu:** yazın kıyıdaki sınır kapılarında kuyruk uzayabiliyor; pasaportunu otobüsün bagajındaki valizde değil, yanındaki çantada tut.
+
+![Batı Balkanlar haritası: Hırvatistan, Bosna-Hersek, Karadağ, Arnavutluk ve Kuzey Makedonya mor.](fig:route-balkans "Rotadaki beş ülke: Hırvatistan, Bosna-Hersek, Karadağ, Arnavutluk ve Kuzey Makedonya. Kıyı boyunca kısa otobüs yolculukları, iç kesimde Saraybosna.")
 
 ## Avrupa'nın mini devletleri
 
@@ -51,6 +59,8 @@ Bu beş minik ülke daha büyük bir seyahate kolayca eklenir ve her biri harita
 
 Marşrutka denen minibüsler sınır dahil yaklaşık altı saat sürüyor, özel şoförler istediğin yerde duruyor, iki başkent arasında bir de yataklı gece treni var. Ekim 2026 itibarıyla Ermenistan'ın Azerbaycan ve Türkiye ile kara sınırları kapalı, yani Ermenistan'dan bu iki ülkeye kara yoluyla devam edemezsin. Türkiye sınırının açılması bir süredir gündemde, plan yapmadan önce son durumu kontrol et. **İpucu:** yataklı tren her gün değil gün aşırı çalışıyor; tarihlerini netleştirmeden önce takvimine bak.
 
+![Kafkasya haritası: Gürcistan ve Ermenistan mavi; çevrede Türkiye, Azerbaycan, Rusya ve İran.](fig:route-caucasus "Gürcistan ve Ermenistan. Ekim 2026 itibarıyla Ermenistan'ın Türkiye ve Azerbaycan ile kara sınırları kapalı olduğu için rota Gürcistan üzerinden gidip geliyor.")
+
 ## Güneydoğu Asya, Orta Amerika ve Körfez
 
 ### Tayland, Laos, Vietnam ve Kamboçya
@@ -59,17 +69,23 @@ Marşrutka denen minibüsler sınır dahil yaklaşık altı saat sürüyor, öze
 
 Bangkok'tan Vientiane'a 2024'ten beri direkt yataklı tren çalışıyor, Vientiane ile Luang Prabang arasını da hızlı trenler iki saat civarında bağlıyor. Laos'tan Hanoi'ye uçabilir ya da uzun bir gece otobüsüne binebilirsin; Ho Chi Minh Kenti ile Phnom Penh arasında da otobüsler var. **İpucu:** Ekim 2026 itibarıyla Tayland ile Kamboçya arasındaki kara sınır kapıları kapalı, bu rotanın o sınırdan geçmemesinin sebebi de bu. Bangkok ile Angkor'u aynı seyahate koymak istersen o ayağı uçakla planla.
 
+![Güneydoğu Asya haritası: Tayland, Laos, Vietnam ve Kamboçya mavi.](fig:route-mekong "Tayland, Laos, Vietnam ve Kamboçya. Rota Bangkok'tan kuzeye, Laos'a çıkıyor, Vietnam boyunca güneye inip Kamboçya'da bitiyor.")
+
 ### Orta Amerika
 
 **Rota:** Guatemala → El Salvador → Honduras → Nikaragua → Kosta Rika → Panama. Daha kısa bir seyahat için Belize'yi Guatemala'yla birleştir: San Ignacio'dan kalkan servisler Tikal'e ya da Flores'e yaklaşık iki saatte varıyor.
 
 Ana şehirler arasında turist servisleri ve şehirlerarası otobüsler çalışıyor; tek başına Tica Bus bile bölgedeki altı ülkeyi birbirine bağlıyor. **İpucu:** Panama ile Kolombiya arasında Darién Boşluğu yüzünden kara yolu yok, Güney Amerika'ya devam edeceksen uçak planla. Her ülke için resmî seyahat uyarılarını da oku, çünkü koşullar ülkeden ülkeye değişiyor.
 
+![Orta Amerika haritası: Guatemala, Belize, El Salvador, Honduras, Nikaragua, Kosta Rika ve Panama mavi.](fig:route-central-america "Orta Amerika'nın yedi ülkesi kuzeybatıdan güneydoğuya. Panama'nın ötesinde Kolombiya'ya kara yolu yok.")
+
 ### Körfez
 
 **Rota:** Dubai'den otobüsle Maskat'a, oradan uçakla Doha'ya, ardından Bahreyn'e ve Kral Fahd Geçidi üzerinden Suudi Arabistan'ın doğusuna.
 
 BAE ile Umman arasında şehirlerarası otobüsler çalışıyor; Dubai'den Maskat'a yolculuk sınırdaki işlemlere göre altı yedi saat sürüyor. 25 km'lik geçit Bahreyn'i Suudi Arabistan'a bağlıyor, geri kalan kısımları kısa uçuşlar hallediyor. **İpucu:** araba kiralayacaksan, aracı sınırdan geçirip geçiremeyeceğini rezervasyondan önce şirkete sor.
+
+![Körfez haritası: BAE, Umman, Katar ve Bahreyn mavi, Suudi Arabistan mor.](fig:route-gulf "Mavi: BAE, Umman, Katar ve Bahreyn. Mor: Suudi Arabistan; Bahreyn'e Kral Fahd Geçidi'yle bağlı.")
 
 ## Yola çıkmadan önce
 

@@ -2,6 +2,8 @@
 slug: hangi-ziyaret-sayilir
 title: Bir Ülkeye Gitmiş Sayılmak İçin Ne Gerekir?
 description: Aktarma, kruvaziyer molası, birkaç saatlik sınır geçişi, mini devletler: hangi ziyaretin sayılacağına karar vermen için pratik kurallar.
+updated: 2026-11-04
+related: countries, smallest, levels
 ---
 Bir ülkeye "gitmiş sayılmanın" resmî bir tanımı yok. Dürüst cevap şu: senin kuralın neyse o, yeter ki her seyahatte aynı kuralı uygula. Çoğu gezgin çizgiyi "topraklarına ayak bastım" ile "orada en az bir gece kaldım" arasında bir yere çekiyor. Asıl tartışma gri alanlarda çıkıyor: havalimanı aktarmaları, kısa sınır geçişleri, kruvaziyer molaları ve bir günde gezilebilecek kadar küçük ülkeler.
 
@@ -38,6 +40,8 @@ Hangisini seçersen seç, bir yere not et ve eskiler dahil bütün seyahatlerine
 ## Mini devletler ve enklavlar
 
 Avrupa'nın en küçük ülkeleri hemen her tartışmada gündeme geliyor, çünkü gitmesi o kadar kolay ki saymak hile gibi geliyor. "Ayak bastım" kuralına göre her biri diğer ülkeler gibi sayılır.
+
+![Batı ve Güney Avrupa haritasında yedi küçük ülke işaretli: Lüksemburg, Liechtenstein, Andorra, Monako, San Marino, Vatikan ve Malta.](fig:microstates "Avrupa'nın küçük ülkeleri, büyük komşularının arasında. Dünya haritasında dokunmak için fazla küçük olanları arama kutusundan bulup işaretleyebilirsin.")
 
 **Vatikan** hem yüzölçümü hem nüfusuyla dünyanın en küçük ülkesi ve tamamen Roma'nın içinde. Aziz Petrus Meydanı, Aziz Petrus Bazilikası ve Vatikan Müzeleri Vatikan topraklarında; İtalya'dan yürüyerek girerken pasaport kontrolü yok. Yani müzelerde geçirdiğin bir sabah, Vatikan'ı haritana eklemen için yeterli.
 

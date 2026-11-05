@@ -52,3 +52,9 @@ details p{color:var(--muted);margin:0 0 14px}
 .menu a{color:var(--muted);font-size:15.5px;text-decoration:none;padding:6px 0;border-bottom:2px solid transparent}
 .menu a:hover{color:var(--ink)}
 .menu a[aria-current]{color:var(--ink);border-bottom-color:var(--accent)}
+figure{margin:26px 0}
+figure img{display:block;width:100%;height:auto;margin:0 auto;border-radius:14px;border:1px solid var(--line);background:#e9f0f6}
+figure.tall img{max-width:600px}
+figcaption{margin-top:9px;color:var(--muted);font-size:14.5px;line-height:1.5}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) figure img{filter:brightness(.9)}}
+:root[data-theme="dark"] figure img{filter:brightness(.9)}

@@ -2,6 +2,8 @@
 slug: harita-projeksiyonlari
 title: Harita Projeksiyonları: Grönland Neden Bu Kadar Büyük?
 description: Grönland neden Afrika kadar görünür? Mercator, Gall-Peters ve Robinson neyi doğru, neyi yanlış gösterir; worldmap.tech hangi projeksiyonu kullanır?
+updated: 2026-11-04
+related: largest, continents, smallest
 ---
 Düz bir dünya haritası mutlaka bir şeyi bozar, çünkü bir kürenin yüzeyi esnetilmeden ya da yırtılmadan düzleştirilemez. Harita projeksiyonu, haritacının neyden vazgeçeceğine dair verdiği karardır: şekillerin doğruluğundan mı, büyüklüklerin doğruluğundan mı, yoksa ikisinden biraz biraz mı? Grönland'ın bir haritada kıta gibi, başka bir haritada büyükçe bir ada gibi durmasının sebebi bu. worldmap.tech'teki harita Natural Earth projeksiyonunu kullanır: bütün dünyayı tek bakışta, hiçbir bölgeyi aşırı şişirmeden göstermek için tasarlanmış bir uzlaşma projeksiyonu.
 
@@ -25,11 +27,15 @@ Bedeli ise büyüklük. Mercator karaları ekvatordan uzaklaştıkça giderek da
 - **Rusya ve Afrika:** Rusya yaklaşık 17,1 milyon km². Mercator'da Afrika'dan büyük görünür, oysa Afrika onun neredeyse iki katı.
 - **Grönland ve Türkiye:** Türkiye'nin yüzölçümü yaklaşık 783 bin km². Grönland bunun üç katından biraz az; Cezayir (yaklaşık 2,38 milyon km²) ve Kongo Demokratik Cumhuriyeti (yaklaşık 2,34 milyon km²) ise Grönland'dan biraz daha büyük.
 
+![Mercator projeksiyonuyla dünya haritası: turuncu Grönland neredeyse mavi Afrika kadar büyük görünüyor.](fig:proj-mercator "Mercator: Grönland (turuncu) neredeyse Afrika (mavi) kadar görünüyor, oysa Afrika yaklaşık 14 kat büyük. Büyütme kutuplara doğru sınırsız arttığı için harita kutuplara hiç ulaşamaz, Antarktika da çoğu zaman dışarıda kalır.")
+
 Peki Mercator internette neden hâlâ her yerde? Google Haritalar 2005'te onun bir türevini benimsedi (genellikle Web Mercator denir) ve bu, web haritalarının standardı hâline geldi; OpenStreetMap, Bing Haritalar ve Mapbox da aynısını kullanıyor. Bir şehre yakınlaştığında önemli olan, sokakların doğru açılarla kesişmesi ve bir dönel kavşağın yuvarlak görünmesidir. Neredeyse açı koruyan bir projeksiyon her yakınlaştırma düzeyinde tam bunu sağlar. Bu servisler, kutuplar sonsuz uzakta kalacağı için haritayı kuzeyde ve güneyde yaklaşık 85. enlemde keser. Kısacası Mercator, yakındaki bir kafeyi bulmak için harika; gezegenin bütününü anlamak içinse yanıltıcı.
 
 ## Eşit alanlı haritalar: gerçek büyüklük, alışılmadık şekiller
 
 Eşit alanlı projeksiyonlar büyüklük sorununu çözer: küre üzerinde aynı büyüklükte olan iki bölge, haritada da aynı yeri kaplar. En bilineni **Gall-Peters** projeksiyonudur. İlk kez 1855'te James Gall tarafından tanımlandı, 1973'ten itibaren de Arno Peters onu dünyanın daha adil bir resmi olarak tanıttı. Afrika'yı ve Güney Amerika'yı gerçek büyüklükleriyle gösterir, ama tropik bölgeler o kadar uzar ki Afrika kuzey-güney yönünde aşırı uzun görünür. ABD'de Boston devlet okulları Mart 2017'de sınıflarda Gall-Peters haritalarına geçmeye başlayınca tartışma yeniden gündeme geldi.
+
+![Gall-Peters projeksiyonuyla dünya haritası: Afrika uzun ve büyük, Grönland ince bir şerit.](fig:proj-gallpeters "Gall-Peters: Afrika (mavi) ile Grönland (turuncu) gerçek oranlarıyla görünüyor, ama Afrika kuzey-güney yönünde uzamış, kuzeydeki karalar yassılaşmış.")
 
 Daha doğal görünen eşit alanlı projeksiyonlar da var. İlk kez 1805'te yayımlanan **Mollweide**, dünyayı 2'ye 1 oranında bir elips içinde gösterir; büyüklükler doğrudur, ama kenarlara yaklaştıkça şekiller belirgin biçimde bozulur. 2018'de Bojan Šavrič, Bernhard Jenny ve Tom Patterson tarafından yayımlanan **Equal Earth** ise Boston haberlerinin ardından Gall-Peters'a göze daha hoş gelen bir alternatif olarak tasarlandı. Popüler Robinson haritasına epey benzer, ama her alanı gerçek oranında tutar.
 
@@ -38,6 +44,8 @@ Daha doğal görünen eşit alanlı projeksiyonlar da var. İlk kez 1805'te yay�
 Atlasların çoğu uzlaşma projeksiyonlarını tercih eder. Arthur H. Robinson, **Robinson** projeksiyonunu 1963'te geliştirdi; National Geographic de 1988'den itibaren dünya haritalarında bunu kullandı. 1998'de ise Oswald Winkel'in 1921'de önerdiği **Winkel Tripel** projeksiyonuna geçti. Almancada "üçlü" anlamına gelen "Tripel", Winkel'in üç tür bozulmayı birden azaltma hedefinden geliyor: alan, yön ve mesafe.
 
 **Natural Earth** projeksiyonu bu ailenin daha genç bir üyesi. ABD Ulusal Park Servisi'nden haritacı Tom Patterson onu 2007'de tasarladı; Robinson projeksiyonundan yola çıktı ve haritayı biraz daha yüksek yaptı. Ne açı koruyan ne de eşit alanlıdır. Onu, haritanın yan kenarlarının düz kutup çizgileriyle buluştuğu yuvarlatılmış köşelerinden tanıyabilirsin; Dünya'nın yuvarlak olduğunu hatırlatan küçük bir ayrıntı. Robinson gibi o da yüksek enlemleri biraz büyütür, ama bu büyütme Mercator'dakinin yanında çok hafif kalır.
+
+![Natural Earth projeksiyonuyla dünya haritası, yuvarlatılmış köşeleriyle; Afrika mavi, Grönland turuncu.](fig:proj-naturalearth "Natural Earth, worldmap.tech'in kullandığı projeksiyon: Grönland (turuncu) hâlâ biraz büyük ama Afrika'nın (mavi) yanında küçük kalıyor ve kıtalar tanıdık şekillerinde.")
 
 ## worldmap.tech hangisini kullanıyor ve neden?
 

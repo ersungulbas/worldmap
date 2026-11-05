@@ -86,6 +86,9 @@ const FAQ = { tr: readJ(content('faq.tr.json')), en: readJ(content('faq.en.json'
     }
   asset('fonts.css', fontCss);
   for (const f of fs.readdirSync('static/assets')) asset(f, fs.readFileSync('static/assets/' + f));
+  // guide illustrations, drawn by figures.js (sizes in data/figures.json)
+  const FIGS = fs.existsSync('data/figures.json') ? readJ('data/figures.json') : {};
+  if (fs.existsSync('static/guides')) for (const f of fs.readdirSync('static/guides')) asset('guides/' + f, fs.readFileSync('static/guides/' + f));
   copy('static/favicon.ico', 'favicon.ico');
 
   const PAGES = { tr: { app: '/tr/', faq: '/sss/', about: '/hakkinda/', contact: '/iletisim/', privacy: '/gizlilik/', terms: '/kosullar/' },
@@ -97,7 +100,7 @@ const FAQ = { tr: readJ(content('faq.tr.json')), en: readJ(content('faq.en.json'
     if (m) for (const l of m[1].split('\n')) { const i = l.indexOf(':'); if (i > 0) meta[l.slice(0, i).trim()] = l.slice(i + 1).trim(); }
     return { meta, body: m ? s.slice(m[0].length) : s };
   };
-  const GUIDES = {}, GUIDE_ORDER = ['countries', 'counting', 'levels', 'routes', 'projections', 'sharing'];
+  const GUIDES = {}, GUIDE_ORDER = ['countries', 'continents', 'counting', 'levels', 'routes', 'schengen', 'neighbors', 'smallest', 'largest', 'landlocked', 'projections', 'sharing'];
   if (fs.existsSync(content('guides'))) for (const f of fs.readdirSync(content('guides')).sort()) {
     const m = f.match(/^([a-z0-9-]+)\.(tr|en)\.md$/);
     if (m) (GUIDES[m[1]] ??= {})[m[2]] = front(read(content('guides/' + f)));
@@ -110,7 +113,15 @@ const FAQ = { tr: readJ(content('faq.tr.json')), en: readJ(content('faq.en.json'
     if (!/^[a-z0-9-]+$/.test(g.slug || '') || !g.title || !g.description) throw new Error(`guides/${k}.${l}.md: slug, title and description are required`);
     PAGES[l]['g:' + k] = (l === 'tr' ? '/rehber/' : '/guides/') + g.slug + '/';
   }
-  const GUIDES_DATE = '2026-10-21';
+  // date: first published, updated: last real change (both optional, YYYY-MM-DD)
+  const GUIDES_DATE = '2026-10-21', isDate = d => /^\d{4}-\d{2}-\d{2}$/.test(d);
+  for (const k of gkeys) for (const l of ['tr', 'en']) {
+    const g = GUIDES[k][l].meta;
+    if ((g.date && !isDate(g.date)) || (g.updated && !isDate(g.updated))) throw new Error(`guides/${k}.${l}.md: date and updated are YYYY-MM-DD`);
+    g.date ||= GUIDES_DATE; g.updated ||= g.date;
+  }
+  const guideMod = k => [GUIDES[k].tr.meta.updated, GUIDES[k].en.meta.updated].sort().pop();
+  const guidesMod = gkeys.map(guideMod).sort().pop() || GUIDES_DATE;
   const icons = `<link rel="icon" href="/favicon.ico" sizes="48x48">
 <link rel="icon" href="/assets/icon.svg?v=${V['icon.svg']}" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=${V['apple-touch-icon.png']}">
@@ -140,10 +151,21 @@ const FAQ = { tr: readJ(content('faq.tr.json')), en: readJ(content('faq.en.json'
     tr: { back: 'Haritaya dön', other: 'English', foot: S.__FOOTER_TR__, faq: 'SSS', about: 'Hakkında', guides: 'Rehber', privacy: 'Gizlilik', terms: 'Koşullar', contact: 'İletişim', contactP: '/iletisim/', map: 'Harita', rights: 'Tüm hakları saklıdır.', self: 'Türkçe' },
     en: { back: 'Back to the map', other: 'Türkçe', foot: S.__FOOTER_EN__, faq: 'FAQ', about: 'About', guides: 'Guides', privacy: 'Privacy', terms: 'Terms', contact: 'Contact', contactP: '/contact/', map: 'Map', rights: 'All rights reserved.', self: 'English' }
   };
-  // small markdown: ## headings, - lists, **bold**, [links](/path/)
-  const md = s => s.split(/\n{2,}/).map(b => {
+  // a figure drawn by figures.js: ![alt text](fig:id "caption"); per-language files are <id>.<lang>.webp
+  const figSrc = (id, lang) => {
+    const F = FIGS[id], file = 'guides/' + id + (F && F.lang ? '.' + lang : '') + '.webp';
+    if (!F || !V[file]) throw new Error(`figure "${id}" (${file}) is missing: run node figures.js`);
+    return { F, url: `/assets/${file}?v=${V[file]}` };
+  };
+  // small markdown: ## headings, - lists, **bold**, [links](/path/), figures
+  const md = (s, lang) => s.split(/\n{2,}/).map(b => {
     b = b.trim(); if (!b) return '';
     const inl = x => esc(x).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, '<a href="$2">$1</a>');
+    const fg = b.match(/^!\[([^\]]+)\]\(fig:([a-z0-9-]+)(?: "([^"]+)")?\)$/);
+    if (fg) {
+      const { F, url } = figSrc(fg[2], lang);
+      return `<figure${F.h > F.w * 0.85 ? ' class="tall"' : ''}><img src="${url}" alt="${esc(fg[1])}" width="${F.w}" height="${F.h}" loading="lazy" decoding="async">${fg[3] ? `<figcaption>${inl(fg[3])}</figcaption>` : ''}</figure>`;
+    }
     if (b.startsWith('### ')) return `<h3>${inl(b.slice(4))}</h3>`;
     if (b.startsWith('## ')) return `<h2>${inl(b.slice(3))}</h2>`;
     if (b.startsWith('# ')) return `<h2>${inl(b.slice(2))}</h2>`;
@@ -176,7 +198,7 @@ ${langRedirect}
     // text under the map: what the tool is, how to use it, a few FAQ answers and the guides
     const tr = lang === 'tr', homeF = content(`home.${lang}.md`);
     const intro = fs.existsSync(homeF) ? `<section id="intro" aria-label="${tr ? 'worldmap.tech hakkında' : 'About worldmap.tech'}">
-${md(read(homeF))}
+${md(read(homeF), lang)}
 <h2>${tr ? 'Sıkça sorulan sorular' : 'Frequently asked questions'}</h2>
 ${FAQ[lang].slice(0, 5).map(x => `<details><summary>${esc(x.q)}</summary><p>${esc(x.a)}</p></details>`).join('\n')}
 <p><a href="${P.faq}">${tr ? 'Tüm sorular ve cevaplar' : 'All questions and answers'}</a></p>
@@ -246,7 +268,7 @@ ${body}
     const faqBody = `<h1>${lang === 'tr' ? 'Sıkça sorulan sorular' : 'Frequently asked questions'}</h1>
 <p class="lead">${esc(m.faq_description)}</p>
 ${FAQ[lang].map(x => `<details><summary>${esc(x.q)}</summary><p>${esc(x.a)}</p></details>`).join('\n')}
-${md(read(content(`about.${lang}.md`)))}
+${md(read(content(`about.${lang}.md`)), lang)}
 <p><a class="btn" href="${P.app}">${T[lang].back}</a></p>`;
     write(P.faq.slice(1) + 'index.html', page({ lang, key: 'faq', title: m.faq_title, desc: m.faq_description, body: faqBody, ld: faqLd }));
     for (const [key, file, title, desc] of [
@@ -270,7 +292,7 @@ ${md(read(content(`about.${lang}.md`)))}
       : 'What worldmap.tech is, who makes it, where the map data comes from, privacy and how to get in touch.';
     write(PAGES[lang].about.slice(1) + 'index.html', page({ lang, key: 'about', title: title + ' | worldmap.tech', desc,
       ld: { '@context': 'https://schema.org', '@type': 'AboutPage', name: title, inLanguage: lang, url: C.origin + PAGES[lang].about },
-      body: `<h1>${esc(title)}</h1>\n${ownerFill(md(read(f)), lang)}\n<p><a class="btn" href="${PAGES[lang].app}">${T[lang].back}</a></p>` }));
+      body: `<h1>${esc(title)}</h1>\n${ownerFill(md(read(f), lang), lang)}\n<p><a class="btn" href="${PAGES[lang].app}">${T[lang].back}</a></p>` }));
   }
 
   // contact pages
@@ -282,7 +304,7 @@ ${md(read(content(`about.${lang}.md`)))}
     write(PAGES[lang].contact.slice(1) + 'index.html', page({ lang, key: 'contact', title: title + ' | worldmap.tech', desc,
       ld: { '@context': 'https://schema.org', '@type': 'ContactPage', name: title, inLanguage: lang, url: C.origin + PAGES[lang].contact,
         mainEntity: { '@type': 'Organization', name: 'worldmap.tech', url: C.origin + PAGES.en.app, email: C.email } },
-      body: `<h1>${esc(title)}</h1>\n${ownerFill(md(read(f)), lang)}\n<p><a class="btn" href="${PAGES[lang].app}">${T[lang].back}</a></p>` }));
+      body: `<h1>${esc(title)}</h1>\n${ownerFill(md(read(f), lang), lang)}\n<p><a class="btn" href="${PAGES[lang].app}">${T[lang].back}</a></p>` }));
   }
 
   // guide pages and the guide index
@@ -291,25 +313,30 @@ ${md(read(content(`about.${lang}.md`)))}
     const P = PAGES[lang], t = T[lang], tr = lang === 'tr';
     const card = k => { const g = GUIDES[k][lang].meta; return `<li><a href="${P['g:' + k]}">${esc(g.title)}</a><br><span class="meta">${esc(g.description)}</span></li>`; };
     const idxTitle = tr ? 'Rehber: ülkeler, rotalar ve seyahat haritaları' : 'Guides: countries, routes and travel maps';
-    const idxDesc = tr ? 'Dünyada kaç ülke var, hangi ziyaret sayılır, gezgin seviyeleri, çok ülkeli rotalar, harita projeksiyonları ve haritanı paylaşma üzerine yazılar.'
-      : 'How many countries there are, what counts as a visit, traveler levels, multi-country routes, map projections and sharing your travel map.';
+    const idxDesc = tr ? 'Dünyada kaç ülke var, kıtalara göre ülkeler, hangi ziyaret sayılır, gezgin seviyeleri, çok ülkeli rotalar, Schengen Bölgesi, Türkiye\'nin komşuları, en küçük, en büyük ve denize kıyısı olmayan ülkeler, harita projeksiyonları ve haritanı paylaşma üzerine haritalı yazılar.'
+      : 'How many countries there are, countries by continent, what counts as a visit, traveler levels, multi-country routes, the Schengen Area, Türkiye\'s neighbors, the smallest, largest and landlocked countries, map projections and sharing your travel map, with maps.';
     if (gkeys.length) write(P.guides.slice(1) + 'index.html', page({ lang, key: 'guides', title: idxTitle + ' | worldmap.tech', desc: idxDesc,
       ld: { '@context': 'https://schema.org', '@type': 'CollectionPage', name: idxTitle, inLanguage: lang, url: C.origin + P.guides,
         hasPart: gkeys.map(k => ({ '@type': 'Article', headline: GUIDES[k][lang].meta.title, url: C.origin + P['g:' + k] })) },
       body: `<h1>${tr ? 'Rehber' : 'Guides'}</h1>\n<p class="lead">${esc(idxDesc)}</p>\n<ul class="guides">${gkeys.map(card).join('')}</ul>\n<p><a class="btn" href="${P.app}">${t.back}</a></p>` }));
     for (const k of gkeys) {
       const g = GUIDES[k][lang], key = 'g:' + k, url = C.origin + P[key];
+      const fig1 = (g.body.match(/\]\(fig:([a-z0-9-]+)/) || [])[1], img = fig1 ? C.origin + figSrc(fig1, lang).url.split('?')[0] : `${C.origin}/assets/og-${lang}.png`;
       const ld = { '@context': 'https://schema.org', '@type': 'Article', headline: g.meta.title, description: g.meta.description, inLanguage: lang,
-        datePublished: GUIDES_DATE, dateModified: GUIDES_DATE, mainEntityOfPage: url, image: `${C.origin}/assets/og-${lang}.png`,
+        datePublished: g.meta.date, dateModified: g.meta.updated, mainEntityOfPage: url, image: img,
         author: C.owner.name ? { '@type': 'Person', name: C.owner.name } : { '@type': 'Organization', name: 'worldmap.tech' },
         publisher: { '@type': 'Organization', name: 'worldmap.tech', url: C.origin + PAGES.en.app, logo: { '@type': 'ImageObject', url: `${C.origin}/assets/icon-512.png` } } };
-      const more = gkeys.filter(x => x !== k);
-      const body = `<p class="meta"><a href="${P.guides}">${t.guides}</a> · ${fmtDate(GUIDES_DATE, lang)}</p>
+      // "more guides": the related ones named in the front matter, then the next ones in order, four in all
+      const rel = (g.meta.related || '').split(/[,\s]+/).filter(x => gkeys.includes(x) && x !== k);
+      const i0 = gkeys.indexOf(k), more = [...new Set([...rel, ...gkeys.slice(i0 + 1), ...gkeys.slice(0, i0)])].filter(x => x !== k).slice(0, 4);
+      const dates = fmtDate(g.meta.date, lang) + (g.meta.updated !== g.meta.date ? ` · ${tr ? 'Güncellendi' : 'Updated'} ${fmtDate(g.meta.updated, lang)}` : '');
+      const body = `<p class="meta"><a href="${P.guides}">${t.guides}</a> · ${dates}</p>
 <h1>${esc(g.meta.title)}</h1>
-${md(g.body)}
+${md(g.body, lang)}
 <p><a class="btn" href="${P.app}">${tr ? 'Haritanı işaretle' : 'Mark your map'}</a></p>
 ${more.length ? `<h2>${tr ? 'Diğer yazılar' : 'More guides'}</h2>
-<ul class="guides">${more.map(card).join('')}</ul>` : ''}`;
+<ul class="guides">${more.map(card).join('')}</ul>
+<p><a href="${P.guides}">${tr ? 'Tüm rehber yazıları' : 'All guides'}</a></p>` : ''}`;
       write(P[key].slice(1) + 'index.html', page({ lang, key, title: g.meta.title + ' | worldmap.tech', desc: g.meta.description, body, ld }));
     }
   }
@@ -333,7 +360,7 @@ ${fontsHead}
 
   // crawler + platform files
   const urls = ['app', 'faq', 'about', 'privacy', 'terms'].concat(fs.existsSync(content('contact.en.md')) ? ['contact'] : [], gkeys.length ? ['guides', ...gkeys.map(k => 'g:' + k)] : []);
-  const lastmod = k => k === 'contact' ? '2026-10-24' : k === 'guides' || k === 'about' || k.startsWith('g:') ? GUIDES_DATE : '2026-10-09';
+  const lastmod = k => k === 'contact' ? '2026-10-24' : k.startsWith('g:') ? guideMod(k.slice(2)) : k === 'guides' ? guidesMod : k === 'about' ? GUIDES_DATE : '2026-10-09';
   write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
 ${urls.flatMap(k => ['en', 'tr'].map(l => `  <url><loc>${C.origin}${PAGES[l][k]}</loc><lastmod>${lastmod(k)}</lastmod>

@@ -2,6 +2,8 @@
 slug: map-projections
 title: Map Projections: Why Every World Map Is a Little Wrong
 description: Why Greenland looks as big as Africa, what Mercator, Gall-Peters and Robinson get right and wrong, and which projection worldmap.tech uses.
+updated: 2026-11-04
+related: largest, continents, smallest
 ---
 Every flat world map distorts something, because the surface of a globe cannot be spread flat without stretching or tearing it. A map projection is the mapmaker's choice of what to give up: true shapes, true sizes, or a little of each. That choice is why Greenland can look like a continent on one map and a large island on another. worldmap.tech uses the Natural Earth projection, a compromise that shows the whole world at once without any region looking wildly out of proportion.
 
@@ -25,11 +27,15 @@ The cost is size: Mercator enlarges land more the farther it lies from the equat
 - **Russia vs Africa:** Russia covers about 17.1 million km². On Mercator it looks bigger than Africa, yet Africa is nearly twice its size.
 - **Greenland vs Algeria:** Algeria, at about 2.38 million km², is slightly larger than Greenland.
 
+![World map in the Mercator projection: orange Greenland looks almost as large as blue Africa.](fig:proj-mercator "Mercator: Greenland (orange) looks almost as big as Africa (blue), although Africa is about 14 times larger. The stretching grows without limit toward the poles, so the map never reaches them and Antarctica is usually left out.")
+
 So why is Mercator still everywhere online? Google Maps adopted a variant called Web Mercator in 2005, and it became the standard for web maps, used by OpenStreetMap, Bing Maps and Mapbox too. When you zoom into a city, you need streets to cross at the right angles and roundabouts to look round, and a near-conformal projection delivers that at every zoom level. These services simply cut the map off at about 85° north and south, since the poles would sit infinitely far away. Mercator is excellent for finding a café and a poor picture of the whole planet.
 
 ## Equal-area maps: true sizes, unusual shapes
 
 Equal-area projections fix the size problem: two regions that are equally large on the globe take up equal space on the map. The best known is the **Gall-Peters** projection, first described by James Gall in 1855 and promoted by Arno Peters from 1973 as a fairer picture of the world. It does show Africa and South America at their true size, but the tropics get stretched so much that Africa looks extremely elongated from north to south. Boston Public Schools began phasing in Gall-Peters maps in March 2017.
+
+![World map in the Gall-Peters projection: Africa is long and large, Greenland a thin strip.](fig:proj-gallpeters "Gall-Peters: Africa (blue) and Greenland (orange) at their true relative sizes, but Africa is stretched north to south and the northern lands are squashed.")
 
 Other equal-area projections look more natural. **Mollweide**, first published in 1805, draws the world as a 2:1 ellipse; sizes are true, while shapes get noticeably distorted toward the edges. **Equal Earth**, published in 2018 by Bojan Šavrič, Bernhard Jenny and Tom Patterson, was designed after the Boston coverage as a better-looking alternative to Gall-Peters: it resembles the popular Robinson map but keeps every area true.
 
@@ -38,6 +44,8 @@ Other equal-area projections look more natural. **Mollweide**, first published i
 Most atlases favor compromises. Arthur H. Robinson devised the **Robinson** projection in 1963, and National Geographic used it for its world maps from 1988. In 1998 the society switched to the **Winkel Tripel**, proposed by Oswald Winkel in 1921. "Tripel" is German for triple, after Winkel's goal of minimizing three kinds of distortion: area, direction and distance.
 
 The **Natural Earth** projection is a younger member of this family. Cartographer Tom Patterson of the US National Park Service designed it in 2007, starting from the Robinson projection and making it slightly taller. Neither conformal nor equal-area, it is easy to recognize by its rounded corners where the sides meet the flat pole lines, a small hint that the Earth is round. Like Robinson, it still enlarges high latitudes somewhat, just nowhere near as much as Mercator does.
+
+![World map in the Natural Earth projection with its rounded corners; Africa in blue, Greenland in orange.](fig:proj-naturalearth "Natural Earth, the projection worldmap.tech uses: Greenland (orange) is still a little large, but it looks small next to Africa (blue) and the continents keep familiar shapes.")
 
 ## What worldmap.tech uses, and why
 

@@ -2,6 +2,8 @@
 slug: gezgin-seviyeleri
 title: Gezgin Seviyeleri ve Dünya Yüzdesi Nasıl Hesaplanır?
 description: worldmap.tech'te gezgin seviyeleri gerçekte neye benzer, dünyanın yüzde kaçını gördüğün 195 üzerinden nasıl hesaplanır, sonraki seviyeye nasıl geçersin?
+updated: 2026-11-04
+related: counting, routes, continents
 ---
 worldmap.tech'te gezgin seviyen tek bir şeye bakar: kaç ülke işaretlediğine. İlk ülkenle Meraklı Yolcu olursun; 5 ülkede Gezgin, 10'da Kaşif, 20'de Dünya Gezgini, 35'te Pasaport Ustası, 60'ta Efsane Gezgin, 100'de de Dünya Vatandaşı. Seviyenin yanında duran dünya yüzdesi ise ülke sayının 195'e bölünmesiyle bulunur. Aşağıda her eşiğin gerçek bir haritada nasıl göründüğünü, hesabın mantığını ve bir sonraki seviyeye gerçekçi yollarla nasıl geçebileceğini bulacaksın.
 
@@ -27,9 +29,13 @@ Bir eşiği geçtiğinde ekranda "Yeni seviye" bildirimi çıkar, seviyen de kay
 
 **20'ye giden yol.** Dünya Gezgini olmak için çoğunlukla birkaç bölge gerekir. Yirmi ülke, Batı Avrupa'nın bir kısmı artı bir Güneydoğu Asya turu olabilir; ya da Balkanlar, Kafkasya ve Körfez'de bir mola. Üstelik tam olarak dünyanın %10'u, hikâyede paylaşmak için gayet güzel bir sayı.
 
+![Örnek bir Dünya Gezgini haritası: Avrupa'dan, Kafkasya'dan, Körfez'den, Mısır'dan, Tayland'dan ve ABD'den toplam 20 ülke mavi.](fig:level-20 "20 ülkelik örnek bir harita: Dünya Gezgini seviyesi, dünyanın %10'u. Ülkelerin çoğu Avrupa'da, birkaçı da uzak yolculuklardan.")
+
 **35'e giden yol.** Burada gideceğin yeri kısmen "daha önce gitmedim" diye seçmeye başlarsın. Muhtemelen tek seyahatte birden çok ülke gezme numarasını birkaç kez yapmış, en az iki üç kıtada vakit geçirmişsindir.
 
 **60'a giden yol.** Coğrafya bu noktada işini zorlaştırmaya başlar. Avrupa'da en geniş tanımla bile 50 civarında egemen devlet var, yani 60'a tek bir kıtanın rahat tren yolculuklarıyla varamazsın. Buraya gelmek genelde bir iki uzun yolculuk ve ekstra plan isteyen birkaç rota demek.
+
+![Örnek bir Efsane Gezgin haritası: Avrupa'nın büyük kısmı ile Kuzey Afrika, Orta Doğu, Asya, Kuzey Amerika, Brezilya, Doğu ve Güney Afrika ve Avustralya'dan toplam 60 ülke mavi.](fig:level-60 "60 ülkelik örnek bir harita: Efsane Gezgin seviyesi, dünyanın %31'i. Avrupa'nın büyük kısmı dolu, geri kalan ülkeler beş kıtaya yayılmış.")
 
 **100'e giden yol.** Dünya Vatandaşı uzun soluklu bir proje. 100 ülkede 195'in yarısını geçmiş olursun; listede kalanlar da çoğu zaman ulaşması daha zahmetli, uçuşu daha seyrek yerlerdir.
 
